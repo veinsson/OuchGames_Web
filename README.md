@@ -1,6 +1,6 @@
 # Ouch Games - Website
 
-A dark, horror-themed website for Ouch Games - an indie horror studio creating experiences in UEFN (Unreal Editor for Fortnite).
+Ouch Games official website.
 
 ## Features
 
@@ -29,34 +29,6 @@ A dark, horror-themed website for Ouch Games - an indie horror studio creating e
 - [Discord](https://discord.com/invite/hk5a7snQHt)
 - [Fortnite.gg](https://fortnite.gg/creator?name=ouch)
 - [Fortnite Creator Page](https://www.fortnite.com/@ouch)
-
-## Free Hosting Options
-
-### Option 1: GitHub Pages (Recommended - 100% Free)
-
-1. Create a GitHub account at https://github.com
-2. Create a new repository named `ouchgames-web` (or `yourusername.github.io` for a custom domain)
-3. Upload all files (index.html, styles.css, script.js)
-4. Go to Settings → Pages → Select "main" branch → Save
-5. Your site will be live at: `https://yourusername.github.io/ouchgames-web`
-
-### Option 2: Netlify (Free)
-
-1. Go to https://netlify.com
-2. Sign up and drag-drop this folder
-3. Your site gets a free `.netlify.app` domain
-
-### Option 3: Vercel (Free)
-
-1. Go to https://vercel.com
-2. Connect your GitHub or drag-drop files
-3. Free `.vercel.app` domain included
-
-### Option 4: Cloudflare Pages (Free)
-
-1. Go to https://pages.cloudflare.com
-2. Connect GitHub or upload directly
-3. Free `.pages.dev` domain
 
 ## Customization
 
@@ -120,10 +92,7 @@ ouchgames-web/
 
 The current implementation simulates player counts with realistic fluctuating values. To get actual live data, you would need to:
 
-1. Use fortnite.gg's unofficial API (if available)
-2. Set up a backend proxy to fetch data
-3. Use Epic Games' official API (requires developer access)
-
 ---
 
 © 2026 Ouch Games. All horror experiences reserved.
+
