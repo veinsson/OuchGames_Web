@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouch Games - Indie Horror Studio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        // Fallback in case load event doesn't fire
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#games">Games</a>
+                <a href="#stats">Stats</a>
+                <a href="creators.html">Team</a>
+                <a href="#socials">Socials</a>
+            </nav>
+            
+            <a href="apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="assets/hero-bg.jpg" alt="" class="hero-bg-image">
+        </div>
+        <!-- CRT overlay for retro effect -->
+        <div class="crt-overlay"></div>
+        
+        <div class="hero-content centered">
+            <!-- Ouch Logo -->
+            <div class="ouch-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch Games" class="logo-image">
+            </div>
+            
+            <div class="hero-badge">Indie Horror Studio</div>
+            <h1 class="hero-title">ouch games</h1>
+            <p class="hero-subtitle">We're a small team of creators crafting horror experiences in UEFN.<br><span class="highlight">150M+ minutes played</span> and counting.</p>
+            
+            <!-- Live player count -->
+            <div class="live-players">
+                <div class="live-indicator"></div>
+                <span id="total-players">0</span> playing now across all games
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#games" class="btn btn-primary">Explore Games</a>
+                <a href="#project-x" class="btn btn-secondary">What's Next?</a>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span>SCROLL</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar" id="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-info">
+                    <span class="stat-value">154.5M+</span>
+                    <span class="stat-label">MINUTES PLAYED</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-value">95.6K</span>
+                    <span class="stat-label">FOLLOWERS</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">❤️</div>
+                <div class="stat-info">
+                    <span class="stat-value">557K+</span>
+                    <span class="stat-label">FAVORITES</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <span class="stat-value">#146</span>
+                    <span class="stat-label">CREATOR RANK</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Secret Project Section -->
+    <section class="sealed-section" id="project-x">
+        <div class="sealed-container">
+            <div class="sealed-header">
+                <div class="classified-badge">⬡ CLASSIFIED</div>
+                <h2 class="sealed-title">PROJECT X</h2>
+                <div class="sealed-status">
+                    <span class="status-text">STATUS: ██████████</span>
+                    <span class="status-eta">• ETA: ████</span>
+                </div>
+            </div>
+            
+            <div class="sealed-content">
+                <div class="sealed-brief">
+                    <div class="brief-header">
+                        <span class="brief-label">INTEL BRIEFING</span>
+                        <span class="brief-peek">LEVEL 5 CLEARANCE</span>
+                    </div>
+                    
+                    <div class="brief-item">
+                        <span class="brief-key">CODENAME</span>
+                        <span class="brief-value redacted">████████</span>
+                    </div>
+                    
+                    <div class="brief-item">
+                        <span class="brief-key">TYPE</span>
+                        <span class="brief-value redacted">██████ ███████████</span>
+                    </div>
+                    
+                    <div class="brief-item">
+                        <span class="brief-key">DETAILS</span>
+                        <span class="brief-value redacted">████████████████████████</span>
+                    </div>
+                    
+                    <div class="brief-item">
+                        <span class="brief-key">THREAT LEVEL</span>
+                        <span class="brief-value threat">█████████</span>
+                    </div>
+                    
+                    <div class="sealed-warning">
+                        <span class="warning-label">⚠️ NOTICE</span>
+                        <p class="warning-text">"Information restricted. Follow for updates."</p>
+                    </div>
+                    
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="sealed-cta">
+                        Follow @OuchUEFN for intel →
+                    </a>
+                </div>
+                
+                <div class="sealed-visual">
+                    <div class="subject-badge">FILE: RESTRICTED</div>
+                    <div class="sealed-character-container">
+                        <div class="sealed-character"></div>
+                        <div class="redacted-overlay">? ? ?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Speedrunners Carousel -->
+    <section class="speedrunners-section" id="speedrunners">
+        <div class="speedrunners-container">
+            <div class="section-header">
+                <h2 class="section-title">🏆 Speedrun Champions</h2>
+                <p class="section-subtitle">The fastest players across all Ouch Games experiences</p>
+            </div>
+            
+            <div class="carousel-wrapper">
+                <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">‹</button>
+                
+                <div class="speedrunner-carousel" id="speedrunnerCarousel">
+                    <div class="speedrunner-card featured">
+                        <div class="speedrunner-rank">👑</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">HOMELESS</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                        <div class="speedrunner-badge">FASTEST OVERALL</div>
+                    </div>
+                    
+                    <div class="speedrunner-card">
+                        <div class="speedrunner-rank">🥇</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">EVICTED</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                    </div>
+                    
+                    <div class="speedrunner-card">
+                        <div class="speedrunner-rank">🥇</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">DISTURBED</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                    </div>
+                    
+                    <div class="speedrunner-card">
+                        <div class="speedrunner-rank">🥇</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">RITUAL</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                    </div>
+                    
+                    <div class="speedrunner-card">
+                        <div class="speedrunner-rank">🥇</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">SANITY</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                    </div>
+                    
+                    <div class="speedrunner-card">
+                        <div class="speedrunner-rank">🥇</div>
+                        <div class="speedrunner-avatar">
+                            <div class="avatar-redacted">?</div>
+                        </div>
+                        <div class="speedrunner-info">
+                            <span class="speedrunner-name redacted">██████████</span>
+                            <span class="speedrunner-game">TRAUMA</span>
+                            <span class="speedrunner-time redacted">██:██.██</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">›</button>
+            </div>
+            
+            <div class="submit-time-cta">
+                <span>Got a faster time?</span>
+                <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-secondary">Submit Time</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="games-section" id="games">
+        <div class="games-container">
+            <div class="section-header">
+                <h2 class="section-title">Horror Experiences</h2>
+                <p class="section-subtitle">Immersive psychological horror games designed for 1-4 players. Each experience crafted with realistic environments and atmospheric storytelling.</p>
+            </div>
+            
+            <div class="games-grid">
+                <!-- DISTURBED -->
+                <div class="game-card" data-island="3475-9207-2052">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/AiHjklCxZQfuXVNuOX/image/landscape_comp_s.jpeg" alt="DISTURBED">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">DISTURBED</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="disturbed">0</span> playing</span>
+                            <span class="peak">3,250 peak</span>
+                        </div>
+                        <div class="game-code">3475-9207-2052</div>
+                        <a href="games/disturbed.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SANITY -->
+                <div class="game-card" data-island="0555-4316-6085">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/PCIxAxRbofsoeegLPe/image/landscape_comp_s.jpeg" alt="SANITY">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">SANITY</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="sanity">0</span> playing</span>
+                            <span class="peak">2,798 peak</span>
+                        </div>
+                        <div class="game-code">0555-4316-6085</div>
+                        <a href="games/sanity.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+
+                <!-- EVICTED -->
+                <div class="game-card" data-island="9694-9799-9090">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/VqOFyFxRznIwhtubra/image/landscape_comp_s.jpeg" alt="EVICTED">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">EVICTED</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="evicted">0</span> playing</span>
+                            <span class="peak">1,597 peak</span>
+                        </div>
+                        <div class="game-code">9694-9799-9090</div>
+                        <a href="games/evicted.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HOMELESS -->
+                <div class="game-card" data-island="4095-6376-8788">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/lkxknFwEcHJnmevRBa/image/landscape_comp_s.jpeg" alt="HOMELESS">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">HOMELESS</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="homeless">0</span> playing</span>
+                            <span class="peak">1,756 peak</span>
+                        </div>
+                        <div class="game-code">4095-6376-8788</div>
+                        <a href="games/homeless.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TRAUMA -->
+                <div class="game-card" data-island="8985-1891-2904">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/WHssEuNrjGhuwPKxIh/image/landscape_comp_s.jpeg" alt="TRAUMA">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">TRAUMA</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="trauma">0</span> playing</span>
+                            <span class="peak">1,521 peak</span>
+                        </div>
+                        <div class="game-code">8985-1891-2904</div>
+                        <a href="games/trauma.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RITUAL -->
+                <div class="game-card" data-island="1376-1111-7887">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/ovZtDDcREJatqJNBxK/image/landscape_comp_s.jpeg" alt="RITUAL">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">RITUAL</h3>
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="ritual">0</span> playing</span>
+                            <span class="peak">276 peak</span>
+                        </div>
+                        <div class="game-code">1376-1111-7887</div>
+                        <a href="games/ritual.html" class="btn btn-play">
+                            <span>→</span> VIEW MORE
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">ouch games</h3>
+                    <p class="footer-tagline">Creating immersive psychological horror experiences in UEFN. Stay sharp. Stay sane.</p>
+                </div>
+                
+                <div class="footer-socials">
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="social-link" title="X / Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <span>X / Twitter</span>
+                    </a>
+                    <a href="https://www.youtube.com/@OuchUEFN" target="_blank" class="social-link" title="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="social-link" title="Discord">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                        <span>Discord</span>
+                    </a>
+                    <a href="https://fortnite.gg/creator?name=ouch" target="_blank" class="social-link" title="Fortnite.gg">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <span>Fortnite.gg</span>
+                    </a>
+                    <a href="https://www.fortnite.com/@ouch" target="_blank" class="social-link" title="Fortnite Creator">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <span>Fortnite</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2026 Ouch Games. All horror experiences reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
