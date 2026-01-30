@@ -645,6 +645,45 @@
             formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         
+        // Discord webhook notification
+        async function sendToDiscord(data) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1466651904305270845/VeqVYVzOgAIcjwctNfdxAi8Yx-q2-3wAJyT-UZqmYXwz1E-FzTcANRXezI9M8378BUmL';
+            
+            const embed = {
+                title: '🏆 New Speedrun Submission',
+                color: 0x9b4dff,
+                fields: [
+                    { name: 'Game', value: data.game, inline: true },
+                    { name: 'Time', value: data.time, inline: true },
+                    { name: 'Epic Username', value: data.epicUsername, inline: true },
+                    { name: 'Discord', value: data.discordUsername, inline: true },
+                    { name: 'Proof', value: `[Watch Proof](${data.proofUrl})`, inline: false },
+                    { name: 'Notes', value: data.notes || 'None', inline: false }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: '⏳ Pending Review - Check Firebase Console'
+                }
+            };
+            
+            try {
+                console.log('Sending speedrun notification to Discord...');
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Discord notification sent!');
+                } else {
+                    console.error('❌ Discord webhook failed:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('❌ Failed to send Discord notification:', error);
+            }
+        }
+        
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -672,6 +711,9 @@
                 };
                 
                 await firebase.firestore().collection('submissions').add(submission);
+                
+                // Send notification to Discord
+                sendToDiscord(submission);
                 
                 showMessage('success', '✅ Speedrun submitted! We\'ll review it within 24-48 hours and verify your Discord membership.');
                 

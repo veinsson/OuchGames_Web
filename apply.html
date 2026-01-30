@@ -972,7 +972,7 @@
 
         // Discord webhook integration
         async function sendToDiscord(data) {
-            const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL'; // Replace with actual webhook
+            const webhookUrl = 'https://discord.com/api/webhooks/1466623780192260259/chvGbhxTjp3Sq_Q8McfCaGmc0ldxggWPO4NH0balL-7ZmzzYpFvf4MYdcapex_ETvLX9'; 
             
             const embed = {
                 title: '📋 New Team Application',
@@ -999,13 +999,22 @@
             };
 
             try {
-                await fetch(webhookUrl, {
+                console.log('Sending to Discord webhook...');
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ embeds: [embed] })
                 });
+                
+                if (response.ok) {
+                    console.log('✅ Successfully sent to Discord!');
+                } else {
+                    console.error('❌ Discord webhook failed:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.error('Error details:', errorText);
+                }
             } catch (error) {
-                console.error('Failed to send to Discord:', error);
+                console.error('❌ Failed to send to Discord:', error);
             }
         }
     </script>

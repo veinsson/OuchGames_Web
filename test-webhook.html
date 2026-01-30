@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0d1117;
+            color: #c9d1d9;
+        }
+        button {
+            background: #9b4dff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #8a3eef;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success {
+            background: #1a472a;
+            border: 1px solid #2ea043;
+            color: #3fb950;
+        }
+        .error {
+            background: #4a1a1a;
+            border: 1px solid #f85149;
+            color: #ff7b72;
+        }
+    </style>
+</head>
+<body>
+    <h1>Discord Webhook Tester</h1>
+    <p>This will test if your Discord webhook is working correctly.</p>
+    
+    <button onclick="testWebhook()">Test Simple Message</button>
+    <button onclick="testEmbed()">Test Application Embed</button>
+    
+    <div id="result"></div>
+
+    <script>
+        const webhookUrl = 'https://discord.com/api/webhooks/1466623780192260259/chvGbhxTjp3Sq_Q8McfCaGmc0ldxggWPO4NH0balL-7ZmzzYpFvf4MYdcapex_ETvLX9';
+        
+        async function testWebhook() {
+            const result = document.getElementById('result');
+            result.style.display = 'block';
+            result.textContent = 'Sending...';
+            result.className = '';
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: '✅ Simple webhook test from test-webhook.html'
+                    })
+                });
+                
+                if (response.ok) {
+                    result.className = 'success';
+                    result.textContent = '✅ SUCCESS! Message sent to Discord. Check your channel!';
+                } else {
+                    result.className = 'error';
+                    const errorText = await response.text();
+                    result.textContent = `❌ FAILED: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                result.className = 'error';
+                result.textContent = `❌ ERROR: ${error.message}`;
+            }
+        }
+        
+        async function testEmbed() {
+            const result = document.getElementById('result');
+            result.style.display = 'block';
+            result.textContent = 'Sending embed...';
+            result.className = '';
+            
+            const embed = {
+                title: '📋 Test Team Application',
+                color: 0x9b4dff,
+                fields: [
+                    { name: 'Role', value: 'Developer', inline: true },
+                    { name: 'Name', value: 'Test User', inline: true },
+                    { name: 'Discord', value: 'testuser#1234', inline: true },
+                    { name: 'Experience', value: '3+ years', inline: true },
+                    { name: 'Why Join?', value: 'This is a test submission from test-webhook.html', inline: false }
+                ],
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] })
+                });
+                
+                if (response.ok) {
+                    result.className = 'success';
+                    result.textContent = '✅ SUCCESS! Embed sent to Discord. Check your channel!';
+                } else {
+                    result.className = 'error';
+                    const errorText = await response.text();
+                    result.textContent = `❌ FAILED: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                result.className = 'error';
+                result.textContent = `❌ ERROR: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
