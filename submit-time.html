@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Speedrun | Ouch Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        .submit-page {
+            min-height: 100vh;
+            padding: 120px 2rem 4rem;
+        }
+        
+        .submit-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .submit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .submit-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .submit-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--neon-purple);
+        }
+        
+        /* Game Selection Grid */
+        .game-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .game-select-card {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            aspect-ratio: 16/9;
+        }
+        
+        .game-select-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 10px 40px rgba(155, 77, 255, 0.3);
+        }
+        
+        .game-select-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .game-select-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.25rem;
+        }
+        
+        .game-select-name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .game-select-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* Form Styles */
+        .submit-form-container {
+            display: none;
+        }
+        
+        .submit-form-container.active {
+            display: block;
+        }
+        
+        .selected-game-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+        }
+        
+        .selected-game-thumb {
+            width: 120px;
+            height: 68px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+        }
+        
+        .selected-game-info h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .change-game-btn {
+            color: var(--neon-purple);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .change-game-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .submit-form {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-label span {
+            color: #ff3366;
+        }
+        
+        .form-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.2);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.75rem;
+        }
+        
+        .time-group {
+            text-align: center;
+        }
+        
+        .time-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .time-group input {
+            width: 100%;
+            padding: 0.75rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .file-upload {
+            position: relative;
+            border: 2px dashed var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--neon-purple);
+            background: rgba(155, 77, 255, 0.05);
+        }
+        
+        .file-upload.has-file {
+            border-color: #39ff14;
+            background: rgba(57, 255, 20, 0.05);
+        }
+        
+        .file-upload.uploading {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+        
+        .file-upload input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .file-upload-text strong {
+            color: var(--neon-purple);
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #39ff14;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .submit-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(155, 77, 255, 0.1);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .submit-note strong {
+            color: var(--neon-purple);
+        }
+        
+        .discord-requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+        }
+        
+        .discord-requirement svg {
+            width: 24px;
+            height: 24px;
+            fill: #5865F2;
+            flex-shrink: 0;
+        }
+        
+        .discord-requirement p {
+            font-size: 0.9rem;
+            color: #fff;
+        }
+        
+        .discord-requirement a {
+            color: #5865F2;
+            font-weight: 600;
+        }
+        
+        .form-message {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-message.success {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            color: #39ff14;
+        }
+        
+        .form-message.error {
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            color: #ff3366;
+        }
+        
+        @media (max-width: 600px) {
+            .selected-game-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .game-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="creators.html">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            
+            <a href="apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Submit Page -->
+    <section class="submit-page">
+        <div class="submit-container">
+            <a href="/" class="back-link">← Back to Home</a>
+            
+            <div class="submit-header">
+                <h1 class="submit-title">🏆 Submit Speedrun</h1>
+                <p class="submit-subtitle">Think you've got the fastest time? Select a game below and submit your run to compete for a spot on our leaderboards!</p>
+            </div>
+            
+            <!-- Step 1: Game Selection -->
+            <div id="gameSelection">
+                <div class="game-selection">
+                    <div class="game-select-card" data-game="DISTURBED" data-image="https://cdn-0001.qstv.on.epicgames.com/AiHjklCxZQfuXVNuOX/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/AiHjklCxZQfuXVNuOX/image/landscape_comp_s.jpeg" alt="DISTURBED">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">DISTURBED</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="SANITY" data-image="https://cdn-0001.qstv.on.epicgames.com/PCIxAxRbofsoeegLPe/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/PCIxAxRbofsoeegLPe/image/landscape_comp_s.jpeg" alt="SANITY">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">SANITY</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="EVICTED" data-image="https://cdn-0001.qstv.on.epicgames.com/VqOFyFxRznIwhtubra/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/VqOFyFxRznIwhtubra/image/landscape_comp_s.jpeg" alt="EVICTED">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">EVICTED</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="HOMELESS" data-image="https://cdn-0001.qstv.on.epicgames.com/lkxknFwEcHJnmevRBa/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/lkxknFwEcHJnmevRBa/image/landscape_comp_s.jpeg" alt="HOMELESS">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">HOMELESS</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="TRAUMA" data-image="https://cdn-0001.qstv.on.epicgames.com/WHssEuNrjGhuwPKxIh/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/WHssEuNrjGhuwPKxIh/image/landscape_comp_s.jpeg" alt="TRAUMA">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">TRAUMA</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="RITUAL" data-image="https://cdn-0001.qstv.on.epicgames.com/ovZtDDcREJatqJNBxK/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/ovZtDDcREJatqJNBxK/image/landscape_comp_s.jpeg" alt="RITUAL">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">RITUAL</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="BELOW" data-image="https://cdn-0001.qstv.on.epicgames.com/eiiMqAdhTtVkMIBqWt/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/eiiMqAdhTtVkMIBqWt/image/landscape_comp_s.jpeg" alt="BELOW">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">BELOW</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="DUMMY" data-image="https://cdn-0001.qstv.on.epicgames.com/zWaWlyFuommznbnUMR/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/zWaWlyFuommznbnUMR/image/landscape_comp_s.jpeg" alt="DUMMY">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">DUMMY</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                    
+                    <div class="game-select-card" data-game="MENTAL" data-image="https://cdn-0001.qstv.on.epicgames.com/drwkaulGqWamlyFRYy/image/landscape_comp_s.jpeg">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/drwkaulGqWamlyFRYy/image/landscape_comp_s.jpeg" alt="MENTAL">
+                        <div class="game-select-overlay">
+                            <span class="game-select-name">MENTAL</span>
+                            <span class="game-select-hint">Click to submit time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Submission Form -->
+            <div class="submit-form-container" id="formContainer">
+                <div class="selected-game-header">
+                    <img id="selectedGameThumb" class="selected-game-thumb" src="" alt="">
+                    <div class="selected-game-info">
+                        <h2 id="selectedGameName"></h2>
+                        <span class="change-game-btn" onclick="showGameSelection()">← Choose different game</span>
+                    </div>
+                </div>
+                
+                <form class="submit-form" id="speedrunForm">
+                    <div id="formMessage" class="form-message" style="display: none;"></div>
+                    
+                    <div class="discord-requirement">
+                        <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        <p><strong>Required:</strong> You must be a member of our <a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord server</a> to submit times. We'll verify your membership.</p>
+                    </div>
+                    
+                    <input type="hidden" name="game" id="gameInput">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Your Time <span>*</span></label>
+                        <div class="time-inputs">
+                            <div class="time-group">
+                                <label>Minutes</label>
+                                <input type="number" class="form-input" name="minutes" min="0" max="99" placeholder="00" required>
+                            </div>
+                            <div class="time-group">
+                                <label>Seconds</label>
+                                <input type="number" class="form-input" name="seconds" min="0" max="59" placeholder="00" required>
+                            </div>
+                            <div class="time-group">
+                                <label>Milliseconds</label>
+                                <input type="number" class="form-input" name="milliseconds" min="0" max="99" placeholder="00">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Epic Username <span>*</span></label>
+                        <input type="text" class="form-input" name="epicUsername" placeholder="Your Epic Games username" required>
+                        <p class="form-hint">Must match the name shown in your proof screenshot/video</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Discord Username <span>*</span></label>
+                        <input type="text" class="form-input" name="discordUsername" placeholder="username or @username" required>
+                        <p class="form-hint">We'll verify your Discord membership and contact you there</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Proof Link (Screenshot/Video) <span>*</span></label>
+                        <input type="url" class="form-input" name="proofUrl" placeholder="https://imgur.com/abc123 or YouTube link" required>
+                        <p class="form-hint">Upload your screenshot/video to Imgur, YouTube, Streamable, etc. and paste the link here. Must clearly show your final time and Epic username.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Additional Notes (Optional)</label>
+                        <textarea class="form-textarea" name="notes" placeholder="Any additional info about your run..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">Submit Speedrun</button>
+                    
+                    <div class="submit-note">
+                        <strong>📋 Verification Process:</strong> Our team will review your submission within 24-48 hours. If verified, your time will appear on the leaderboards!
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="footer-logo">
+                <span class="footer-name">ouch</span>
+            </div>
+            <p class="footer-tagline">Crafting nightmares in Fortnite Creative.</p>
+            <p class="footer-copyright">© 2026 Ouch Games. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        let selectedGame = null;
+        let selectedGameImage = null;
+        let selectedFile = null;
+        
+        // Game selection
+        document.querySelectorAll('.game-select-card').forEach(card => {
+            card.addEventListener('click', function() {
+                selectedGame = this.dataset.game;
+                selectedGameImage = this.dataset.image;
+                showForm();
+            });
+        });
+        
+        function showForm() {
+            document.getElementById('gameSelection').style.display = 'none';
+            document.getElementById('formContainer').classList.add('active');
+            document.getElementById('selectedGameThumb').src = selectedGameImage;
+            document.getElementById('selectedGameName').textContent = selectedGame;
+            document.getElementById('gameInput').value = selectedGame;
+            
+            document.querySelector('.submit-title').textContent = '🏆 Submit ' + selectedGame + ' Time';
+            document.querySelector('.submit-subtitle').style.display = 'none';
+        }
+        
+        function showGameSelection() {
+            document.getElementById('gameSelection').style.display = 'block';
+            document.getElementById('formContainer').classList.remove('active');
+            document.querySelector('.submit-title').textContent = '🏆 Submit Speedrun';
+            document.querySelector('.submit-subtitle').style.display = 'block';
+            
+            document.getElementById('speedrunForm').reset();
+        }
+        
+        // Check URL params for pre-selected game
+        const urlParams = new URLSearchParams(window.location.search);
+        const preselectedGame = urlParams.get('game');
+        if (preselectedGame) {
+            const card = document.querySelector(`[data-game="${preselectedGame.toUpperCase()}"]`);
+            if (card) {
+                selectedGame = card.dataset.game;
+                selectedGameImage = card.dataset.image;
+                showForm();
+            }
+        }
+        
+        // Form submission
+        const form = document.getElementById('speedrunForm');
+        const formMessage = document.getElementById('formMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        function showMessage(type, text) {
+            formMessage.className = `form-message ${type}`;
+            formMessage.textContent = text;
+            formMessage.style.display = 'block';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                showMessage('error', 'System not configured yet. Please contact the team on Discord.');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const submission = {
+                    game: formData.get('game'),
+                    time: `${String(formData.get('minutes')).padStart(2, '0')}:${String(formData.get('seconds')).padStart(2, '0')}.${String(formData.get('milliseconds') || '00').padStart(2, '0')}`,
+                    timeInSeconds: (parseInt(formData.get('minutes')) * 60) + parseInt(formData.get('seconds')) + (parseInt(formData.get('milliseconds') || 0) / 100),
+                    epicUsername: formData.get('epicUsername'),
+                    discordUsername: formData.get('discordUsername'),
+                    proofUrl: formData.get('proofUrl'),
+                    notes: formData.get('notes') || '',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending'
+                };
+                
+                await firebase.firestore().collection('submissions').add(submission);
+                
+                showMessage('success', '✅ Speedrun submitted! We\'ll review it within 24-48 hours and verify your Discord membership.');
+                
+                form.reset();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage('error', 'Failed to submit. Please try again or contact us on Discord.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Speedrun';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Team - Ouch Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        // Fallback in case load event doesn't fire
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="creators.html" class="active">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            
+            <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Team Hero -->
+    <section class="team-hero">
+        <div class="team-hero-content">
+            <div class="team-badge">Est. 2025</div>
+            <h1 class="team-title">Meet the Team</h1>
+            <p class="team-subtitle">The creative minds behind Ouch Games' horror experiences</p>
+        </div>
+    </section>
+
+    <!-- Team Members -->
+    <section class="team-section">
+        <div class="team-container">
+            <div class="team-grid">
+                <!-- Vello -->
+                <div class="creator-card owner">
+                    <div class="creator-avatar">
+                        <div class="avatar-placeholder">V</div>
+                    </div>
+                    <div class="creator-info">
+                        <h2 class="creator-name">Vello</h2>
+                        <span class="creator-role">Co-Founder</span>
+                        <div class="creator-skills">
+                            <span class="skill-tag">Verse</span>
+                            <span class="skill-tag">Backend</span>
+                            <span class="skill-tag">Web Dev</span>
+                            <span class="skill-tag">Visual Design</span>
+                            <span class="skill-tag">3D</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key -->
+                <div class="creator-card owner">
+                    <div class="creator-avatar">
+                        <div class="avatar-placeholder">K</div>
+                    </div>
+                    <div class="creator-info">
+                        <h2 class="creator-name">Key</h2>
+                        <span class="creator-role">Co-Founder</span>
+                        <div class="creator-skills">
+                            <span class="skill-tag">Verse</span>
+                            <span class="skill-tag">Animation</span>
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">VFX</span>
+                            <span class="skill-tag">Environment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QP -->
+                <div class="creator-card owner">
+                    <div class="creator-avatar">
+                        <div class="avatar-placeholder">Q</div>
+                    </div>
+                    <div class="creator-info">
+                        <h2 class="creator-name">QP</h2>
+                        <span class="creator-role">Co-Founder</span>
+                        <div class="creator-skills">
+                            <span class="skill-tag">Environment</span>
+                            <span class="skill-tag">Frontend</span>
+                            <span class="skill-tag">Level Design</span>
+                            <span class="skill-tag">Visual</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brick -->
+                <div class="creator-card new-member">
+                    <span class="new-badge">NEW TO THE TEAM</span>
+                    <div class="creator-avatar">
+                        <div class="avatar-placeholder">B</div>
+                    </div>
+                    <div class="creator-info">
+                        <h2 class="creator-name">Brick</h2>
+                        <span class="creator-role">Developer</span>
+                        <div class="creator-skills">
+                            <span class="skill-tag">Verse</span>
+                            <span class="skill-tag">UI Scripting</span>
+                            <span class="skill-tag">Systems</span>
+                            <span class="skill-tag">Backend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="story-section">
+        <div class="story-container">
+            <div class="story-content">
+                <h2 class="story-title">Our Story</h2>
+                <div class="story-text">
+                    <p>Ouch was founded by three developers with a shared passion for horror, storytelling, and player-driven design.</p>
+                    <p>What began as a small collaborative project has evolved into a dedicated studio focused on delivering high-quality, immersive experiences within Fortnite Creative.</p>
+                    <p>Our team brings experience from <strong>Roblox</strong>, <strong>Unreal Engine</strong>, and various independent projects, giving us a strong foundation in both technical development and creative direction. We believe that horror works best when it blends atmosphere, narrative, and interactivity — and we design every project with that philosophy in mind.</p>
+                    <p>Using UEFN, we aim to push the boundaries of what's possible inside Fortnite Creative, crafting environments that feel alive, unpredictable, and deeply engaging. Our goal is simple: create experiences players remember long after they log off.</p>
+                    <p><strong>At Ouch, horror isn't just our specialty. It's our identity.</strong></p>
+                </div>
+                <div class="story-stats">
+                    <div class="story-stat">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">Team Members</span>
+                    </div>
+                    <div class="story-stat">
+                        <span class="stat-number">10</span>
+                        <span class="stat-label">Games Released</span>
+                    </div>
+                    <div class="story-stat">
+                        <span class="stat-number">155M+</span>
+                        <span class="stat-label">Minutes Played</span>
+                    </div>
+                    <div class="story-stat">
+                        <span class="stat-number">2025</span>
+                        <span class="stat-label">Founded</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Us CTA -->
+    <section class="join-cta-section">
+        <div class="join-cta-container">
+            <h2 class="join-cta-title">Want to join the team?</h2>
+            <p class="join-cta-text">We're always looking for talented creators who share our passion for horror.</p>
+            <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-primary btn-large">Join Discord</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p class="copyright">© 2026 Ouch Games. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="social-link">𝕏</a>
+                    <a href="https://www.youtube.com/@OuchUEFN" target="_blank" class="social-link">▶</a>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="social-link">💬</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
