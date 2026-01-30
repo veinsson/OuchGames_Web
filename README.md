@@ -59,28 +59,7 @@ Ouch Games specializes in psychological horror experiences with:
 ---
 
 © 2026 Ouch Games. All rights reserved.
-4. Go to Settings → Pages → Select "main" branch → Save
-5. Your site will be live at: `https://yourusername.github.io/ouchgames-web`
 
-### Option 2: Netlify (Free)
-
-1. Go to https://netlify.com
-2. Sign up and drag-drop this folder
-3. Your site gets a free `.netlify.app` domain
-
-### Option 3: Vercel (Free)
-
-1. Go to https://vercel.com
-2. Connect your GitHub or drag-drop files
-3. Free `.vercel.app` domain included
-
-### Option 4: Cloudflare Pages (Free)
-
-1. Go to https://pages.cloudflare.com
-2. Connect GitHub or upload directly
-3. Free `.pages.dev` domain
-
-## Customization
 
 ### Adding New Games
 
