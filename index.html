@@ -527,22 +527,25 @@
             if (!container) return;
             
             try {
+                // Get all submissions and filter in JS to avoid composite index
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
-                    .where('status', 'in', ['approved', 'featured'])
-                    .orderBy('timeInSeconds', 'asc')
-                    .limit(20)
                     .get();
                 
-                if (snapshot.empty) {
+                // Filter for approved or featured status and sort by time
+                const allSubmissions = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(s => s.status === 'approved' || s.status === 'featured')
+                    .sort((a, b) => (a.timeInSeconds || 9999) - (b.timeInSeconds || 9999));
+                
+                if (allSubmissions.length === 0) {
                     container.innerHTML = '<p class="speedrunner-loading">No speedrunners yet. Be the first!</p>';
                     return;
                 }
                 
                 // Group by game and get fastest for each
                 const byGame = {};
-                snapshot.docs.forEach(doc => {
-                    const data = doc.data();
+                allSubmissions.forEach(data => {
                     if (!byGame[data.game] || data.timeInSeconds < byGame[data.game].timeInSeconds) {
                         byGame[data.game] = data;
                     }
@@ -557,10 +560,10 @@
                     <div class="speedrunner-card">
                         <div class="speedrunner-rank">${i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏅'}</div>
                         <div class="speedrunner-info">
-                            <h3 class="speedrunner-name">${escapeHtml(s.epicUsername)}</h3>
+                            <h3 class="speedrunner-name">${escapeHtml(s.epicUsername || s.username || 'Unknown')}</h3>
                             <p class="speedrunner-game">${s.game}</p>
                         </div>
-                        <div class="speedrunner-time">${s.time}</div>
+                        <div class="speedrunner-time">${s.time || '--:--'}</div>
                     </div>
                 `).join('');
                 
@@ -576,21 +579,23 @@
             
             try {
                 console.log('Loading carousel champions...');
+                // Get all submissions and filter in JS to avoid needing composite index
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
-                    .where('status', 'in', ['approved', 'featured'])
-                    .orderBy('timeInSeconds', 'asc')
                     .get();
                 
-                console.log('Found submissions:', snapshot.size);
+                // Filter for approved or featured status
+                const allSubmissions = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(s => s.status === 'approved' || s.status === 'featured')
+                    .sort((a, b) => (a.timeInSeconds || 9999) - (b.timeInSeconds || 9999));
                 
-                if (snapshot.empty) {
+                console.log('Found approved submissions:', allSubmissions.length);
+                
+                if (allSubmissions.length === 0) {
                     console.log('No approved submissions found');
                     return;
                 }
-                
-                const submissions = snapshot.docs.map(doc => doc.data());
-                console.log('All submissions:', submissions);
                 
                 // Get all cards in the carousel specifically
                 const cards = carousel.querySelectorAll('.speedrunner-card');
@@ -601,7 +606,7 @@
                     if (!gameEl) return;
                     
                     const game = gameEl.textContent.trim();
-                    const gameSubmissions = submissions.filter(s => s.game === game);
+                    const gameSubmissions = allSubmissions.filter(s => s.game === game);
                     
                     console.log(`Game ${game}: ${gameSubmissions.length} submissions`);
                     
@@ -613,15 +618,15 @@
                         const avatarEl = card.querySelector('.avatar-placeholder');
                         
                         if (nameEl) {
-                            nameEl.textContent = fastest.epicUsername;
+                            nameEl.textContent = fastest.epicUsername || fastest.username || 'Unknown';
                             nameEl.classList.remove('placeholder');
                         }
                         if (timeEl) {
-                            timeEl.textContent = fastest.time;
+                            timeEl.textContent = fastest.time || '--:--';
                             timeEl.classList.remove('placeholder');
                         }
-                        if (avatarEl) {
-                            avatarEl.textContent = fastest.epicUsername.charAt(0).toUpperCase();
+                        if (avatarEl && fastest.epicUsername) {
+                            avatarEl.textContent = (fastest.epicUsername || 'U').charAt(0).toUpperCase();
                         }
                         
                         console.log(`Updated ${game}: ${fastest.epicUsername} - ${fastest.time}`);
@@ -644,27 +649,31 @@
             if (!container) return;
             
             if (typeof firebase === 'undefined' || !firebase.apps.length) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="/submit-video" style="color: var(--accent-purple);">Submit yours!</a></p>';
                 return;
             }
             
             try {
+                // Get all video submissions and filter in JS to avoid composite index
                 const snapshot = await firebase.firestore()
                     .collection('video-submissions')
-                    .where('featured', '==', true)
-                    .orderBy('featuredAt', 'desc')
-                    .limit(6)
                     .get();
                 
-                if (snapshot.empty) {
+                // Filter for featured videos
+                const videos = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(v => v.featured === true)
+                    .slice(0, 6);
+                
+                console.log('Featured videos found:', videos.length);
+                
+                if (videos.length === 0) {
                     container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="/submit-video" style="color: var(--accent-purple);">Submit yours!</a></p>';
                     return;
                 }
                 
-                const videos = snapshot.docs.map(doc => doc.data());
-                
                 container.innerHTML = videos.map(v => {
-                    const platformIcon = v.platform === 'X (Twitter)' ? '𝕏' : v.platform === 'TikTok' ? '📱' : '📷';
+                    const platformIcon = v.platform === 'X (Twitter)' ? '𝕏' : v.platform === 'TikTok' ? '📱' : v.platform === 'YouTube' ? '▶' : '📷';
                     
                     return `
                         <div class="video-card">

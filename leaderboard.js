@@ -44,13 +44,15 @@ async function loadGameLeaderboard() {
             .sort((a, b) => a.timeInSeconds - b.timeInSeconds)
             .slice(0, 5);
         
+        console.log('Leaderboard runs:', runs);
+        
         container.innerHTML = `
             <div class="leaderboard-list">
                 ${runs.map((run, i) => `
                     <div class="leaderboard-entry ${i === 0 ? 'first-place' : ''}">
                         <span class="leaderboard-rank">${i === 0 ? '👑' : '#' + (i + 1)}</span>
-                        <span class="leaderboard-player">${escapeHtml(run.epicUsername)}</span>
-                        <span class="leaderboard-time">${run.time}</span>
+                        <span class="leaderboard-player">${escapeHtml(run.epicUsername || run.username || 'Unknown')}</span>
+                        <span class="leaderboard-time">${run.time || '--:--'}</span>
                     </div>
                 `).join('')}
             </div>
