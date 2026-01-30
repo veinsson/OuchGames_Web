@@ -10,14 +10,14 @@
     <meta property="og:url" content="https://ouchuefn.com/">
     <meta property="og:title" content="Ouch Games - Indie Horror Studio">
     <meta property="og:description" content="Experience spine-chilling horror games crafted by passionate indie developers. Explore our terrifying collection of Fortnite Creative horror experiences.">
-    <meta property="og:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    <meta property="og:image" content="https://ouchuefn.com/assets/ouchgamesTB.png">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://ouchuefn.com/">
     <meta name="twitter:title" content="Ouch Games - Indie Horror Studio">
     <meta name="twitter:description" content="Experience spine-chilling horror games crafted by passionate indie developers.">
-    <meta name="twitter:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    <meta name="twitter:image" content="https://ouchuefn.com/assets/ouchgamesTB.png">
     
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -193,7 +193,7 @@
                         <p class="warning-text">"Some things were sealed away for a reason."</p>
                     </div>
                     
-                    <a href="project-x.html" class="btn btn-primary sealed-cta-btn">
+                    <a href="/project-x" class="btn btn-primary sealed-cta-btn">
                         View Full Intel →
                     </a>
                 </div>
@@ -223,7 +223,7 @@
             
             <div class="submit-time-cta" style="margin-top: 3rem;">
                 <span>Got epic content?</span>
-                <a href="submit-video.html" class="btn btn-secondary">Submit Your Video</a>
+                <a href="/submit-video" class="btn btn-secondary">Submit Your Video</a>
             </div>
         </div>
     </section>
@@ -335,7 +335,7 @@
                             <span class="spotlight-stat"><span class="live-dot"></span><span class="player-count" data-game="below">0</span> playing now</span>
                             <span class="spotlight-code">1503-0620-8537</span>
                         </div>
-                        <a href="games/below.html" class="btn btn-primary spotlight-btn">Play Now →</a>
+                        <a href="/games/below" class="btn btn-primary spotlight-btn">Play Now →</a>
                     </div>
                 </div>
             </div>
@@ -354,7 +354,7 @@
                             <span class="peak">3,250 peak</span>
                         </div>
                         <div class="game-code">3475-9207-2052</div>
-                        <a href="games/disturbed.html" class="btn btn-play">
+                        <a href="/games/disturbed" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -373,7 +373,7 @@
                             <span class="peak">2,798 peak</span>
                         </div>
                         <div class="game-code">0555-4316-6085</div>
-                        <a href="games/sanity.html" class="btn btn-play">
+                        <a href="/games/sanity" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -392,7 +392,7 @@
                             <span class="peak">1,597 peak</span>
                         </div>
                         <div class="game-code">9694-9799-9090</div>
-                        <a href="games/evicted.html" class="btn btn-play">
+                        <a href="/games/evicted" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -411,7 +411,7 @@
                             <span class="peak">1,756 peak</span>
                         </div>
                         <div class="game-code">4095-6376-8788</div>
-                        <a href="games/homeless.html" class="btn btn-play">
+                        <a href="/games/homeless" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -430,7 +430,7 @@
                             <span class="peak">1,521 peak</span>
                         </div>
                         <div class="game-code">8985-1891-2904</div>
-                        <a href="games/trauma.html" class="btn btn-play">
+                        <a href="/games/trauma" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -449,7 +449,7 @@
                             <span class="peak">276 peak</span>
                         </div>
                         <div class="game-code">1376-1111-7887</div>
-                        <a href="games/ritual.html" class="btn btn-play">
+                        <a href="/games/ritual" class="btn btn-play">
                             <span>→</span> VIEW MORE
                         </a>
                     </div>
@@ -688,15 +688,58 @@
             }
             
             // Helper to get thumbnail from video URL
-            const getThumbnail = (url, platform) => {
-                // YouTube thumbnail extraction
-                if (platform === 'YouTube') {
-                    const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-                    if (ytMatch) {
-                        return `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+            const getThumbnail = async (url, platform) => {
+                try {
+                    // YouTube thumbnail extraction
+                    if (platform === 'YouTube') {
+                        const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                        if (ytMatch) {
+                            return `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+                        }
                     }
+                    
+                    // X (Twitter) - Extract video ID and use thumbnail endpoint
+                    if (platform === 'X (Twitter)') {
+                        const twitterMatch = url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
+                        if (twitterMatch) {
+                            // Use Twitter's oEmbed API
+                            const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(url)}`;
+                            const response = await fetch(oembedUrl);
+                            if (response.ok) {
+                                const data = await response.json();
+                                // Extract thumbnail from HTML if available
+                                const match = data.html?.match(/src="([^"]+)"/);
+                                if (match) return match[1];
+                            }
+                        }
+                    }
+                    
+                    // TikTok - Use oEmbed API
+                    if (platform === 'TikTok') {
+                        const tiktokMatch = url.match(/tiktok\.com\/@[\w.-]+\/video\/(\d+)/);
+                        if (tiktokMatch) {
+                            const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
+                            const response = await fetch(oembedUrl);
+                            if (response.ok) {
+                                const data = await response.json();
+                                if (data.thumbnail_url) return data.thumbnail_url;
+                            }
+                        }
+                    }
+                    
+                    // Instagram - Try extracting from URL pattern
+                    if (platform === 'Instagram') {
+                        const instaMatch = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+                        if (instaMatch) {
+                            // Instagram blocks most external thumbnail access, use platform icon instead
+                            return null;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Failed to fetch thumbnail for', platform, error);
                 }
-                // For other platforms, use a gradient placeholder with platform icon
+                
+                // For other platforms or on failure, use a gradient placeholder
                 return null;
             };
             
@@ -727,12 +770,13 @@
                     return;
                 }
                 
-                container.innerHTML = videos.map((v, index) => {
+                // Fetch thumbnails and build HTML
+                const videoCards = await Promise.all(videos.map(async (v, index) => {
                     const style = platformStyles[v.platform] || platformStyles['YouTube'];
-                    const thumbnail = getThumbnail(v.videoUrl, v.platform);
+                    const thumbnail = await getThumbnail(v.videoUrl, v.platform);
                     
                     const thumbnailHtml = thumbnail 
-                        ? `<img src="${thumbnail}" alt="Video thumbnail" onerror="this.parentElement.style.background='${style.gradient}';">`
+                        ? `<img src="${thumbnail}" alt="Video thumbnail" onerror="this.parentElement.style.background='${style.gradient}'; this.style.display='none';">`
                         : `<div style="width:100%;height:100%;background:${style.gradient};display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${style.icon}</div>`;
                     
                     return `
@@ -750,7 +794,9 @@
                             </div>
                         </div>
                     `;
-                }).join('');
+                }));
+                
+                container.innerHTML = videoCards.join('');
                 
             } catch (error) {
                 console.error('Error loading featured videos:', error);
