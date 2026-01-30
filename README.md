@@ -1,53 +1,64 @@
-# Ouch Games - Website
+# Ouch Games - Official Website
 
-A dark, horror-themed website for Ouch Games - an indie horror studio creating experiences in UEFN (Unreal Editor for Fortnite).
+Official website for **Ouch Games** - An indie horror studio creating immersive horror experiences in UEFN (Unreal Editor for Fortnite).
 
 ## 🌐 Live Site
 
 **[ouchuefn.com](https://ouchuefn.com)**
 
+## About
+
+Ouch Games specializes in psychological horror experiences with:
+- **155M+** minutes played
+- **557K+** favorites  
+- **95.6K** followers
+- **10 published horror games**
+
+## Featured Games
+
+### Original Horror Collection
+- **DISTURBED** - Arctic research station gone wrong
+- **SANITY** - Psychological nightmare
+- **EVICTED** - Haunted apartment escape
+- **HOMELESS** - Urban survival horror
+- **TRAUMA** - Mind-bending terror
+- **RITUAL** - Occult investigation
+
+### New Releases
+- **BELOW** - Deep sea drilling horror *(Epic Picked Soon)*
+- **DUMMY** - Mannequin factory nightmare
+- **MENTAL** - Forest survival horror
+- **SNEAKY SNIPERS** - PvP sniper action
+
+### Coming Soon
+- **[CLASSIFIED]** - Extraction horror with procedural generation, adaptive AI, and persistent progression *(ETA: 2025)*
+
 ## Features
 
-- 🎮 **Live Player Counts** - Shows current players across all Ouch games
-- 👻 **SEALED Teaser Section** - Our upcoming extraction horror with procedural generation
-- 🎯 **Game Cards** - All horror games with direct Fortnite play links
-- 📱 **Fully Responsive** - Works on desktop, tablet, and mobile
-- 🌙 **Dark Theme** - Horror-appropriate purple neon aesthetic
-- ✨ **Animations** - Smooth scroll, hover effects, and interactive elements
-- 🏆 **Speedrun Champions** - Featured speedrunner showcase
+- 🏆 **Speedrun Leaderboards** - Firebase-powered submission system with admin verification
+- 📊 **Live Player Counts** - Real-time players across all games
+- 🎮 **Direct Play Links** - One-click access to all games
+- 📱 **Fully Responsive** - Optimized for all devices
+- 🌙 **Dark Horror Theme** - Purple neon aesthetic
+- 🔥 **Firebase Integration** - Secure leaderboard backend
 
-## Stats
+## Tech Stack
 
-- **155M+** minutes played
-- **557K+** favorites
-- **95.6K** followers
+- HTML5, CSS3, JavaScript
+- Firebase (Firestore, Authentication)
+- GitHub Pages hosting
+- Custom domain via Cloudflare
 
-## Games Included
-
-| Game | Island Code | Play Link |
-|------|-------------|-----------|
-| DISTURBED | 3475-9207-2052 | [Play](https://www.fortnite.com/play/island/3475-9207-2052?lang=en-US) |
-| SANITY | 0555-4316-6085 | [Play](https://www.fortnite.com/play/island/0555-4316-6085?lang=en-US) |
-| EVICTED | 9694-9799-9090 | [Play](https://www.fortnite.com/play/island/9694-9799-9090?lang=en-US) |
-| HOMELESS | 4095-6376-8788 | [Play](https://www.fortnite.com/play/island/4095-6376-8788?lang=en-US) |
-| TRAUMA | 8985-1891-2904 | [Play](https://www.fortnite.com/play/island/8985-1891-2904?lang=en-US) |
-| RITUAL | 1376-4468-8766 | [Play](https://www.fortnite.com/play/island/1376-4468-8766?lang=en-US) |
-
-## Social Links
+## Connect
 
 - [X / Twitter](https://x.com/OuchUEFN)
 - [YouTube](https://www.youtube.com/@OuchUEFN)
 - [Discord](https://discord.com/invite/hk5a7snQHt)
-- [Fortnite.gg](https://fortnite.gg/creator?name=ouch)
-- [Fortnite Creator Page](https://www.fortnite.com/@ouch)
+- [Fortnite Creator Profile](https://www.fortnite.com/@ouch)
 
-## Free Hosting Options
+---
 
-### Option 1: GitHub Pages (Recommended - 100% Free)
-
-1. Create a GitHub account at https://github.com
-2. Create a new repository named `ouchgames-web` (or `yourusername.github.io` for a custom domain)
-3. Upload all files (index.html, styles.css, script.js)
+© 2026 Ouch Games. All rights reserved.
 4. Go to Settings → Pages → Select "main" branch → Save
 5. Your site will be live at: `https://yourusername.github.io/ouchgames-web`
 
