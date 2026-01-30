@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Video | Ouch Games</title>
+    <meta name="description" content="Submit your Ouch Games content from X, TikTok, or Instagram to be featured!">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+</head>
+<body>
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch Games">
+                <span>ouch</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#games">Games</a></li>
+                <li><a href="creators.html">Creators</a></li>
+                <li><a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="submit-video-page">
+        <div class="submit-container">
+            <div class="page-header">
+                <h1 class="page-title">📹 Submit Your Content</h1>
+                <p class="page-subtitle">Share your Ouch Games videos from X, TikTok, or Instagram and get featured on our homepage!</p>
+            </div>
+
+            <form class="video-form" id="videoForm">
+                <div class="form-group">
+                    <label>Platform</label>
+                    <div class="platform-selector">
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="X (Twitter)" required>
+                            <div class="platform-card">
+                                <span class="platform-icon">𝕏</span>
+                                <span class="platform-name">X (Twitter)</span>
+                            </div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="TikTok" required>
+                            <div class="platform-card">
+                                <span class="platform-icon">📱</span>
+                                <span class="platform-name">TikTok</span>
+                            </div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="Instagram" required>
+                            <div class="platform-card">
+                                <span class="platform-icon">📷</span>
+                                <span class="platform-name">Instagram</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoUrl">Video URL *</label>
+                    <input type="url" id="videoUrl" name="videoUrl" placeholder="https://x.com/username/status/... or https://tiktok.com/@username/video/..." required>
+                    <small>Paste the direct link to your post/video</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="game">Which Ouch Game? *</label>
+                    <select id="game" name="game" required>
+                        <option value="">Select a game</option>
+                        <option value="DISTURBED">DISTURBED</option>
+                        <option value="SANITY">SANITY</option>
+                        <option value="EVICTED">EVICTED</option>
+                        <option value="HOMELESS">HOMELESS</option>
+                        <option value="TRAUMA">TRAUMA</option>
+                        <option value="RITUAL">RITUAL</option>
+                        <option value="BELOW">BELOW</option>
+                        <option value="DUMMY">DUMMY</option>
+                        <option value="MENTAL">MENTAL</option>
+                        <option value="SEALED (Project X)">SEALED (Project X)</option>
+                        <option value="Multiple/General">Multiple Games / General Content</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Your Username *</label>
+                    <input type="text" id="username" name="username" placeholder="@yourhandle" required>
+                    <small>Your username on the platform (e.g., @username)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Video Description</label>
+                    <textarea id="description" name="description" placeholder="Tell us about your video (optional)" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="discordUsername">Discord Username (Optional)</label>
+                    <input type="text" id="discordUsername" name="discordUsername" placeholder="username#0000 or @username">
+                    <small>We'll DM you if your video gets featured!</small>
+                </div>
+
+                <div class="form-message" id="formMessage"></div>
+
+                <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
+                    Submit Video
+                </button>
+            </form>
+
+            <div class="info-box">
+                <h3>✨ What We Feature</h3>
+                <ul>
+                    <li>🎮 Gameplay highlights & funny moments</li>
+                    <li>😱 Epic scares & reactions</li>
+                    <li>🏆 Speedruns & challenges</li>
+                    <li>🎨 Creative content & theories</li>
+                    <li>👥 Community moments & collabs</li>
+                </ul>
+                <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                    We review all submissions and feature the best content on our homepage!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2025-2026 Ouch Games. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord</a>
+                <a href="https://x.com/ouchgamesuefn" target="_blank">X</a>
+                <a href="https://www.tiktok.com/@ouchgames" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/ouchgamesuefn/" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const form = document.getElementById('videoForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formMessage = document.getElementById('formMessage');
+
+        function showMessage(type, message) {
+            formMessage.className = `form-message ${type}`;
+            formMessage.textContent = message;
+            formMessage.style.display = 'block';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Discord webhook notification
+        async function sendToDiscord(data) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1466651904305270845/VeqVYVzOgAIcjwctNfdxAi8Yx-q2-3wAJyT-UZqmYXwz1E-FzTcANRXezI9M8378BUmL';
+            
+            const embed = {
+                title: '📹 New Video Submission',
+                color: 0xff4da6,
+                fields: [
+                    { name: 'Platform', value: data.platform, inline: true },
+                    { name: 'Game', value: data.game, inline: true },
+                    { name: 'Username', value: data.username, inline: true },
+                    { name: 'Video URL', value: `[Watch Video](${data.videoUrl})`, inline: false },
+                    { name: 'Description', value: data.description || 'None', inline: false },
+                    { name: 'Discord', value: data.discordUsername || 'Not provided', inline: true }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: '⏳ Pending Review - Check Admin Panel'
+                }
+            };
+
+            try {
+                console.log('Sending video notification to Discord...');
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Discord notification sent!');
+                } else {
+                    console.error('❌ Discord webhook failed:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('❌ Failed to send Discord notification:', error);
+            }
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                showMessage('error', 'System not configured yet. Please contact the team on Discord.');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const submission = {
+                    platform: formData.get('platform'),
+                    videoUrl: formData.get('videoUrl'),
+                    game: formData.get('game'),
+                    username: formData.get('username'),
+                    description: formData.get('description') || '',
+                    discordUsername: formData.get('discordUsername') || '',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending',
+                    featured: false
+                };
+                
+                await firebase.firestore().collection('video-submissions').add(submission);
+                
+                // Send notification to Discord
+                sendToDiscord(submission);
+                
+                showMessage('success', '✅ Video submitted! We\'ll review it and reach out if it gets featured.');
+                
+                form.reset();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage('error', 'Failed to submit. Please try again or contact us on Discord.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Video';
+            }
+        });
+    </script>
+</body>
+</html>
