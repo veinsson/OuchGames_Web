@@ -59,8 +59,31 @@
             </nav>
             
             <a href="/apply" class="btn btn-tertiary btn-nav">Join the Team</a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#games" onclick="toggleMobileMenu()">Games</a>
+            <a href="#stats" onclick="toggleMobileMenu()">Stats</a>
+            <a href="/creators" onclick="toggleMobileMenu()">Team</a>
+            <a href="#socials" onclick="toggleMobileMenu()">Socials</a>
+            <a href="/apply" class="btn btn-tertiary" onclick="toggleMobileMenu()">Join the Team</a>
         </div>
     </header>
+    
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+    </script>
 
     <!-- Hero Section -->
     <section class="hero">
