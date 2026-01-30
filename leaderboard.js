@@ -21,20 +21,25 @@ async function loadGameLeaderboard() {
     }
     
     try {
-        // Get all featured submissions for this game
+        // Get all approved/featured submissions for this game
         const snapshot = await firebase.firestore()
             .collection('submissions')
-            .where('status', '==', 'featured')
             .where('game', '==', gameName)
             .get();
         
-        if (snapshot.empty) {
+        // Filter for approved or featured status
+        const docs = snapshot.docs.filter(doc => {
+            const status = doc.data().status;
+            return status === 'approved' || status === 'featured';
+        });
+        
+        if (docs.length === 0) {
             container.innerHTML = '<p class="leaderboard-empty">No speedruns yet. Be the first!</p>';
             return;
         }
         
         // Sort by time and get top 5
-        const runs = snapshot.docs
+        const runs = docs
             .map(doc => doc.data())
             .sort((a, b) => a.timeInSeconds - b.timeInSeconds)
             .slice(0, 5);
@@ -49,7 +54,7 @@ async function loadGameLeaderboard() {
                     </div>
                 `).join('')}
             </div>
-            <a href="/submit-time.html" class="btn btn-tertiary btn-sm leaderboard-submit">Submit Your Time</a>
+            <a href="/submit-time" class="btn btn-tertiary btn-sm leaderboard-submit">Submit Your Time</a>
         `;
         
     } catch (error) {
