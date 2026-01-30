@@ -6,13 +6,25 @@
  * 1. Include Firebase SDK and firebase-config.js
  * 2. Include this script
  * 3. Add a container with id="gameLeaderboard" and data-game="GAME_NAME"
+ *    OR call loadGameLeaderboard('GAME_NAME') manually
  */
 
-async function loadGameLeaderboard() {
-    const container = document.getElementById('gameLeaderboard');
-    if (!container) return;
+async function loadGameLeaderboard(gameName) {
+    // Support both old and new calling patterns
+    let container, game;
     
-    const gameName = container.dataset.game;
+    if (gameName) {
+        // Called with game name parameter - find any leaderboard container
+        container = document.getElementById('leaderboardList') || document.getElementById('gameLeaderboard');
+        game = gameName;
+    } else {
+        // Legacy: Look for container with data-game attribute
+        container = document.getElementById('gameLeaderboard');
+        if (!container) return;
+        game = container.dataset.game;
+    }
+    
+    if (!container) return;
     
     // Check if Firebase is configured
     if (typeof firebase === 'undefined' || !firebase.apps.length) {
@@ -21,30 +33,28 @@ async function loadGameLeaderboard() {
     }
     
     try {
-        // Get all approved/featured submissions for this game
+        // Get all submissions and filter in JS to avoid needing composite index
         const snapshot = await firebase.firestore()
             .collection('submissions')
-            .where('game', '==', gameName)
             .get();
         
-        // Filter for approved or featured status
-        const docs = snapshot.docs.filter(doc => {
-            const status = doc.data().status;
-            return status === 'approved' || status === 'featured';
-        });
+        // Filter for this game and approved/featured status
+        const runs = snapshot.docs
+            .map(doc => doc.data())
+            .filter(run => {
+                const matchesGame = run.game === gameName;
+                const isApproved = run.status === 'approved' || run.status === 'featured';
+                return matchesGame && isApproved;
+            })
+            .sort((a, b) => (a.timeInSeconds || 9999) - (b.timeInSeconds || 9999))
+            .slice(0, 5);
         
-        if (docs.length === 0) {
+        console.log('Leaderboard runs for', gameName, ':', runs);
+        
+        if (runs.length === 0) {
             container.innerHTML = '<p class="leaderboard-empty">No speedruns yet. Be the first!</p>';
             return;
         }
-        
-        // Sort by time and get top 5
-        const runs = docs
-            .map(doc => doc.data())
-            .sort((a, b) => a.timeInSeconds - b.timeInSeconds)
-            .slice(0, 5);
-        
-        console.log('Leaderboard runs:', runs);
         
         container.innerHTML = `
             <div class="leaderboard-list">
