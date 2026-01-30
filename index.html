@@ -54,11 +54,11 @@
             <nav class="nav-links">
                 <a href="#games">Games</a>
                 <a href="#stats">Stats</a>
-                <a href="creators.html">Team</a>
+                <a href="/creators">Team</a>
                 <a href="#socials">Socials</a>
             </nav>
             
-            <a href="apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+            <a href="/apply" class="btn btn-tertiary btn-nav">Join the Team</a>
         </div>
     </header>
 
@@ -307,7 +307,7 @@
             
             <div class="submit-time-cta">
                 <span>Got a faster time?</span>
-                <a href="submit-time.html" class="btn btn-secondary">Submit Time</a>
+                <a href="/submit-time" class="btn btn-secondary">Submit Time</a>
             </div>
         </div>
     </section>
@@ -545,7 +545,7 @@
             try {
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
-                    .where('status', '==', 'approved')
+                    .where('status', 'in', ['approved', 'featured'])
                     .orderBy('timeInSeconds', 'asc')
                     .limit(20)
                     .get();
@@ -594,7 +594,7 @@
                 console.log('Loading carousel champions...');
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
-                    .where('status', '==', 'approved')
+                    .where('status', 'in', ['approved', 'featured'])
                     .orderBy('timeInSeconds', 'asc')
                     .get();
                 
@@ -673,7 +673,7 @@
                     .get();
                 
                 if (snapshot.empty) {
-                    container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+                    container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="/submit-video" style="color: var(--accent-purple);">Submit yours!</a></p>';
                     return;
                 }
                 
@@ -701,7 +701,7 @@
                 
             } catch (error) {
                 console.error('Error loading featured videos:', error);
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="/submit-video" style="color: var(--accent-purple);">Submit yours!</a></p>';
             }
         }
         
