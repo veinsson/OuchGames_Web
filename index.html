@@ -98,6 +98,24 @@
         </div>
     </section>
 
+    <!-- 1 Year Anniversary Banner -->
+    <section class="anniversary-banner">
+        <div class="anniversary-container">
+            <div class="anniversary-badge">🎂</div>
+            <div class="anniversary-content">
+                <h2 class="anniversary-title">1 YEAR OF TERROR</h2>
+                <p class="anniversary-text">One year ago, Ouch Games began its journey. <strong>155M+ minutes played</strong>, <strong>95.6K followers</strong>, and a community that keeps growing. Thank you for the screams, the speedruns, and the memories. 🖤</p>
+            </div>
+            <div class="anniversary-confetti">
+                <span class="confetti">🎉</span>
+                <span class="confetti">👻</span>
+                <span class="confetti">🎮</span>
+                <span class="confetti">💀</span>
+                <span class="confetti">⚡</span>
+            </div>
+        </div>
+    </section>
+
     <!-- Stats Bar -->
     <section class="stats-bar" id="stats">
         <div class="stats-container">
@@ -270,7 +288,7 @@
             
             <div class="submit-time-cta">
                 <span>Got a faster time?</span>
-                <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-secondary">Submit Time</a>
+                <a href="submit-time.html" class="btn btn-secondary">Submit Time</a>
             </div>
         </div>
     </section>
@@ -495,18 +513,26 @@
             
             // Check if Firebase is configured
             if (typeof firebase === 'undefined' || !firebase.apps.length) {
-                container.innerHTML = '<p class="speedrunner-loading">Leaderboard coming soon!</p>';
+                if (container) container.innerHTML = '<p class="speedrunner-loading">Leaderboard coming soon!</p>';
                 return;
             }
+            
+            // Load carousel champions
+            await loadCarouselChampions();
+            
+            // Load featured section if exists
+            if (!container) return;
             
             try {
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
-                    .where('status', '==', 'featured')
+                    .where('status', '==', 'approved')
+                    .orderBy('timeInSeconds', 'asc')
+                    .limit(20)
                     .get();
                 
                 if (snapshot.empty) {
-                    container.innerHTML = '<p class="speedrunner-loading">No featured speedrunners yet. Be the first!</p>';
+                    container.innerHTML = '<p class="speedrunner-loading">No speedrunners yet. Be the first!</p>';
                     return;
                 }
                 
@@ -538,6 +564,50 @@
             } catch (error) {
                 console.error('Error loading speedrunners:', error);
                 container.innerHTML = '<p class="speedrunner-loading">Leaderboard coming soon!</p>';
+            }
+        }
+        
+        async function loadCarouselChampions() {
+            try {
+                const snapshot = await firebase.firestore()
+                    .collection('submissions')
+                    .where('status', '==', 'approved')
+                    .orderBy('timeInSeconds', 'asc')
+                    .get();
+                
+                if (snapshot.empty) return;
+                
+                const games = ['HOMELESS', 'EVICTED', 'DISTURBED', 'RITUAL', 'SANITY', 'TRAUMA'];
+                const cards = document.querySelectorAll('.speedrunner-card');
+                
+                const submissions = snapshot.docs.map(doc => doc.data());
+                
+                games.forEach((game, index) => {
+                    const gameSubmissions = submissions.filter(s => s.game === game);
+                    if (gameSubmissions.length > 0) {
+                        const fastest = gameSubmissions[0];
+                        const card = cards[index];
+                        if (!card) return;
+                        
+                        const nameEl = card.querySelector('.speedrunner-name');
+                        const timeEl = card.querySelector('.speedrunner-time');
+                        const avatarEl = card.querySelector('.avatar-placeholder');
+                        
+                        if (nameEl) {
+                            nameEl.textContent = fastest.epicUsername;
+                            nameEl.classList.remove('placeholder');
+                        }
+                        if (timeEl) {
+                            timeEl.textContent = fastest.time;
+                            timeEl.classList.remove('placeholder');
+                        }
+                        if (avatarEl) {
+                            avatarEl.textContent = fastest.epicUsername.charAt(0).toUpperCase();
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Failed to load carousel champions:', error);
             }
         }
         

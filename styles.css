@@ -547,6 +547,133 @@ a {
     background: linear-gradient(90deg, var(--text-muted), transparent);
 }
 
+/* ===== Anniversary Banner ===== */
+.anniversary-banner {
+    background: linear-gradient(135deg, rgba(155, 77, 255, 0.1) 0%, rgba(255, 77, 166, 0.1) 100%);
+    border-top: 2px solid var(--accent-purple);
+    border-bottom: 2px solid var(--accent-pink);
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.anniversary-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(155, 77, 255, 0.1) 50%, 
+        transparent 100%
+    );
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(50%); }
+}
+
+.anniversary-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.anniversary-badge {
+    font-size: 4rem;
+    animation: rotate-badge 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes rotate-badge {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(10deg) scale(1.1); }
+}
+
+.anniversary-content {
+    flex: 1;
+}
+
+.anniversary-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink), var(--accent-purple));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: gradient-text 3s ease infinite;
+}
+
+@keyframes gradient-text {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+.anniversary-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.anniversary-text strong {
+    color: var(--accent-purple);
+    font-weight: 600;
+}
+
+.anniversary-confetti {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.confetti {
+    display: inline-block;
+    animation: float 2s ease-in-out infinite;
+}
+
+.confetti:nth-child(1) { animation-delay: 0s; }
+.confetti:nth-child(2) { animation-delay: 0.2s; }
+.confetti:nth-child(3) { animation-delay: 0.4s; }
+.confetti:nth-child(4) { animation-delay: 0.6s; }
+.confetti:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+    .anniversary-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .anniversary-title {
+        font-size: 1.5rem;
+    }
+    
+    .anniversary-text {
+        font-size: 0.9rem;
+    }
+    
+    .anniversary-confetti {
+        justify-content: center;
+    }
+}
+
 /* ===== Stats Bar ===== */
 .stats-bar {
     background: var(--bg-secondary);
