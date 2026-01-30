@@ -231,24 +231,21 @@ a {
 
 .mobile-menu {
     display: none;
-    position: fixed;
-    top: 70px;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     background: rgba(10, 6, 18, 0.98);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--glass-border);
-    padding: 1rem;
+    padding: 0;
     flex-direction: column;
     gap: 0.5rem;
-    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
 }
 
 .mobile-menu.active {
     display: flex;
-    max-height: 400px;
     padding: 1.5rem 1rem;
 }
 
