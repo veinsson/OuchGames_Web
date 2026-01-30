@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANITY - Ouch Games</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../game-page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../assets/ouch-logo.png">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="../assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="/creators.html">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            <a href="../apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <section class="game-hero">
+        <div class="game-hero-bg">
+            <img src="https://cdn-0001.qstv.on.epicgames.com/PCIxAxRbofsoeegLPe/image/landscape_comp_s.jpeg" alt="SANITY">
+            <div class="game-hero-overlay"></div>
+        </div>
+        
+        <div class="game-hero-content">
+            <a href="/#games" class="back-link">← Back to Games</a>
+            <div class="game-badge">Horror Experience</div>
+            <h1 class="game-page-title">SANITY</h1>
+            <p class="game-tagline">A house that won't let you leave</p>
+            
+            <div class="game-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Players</span>
+                    <span class="meta-value">1-4</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Duration</span>
+                    <span class="meta-value">20-30 min</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Difficulty</span>
+                    <span class="meta-value difficulty-extreme">Extreme</span>
+                </div>
+                <div class="meta-item live-meta">
+                    <span class="meta-label">Playing Now</span>
+                    <span class="meta-value"><span class="live-dot"></span><span id="live-count">0</span></span>
+                </div>
+            </div>
+            
+            <div class="game-actions">
+                <a href="https://www.fortnite.com/play/island/0555-4316-6085?lang=en-US" target="_blank" class="btn btn-primary btn-large">
+                    <span>▶</span> PLAY NOW
+                </a>
+                <button class="btn btn-secondary btn-large" onclick="copyCode()">
+                    <span>📋</span> Copy Code
+                </button>
+            </div>
+            
+            <div class="island-code">
+                <span class="code-label">Island Code:</span>
+                <span class="code-value" id="island-code">0555-4316-6085</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="game-info-section">
+        <div class="game-info-container">
+            <div class="info-grid">
+                <div class="info-main">
+                    <h2 class="info-title">About the Game</h2>
+                    <div class="info-description">
+                        <p>A house that won't let you leave. Corridors twist and stretch, doors vanish behind you, and something lurks in the dark, always just out of sight. Each step pulls you further into its suffocating grip, leading you through impossible rooms and eerie whispers that blur dream and reality.</p>
+                        <p>The game features an immersive dark environment crafted with attention to atmospheric detail, dynamic lighting that reacts to your presence, and a sound design that will keep you on edge throughout your playthrough.</p>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>🧠 Dynamic sanity system</li>
+                            <li>👁️ Reality-warping mechanics</li>
+                            <li>👥 Asymmetric co-op gameplay</li>
+                            <li>🌀 Procedural hallucinations</li>
+                            <li>🎵 Adaptive horror soundtrack</li>
+                            <li>⏱️ Multiple endings based on sanity</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="info-sidebar">
+                    <div class="stats-card">
+                        <h3>Game Stats</h3>
+                        <div class="stat-row">
+                            <span class="stat-label">Peak Players</span>
+                            <span class="stat-value">2,798</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Total Plays</span>
+                            <span class="stat-value">890K+</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Avg. Completion</span>
+                            <span class="stat-value">24:15</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Completion Rate</span>
+                            <span class="stat-value">21%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Speedrun Leaderboard -->
+                    <div class="game-leaderboard">
+                        <h3>🏆 Speedrun Leaderboard</h3>
+                        <div id="gameLeaderboard" data-game="SANITY">
+                            <p class="leaderboard-empty">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="more-games-section">
+        <div class="more-games-container">
+            <h2 class="section-title">More Horror Experiences</h2>
+            <div class="more-games-grid">
+                <a href="disturbed.html" class="more-game-card">
+                    <img src="https://cdn-0001.qstv.on.epicgames.com/AiHjklCxZQfuXVNuOX/image/landscape_comp_s.jpeg" alt="DISTURBED">
+                    <div class="more-game-info"><span class="more-game-title">DISTURBED</span></div>
+                </a>
+                <a href="evicted.html" class="more-game-card">
+                    <img src="https://cdn-0001.qstv.on.epicgames.com/VqOFyFxRznIwhtubra/image/landscape_comp_s.jpeg" alt="EVICTED">
+                    <div class="more-game-info"><span class="more-game-title">EVICTED</span></div>
+                </a>
+                <a href="trauma.html" class="more-game-card">
+                    <img src="https://cdn-0001.qstv.on.epicgames.com/WHssEuNrjGhuwPKxIh/image/landscape_comp_s.jpeg" alt="TRAUMA">
+                    <div class="more-game-info"><span class="more-game-title">TRAUMA</span></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p class="copyright">© 2026 Ouch Games. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="social-link">𝕏</a>
+                    <a href="https://www.youtube.com/@OuchUEFN" target="_blank" class="social-link">▶</a>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="social-link">💬</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK for Leaderboard -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../leaderboard.js"></script>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById('island-code').textContent;
+            navigator.clipboard.writeText(code);
+            const btn = document.querySelector('.btn-secondary');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>✓</span> Copied!';
+            setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+        }
+        function updateLiveCount() {
+            const base = 46;
+            const variation = Math.floor(base * (0.8 + Math.random() * 0.5));
+            document.getElementById('live-count').textContent = variation;
+        }
+        updateLiveCount();
+        setInterval(updateLiveCount, 60000);
+    </script>
+</body>
+</html>

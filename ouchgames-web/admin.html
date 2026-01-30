@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Ouch Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        .admin-page {
+            min-height: 100vh;
+            padding: 120px 2rem 4rem;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Login Screen */
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 10vh;
+        }
+        
+        .login-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .login-logo {
+            width: 80px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.2);
+        }
+        
+        .login-error {
+            color: #ff3366;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+        }
+        
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .admin-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .admin-email {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        /* Stats Cards */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neon-purple);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Filters */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-family: var(--font-main);
+            cursor: pointer;
+        }
+        
+        .filter-select option {
+            background: var(--bg-primary);
+        }
+        
+        /* Submissions Table */
+        .submissions-table-wrapper {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .submissions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .submissions-table th,
+        .submissions-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .submissions-table th {
+            background: rgba(155, 77, 255, 0.1);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--neon-purple);
+        }
+        
+        .submissions-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .submissions-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .time-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .status-badge.verified {
+            background: rgba(57, 255, 20, 0.2);
+            color: #39ff14;
+        }
+        
+        .status-badge.rejected {
+            background: rgba(255, 51, 102, 0.2);
+            color: #ff3366;
+        }
+        
+        .status-badge.featured {
+            background: rgba(155, 77, 255, 0.3);
+            color: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        
+        .action-btn.verify {
+            background: rgba(57, 255, 20, 0.2);
+            color: #39ff14;
+        }
+        
+        .action-btn.verify:hover {
+            background: rgba(57, 255, 20, 0.3);
+        }
+        
+        .action-btn.reject {
+            background: rgba(255, 51, 102, 0.2);
+            color: #ff3366;
+        }
+        
+        .action-btn.reject:hover {
+            background: rgba(255, 51, 102, 0.3);
+        }
+        
+        .action-btn.feature {
+            background: rgba(155, 77, 255, 0.2);
+            color: var(--neon-purple);
+        }
+        
+        .action-btn.feature:hover {
+            background: rgba(155, 77, 255, 0.3);
+        }
+        
+        .action-btn.view {
+            background: rgba(0, 191, 255, 0.2);
+            color: #00bfff;
+        }
+        
+        .action-btn.view:hover {
+            background: rgba(0, 191, 255, 0.3);
+        }
+        
+        .action-btn.delete {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+        
+        .action-btn.delete:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        /* Featured Players Section */
+        .featured-section {
+            margin-top: 2rem;
+        }
+        
+        .featured-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .featured-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--neon-purple);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .featured-trophy {
+            font-size: 2rem;
+        }
+        
+        .featured-info h4 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .featured-info p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .featured-time {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--neon-purple);
+        }
+        
+        /* Proof Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+        
+        .modal-content img,
+        .modal-content video {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: var(--radius-md);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .submissions-table-wrapper {
+                overflow-x: auto;
+            }
+            
+            .submissions-table {
+                min-width: 900px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Proof Modal -->
+    <div class="modal-overlay" id="proofModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="proofContent"></div>
+        </div>
+    </div>
+
+    <!-- Admin Page -->
+    <section class="admin-page">
+        <div class="admin-container">
+            <!-- Login Screen -->
+            <div class="login-container" id="loginScreen">
+                <div class="login-box">
+                    <img src="assets/ouch-logo.png" alt="Ouch" class="login-logo">
+                    <h1 class="login-title">Admin Panel</h1>
+                    <p class="login-subtitle">Sign in with your admin account</p>
+                    <input type="email" class="login-input" id="adminEmail" placeholder="Email">
+                    <input type="password" class="login-input" id="adminPassword" placeholder="Password">
+                    <p class="login-error" id="loginError"></p>
+                    <button class="btn btn-primary login-btn" onclick="attemptLogin()">Sign In</button>
+                </div>
+            </div>
+            
+            <!-- Dashboard -->
+            <div class="admin-dashboard" id="adminDashboard">
+                <div class="admin-header">
+                    <h1 class="admin-title">🎮 Speedrun Submissions</h1>
+                    <div class="admin-user">
+                        <span class="admin-email" id="userEmail"></span>
+                        <button class="btn btn-tertiary logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalSubmissions">0</div>
+                        <div class="stat-label">Total Submissions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingCount">0</div>
+                        <div class="stat-label">Pending Review</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="verifiedCount">0</div>
+                        <div class="stat-label">Verified</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="featuredCount">0</div>
+                        <div class="stat-label">Featured</div>
+                    </div>
+                </div>
+                
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <select class="filter-select" id="filterGame" onchange="renderTable()">
+                        <option value="">All Games</option>
+                        <option value="DISTURBED">DISTURBED</option>
+                        <option value="SANITY">SANITY</option>
+                        <option value="EVICTED">EVICTED</option>
+                        <option value="HOMELESS">HOMELESS</option>
+                        <option value="TRAUMA">TRAUMA</option>
+                        <option value="RITUAL">RITUAL</option>
+                        <option value="BELOW">BELOW</option>
+                        <option value="DUMMY">DUMMY</option>
+                        <option value="MENTAL">MENTAL</option>
+                    </select>
+                    <select class="filter-select" id="filterStatus" onchange="renderTable()">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="verified">Verified</option>
+                        <option value="featured">Featured</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <select class="filter-select" id="sortBy" onchange="renderTable()">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="fastest">Fastest Time</option>
+                        <option value="slowest">Slowest Time</option>
+                    </select>
+                </div>
+                
+                <!-- Submissions Table -->
+                <div class="submissions-table-wrapper">
+                    <table class="submissions-table">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Time</th>
+                                <th>Epic Username</th>
+                                <th>Discord</th>
+                                <th>Proof</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionsBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">Loading submissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Featured Players -->
+                <div class="featured-section">
+                    <h2 class="featured-title">⭐ Featured Speedrunners</h2>
+                    <div class="featured-grid" id="featuredGrid">
+                        <p style="color: var(--text-secondary);">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        let submissions = [];
+        let currentUser = null;
+        
+        // Authentication
+        async function attemptLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorEl = document.getElementById('loginError');
+            
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, password);
+                errorEl.style.display = 'none';
+            } catch (error) {
+                errorEl.textContent = getErrorMessage(error.code);
+                errorEl.style.display = 'block';
+            }
+        }
+        
+        function getErrorMessage(code) {
+            switch (code) {
+                case 'auth/invalid-email': return 'Invalid email address.';
+                case 'auth/user-not-found': return 'No admin account found with this email.';
+                case 'auth/wrong-password': return 'Incorrect password.';
+                case 'auth/invalid-credential': return 'Invalid email or password.';
+                default: return 'Login failed. Please try again.';
+            }
+        }
+        
+        function logout() {
+            firebase.auth().signOut();
+        }
+        
+        // Listen for auth state changes
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                document.getElementById('userEmail').textContent = user.email;
+                loadSubmissions();
+            } else {
+                currentUser = null;
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('adminDashboard').style.display = 'none';
+            }
+        });
+        
+        // Allow Enter key to submit
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') attemptLogin();
+        });
+        document.getElementById('adminEmail').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('adminPassword').focus();
+        });
+        
+        // Load submissions from Firestore
+        async function loadSubmissions() {
+            try {
+                const snapshot = await firebase.firestore()
+                    .collection('submissions')
+                    .orderBy('submittedAt', 'desc')
+                    .get();
+                
+                submissions = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                updateStats();
+                renderTable();
+                renderFeatured();
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                document.getElementById('submissionsBody').innerHTML = 
+                    '<tr><td colspan="8" class="empty-state">Error loading submissions. Check console for details.</td></tr>';
+            }
+        }
+        
+        function updateStats() {
+            document.getElementById('totalSubmissions').textContent = submissions.length;
+            document.getElementById('pendingCount').textContent = submissions.filter(s => s.status === 'pending').length;
+            document.getElementById('verifiedCount').textContent = submissions.filter(s => s.status === 'verified' || s.status === 'featured').length;
+            document.getElementById('featuredCount').textContent = submissions.filter(s => s.status === 'featured').length;
+        }
+        
+        function renderTable() {
+            const gameFilter = document.getElementById('filterGame').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            let filtered = submissions.filter(s => {
+                if (gameFilter && s.game !== gameFilter) return false;
+                if (statusFilter && s.status !== statusFilter) return false;
+                return true;
+            });
+            
+            // Sort
+            filtered.sort((a, b) => {
+                switch(sortBy) {
+                    case 'newest': 
+                        return (b.submittedAt?.toDate?.() || new Date(0)) - (a.submittedAt?.toDate?.() || new Date(0));
+                    case 'oldest': 
+                        return (a.submittedAt?.toDate?.() || new Date(0)) - (b.submittedAt?.toDate?.() || new Date(0));
+                    case 'fastest': 
+                        return (a.timeInSeconds || 9999) - (b.timeInSeconds || 9999);
+                    case 'slowest': 
+                        return (b.timeInSeconds || 0) - (a.timeInSeconds || 0);
+                }
+            });
+            
+            const tbody = document.getElementById('submissionsBody');
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No submissions found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filtered.map(s => {
+                const date = s.submittedAt?.toDate?.() ? s.submittedAt.toDate().toLocaleDateString() : 'N/A';
+                return `
+                    <tr>
+                        <td><strong>${s.game}</strong></td>
+                        <td class="time-cell">${s.time}</td>
+                        <td>${escapeHtml(s.epicUsername)}</td>
+                        <td>${escapeHtml(s.discordUsername)}</td>
+                        <td>
+                            ${s.proofUrl ? `<button class="action-btn view" onclick="viewProof('${s.proofUrl}')">👁 View</button>` : 'None'}
+                        </td>
+                        <td><span class="status-badge ${s.status}">${s.status}</span></td>
+                        <td>${date}</td>
+                        <td>
+                            <div class="action-btns">
+                                ${s.status === 'pending' ? `
+                                    <button class="action-btn verify" onclick="updateStatus('${s.id}', 'verified')">✓ Verify</button>
+                                    <button class="action-btn reject" onclick="updateStatus('${s.id}', 'rejected')">✗ Reject</button>
+                                ` : ''}
+                                ${s.status === 'verified' ? `
+                                    <button class="action-btn feature" onclick="updateStatus('${s.id}', 'featured')">⭐ Feature</button>
+                                ` : ''}
+                                ${s.status === 'featured' ? `
+                                    <button class="action-btn verify" onclick="updateStatus('${s.id}', 'verified')">Unfeature</button>
+                                ` : ''}
+                                <button class="action-btn delete" onclick="deleteSubmission('${s.id}')">🗑</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+        
+        async function updateStatus(id, newStatus) {
+            try {
+                await firebase.firestore().collection('submissions').doc(id).update({
+                    status: newStatus
+                });
+                
+                // Update local data
+                const sub = submissions.find(s => s.id === id);
+                if (sub) sub.status = newStatus;
+                
+                updateStats();
+                renderTable();
+                renderFeatured();
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Failed to update. Please try again.');
+            }
+        }
+        
+        async function deleteSubmission(id) {
+            if (!confirm('Are you sure you want to delete this submission?')) return;
+            
+            try {
+                await firebase.firestore().collection('submissions').doc(id).delete();
+                submissions = submissions.filter(s => s.id !== id);
+                updateStats();
+                renderTable();
+                renderFeatured();
+            } catch (error) {
+                console.error('Error deleting submission:', error);
+                alert('Failed to delete. Please try again.');
+            }
+        }
+        
+        function renderFeatured() {
+            const featured = submissions.filter(s => s.status === 'featured');
+            const grid = document.getElementById('featuredGrid');
+            
+            if (featured.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-secondary);">No featured players yet. Feature a verified submission to display them here.</p>';
+                return;
+            }
+            
+            // Group by game and get fastest
+            const byGame = {};
+            featured.forEach(s => {
+                if (!byGame[s.game] || (s.timeInSeconds || 9999) < (byGame[s.game].timeInSeconds || 9999)) {
+                    byGame[s.game] = s;
+                }
+            });
+            
+            grid.innerHTML = Object.values(byGame).map(s => `
+                <div class="featured-card">
+                    <div class="featured-trophy">🏆</div>
+                    <div class="featured-info">
+                        <h4>${escapeHtml(s.epicUsername)}</h4>
+                        <p>${s.game}</p>
+                    </div>
+                    <div class="featured-time">${s.time}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Proof modal
+        function viewProof(url) {
+            const modal = document.getElementById('proofModal');
+            const content = document.getElementById('proofContent');
+            
+            // Check if it's a video or image
+            if (url.includes('.mp4') || url.includes('.mov') || url.includes('.webm')) {
+                content.innerHTML = `<video src="${url}" controls autoplay style="max-width: 100%; max-height: 80vh;"></video>`;
+            } else {
+                content.innerHTML = `<img src="${url}" alt="Proof">`;
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('proofModal').classList.remove('active');
+            document.getElementById('proofContent').innerHTML = '';
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('proofModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

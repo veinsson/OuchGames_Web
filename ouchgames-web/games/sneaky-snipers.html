@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNEAKY SNIPERS - Ouch Games</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../game-page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../assets/ouch-logo.png">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="../assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="/creators.html">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            
+            <a href="../apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Game Hero -->
+    <section class="game-hero">
+        <div class="game-hero-bg">
+            <img src="https://cdn2.unrealengine.com/egs-sneakysnipers-ouchgames-s1-1200x1600-abc123.jpg" alt="SNEAKY SNIPERS">
+            <div class="game-hero-overlay"></div>
+        </div>
+        
+        <div class="game-hero-content">
+            <a href="/#games" class="back-link">← Back to Games</a>
+            
+            <div class="game-badge">PvP Action</div>
+            <h1 class="game-page-title">SNEAKY SNIPERS</h1>
+            <p class="game-tagline">One shot. One kill. Stay hidden.</p>
+            
+            <div class="game-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Players</span>
+                    <span class="meta-value">2-16</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Duration</span>
+                    <span class="meta-value">10-15 min</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Difficulty</span>
+                    <span class="meta-value difficulty-medium">Medium</span>
+                </div>
+                <div class="meta-item live-meta">
+                    <span class="meta-label">Playing Now</span>
+                    <span class="meta-value"><span class="live-dot"></span><span id="live-count">0</span></span>
+                </div>
+            </div>
+            
+            <div class="game-actions">
+                <a href="https://www.fortnite.com/@ouchgames" target="_blank" class="btn btn-primary btn-large">
+                    <span>▶</span> PLAY NOW
+                </a>
+                <button class="btn btn-secondary btn-large" onclick="copyCode()">
+                    <span>📋</span> Copy Code
+                </button>
+            </div>
+            
+            <div class="island-code">
+                <span class="code-label">Island Code:</span>
+                <span class="code-value" id="island-code">COMING SOON</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Info Section -->
+    <section class="game-info-section">
+        <div class="game-info-container">
+            <div class="info-grid">
+                <div class="info-main">
+                    <h2 class="info-title">About the Game</h2>
+                    <div class="info-description">
+                        <p>A thrilling sniper showdown where stealth is your greatest weapon. Hide among the environment, line up the perfect shot, and eliminate your opponents before they find you.</p>
+                        <p>SNEAKY SNIPERS is our first PvP experience - a change of pace from horror, but still packed with tension. Every movement could give away your position. Every shot could be your last.</p>
+                    </div>
+                    
+                    <div class="features-list">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>🎯 Intense sniper gameplay</li>
+                            <li>👥 2-16 player PvP</li>
+                            <li>🥷 Stealth-based mechanics</li>
+                            <li>🗺️ Multiple unique maps</li>
+                            <li>🏆 Kill streaks and rewards</li>
+                            <li>⚡ Fast-paced rounds</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-note">
+                        <p><strong>Note:</strong> This is a PvP game mode, not a horror escape. No speedrun leaderboards for this one!</p>
+                    </div>
+                </div>
+                
+                <!-- Info Sidebar (no leaderboard for this game) -->
+                <div class="game-sidebar">
+                    <h3 class="sidebar-title">📢 Coming Soon</h3>
+                    <p class="sidebar-text">SNEAKY SNIPERS is currently in development. Follow us on social media for release updates!</p>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Join Discord for Updates</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="../assets/ouch-logo.png" alt="Ouch" class="footer-logo">
+                <span class="footer-name">ouch</span>
+            </div>
+            <p class="footer-tagline">Crafting nightmares in Fortnite Creative.</p>
+            <p class="footer-copyright">© 2026 Ouch Games. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode() {
+            const code = document.getElementById('island-code').textContent;
+            if (code === 'COMING SOON') {
+                alert('Island code coming soon!');
+                return;
+            }
+            navigator.clipboard.writeText(code);
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>✓</span> Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+    </script>
+</body>
+</html>
