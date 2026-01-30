@@ -587,26 +587,42 @@
         }
         
         async function loadCarouselChampions() {
+            const carousel = document.getElementById('speedrunnerCarousel');
+            if (!carousel) return;
+            
             try {
+                console.log('Loading carousel champions...');
                 const snapshot = await firebase.firestore()
                     .collection('submissions')
                     .where('status', '==', 'approved')
                     .orderBy('timeInSeconds', 'asc')
                     .get();
                 
-                if (snapshot.empty) return;
+                console.log('Found submissions:', snapshot.size);
                 
-                const games = ['HOMELESS', 'EVICTED', 'DISTURBED', 'RITUAL', 'SANITY', 'TRAUMA'];
-                const cards = document.querySelectorAll('.speedrunner-card');
+                if (snapshot.empty) {
+                    console.log('No approved submissions found');
+                    return;
+                }
                 
                 const submissions = snapshot.docs.map(doc => doc.data());
+                console.log('All submissions:', submissions);
                 
-                games.forEach((game, index) => {
+                // Get all cards in the carousel specifically
+                const cards = carousel.querySelectorAll('.speedrunner-card');
+                
+                // Map each card to its game based on the game label shown in the card
+                cards.forEach((card, index) => {
+                    const gameEl = card.querySelector('.speedrunner-game');
+                    if (!gameEl) return;
+                    
+                    const game = gameEl.textContent.trim();
                     const gameSubmissions = submissions.filter(s => s.game === game);
+                    
+                    console.log(`Game ${game}: ${gameSubmissions.length} submissions`);
+                    
                     if (gameSubmissions.length > 0) {
-                        const fastest = gameSubmissions[0];
-                        const card = cards[index];
-                        if (!card) return;
+                        const fastest = gameSubmissions[0]; // Already sorted by timeInSeconds asc
                         
                         const nameEl = card.querySelector('.speedrunner-name');
                         const timeEl = card.querySelector('.speedrunner-time');
@@ -623,6 +639,8 @@
                         if (avatarEl) {
                             avatarEl.textContent = fastest.epicUsername.charAt(0).toUpperCase();
                         }
+                        
+                        console.log(`Updated ${game}: ${fastest.epicUsername} - ${fastest.time}`);
                     }
                 });
             } catch (error) {

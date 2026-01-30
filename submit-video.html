@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Video | Ouch Games</title>
-    <meta name="description" content="Submit your Ouch Games content from X, TikTok, or Instagram to be featured!">
+    <meta name="description" content="Submit your Ouch Games content from X, TikTok, Instagram, or YouTube to be featured!">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +67,7 @@
             margin-bottom: 1.5rem;
         }
         
-        .form-group label {
+        .form-group > label {
             display: block;
             font-family: var(--font-display);
             font-weight: 600;
@@ -87,6 +87,7 @@
             font-family: var(--font-main);
             font-size: 1rem;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
         
         .form-group input:focus,
@@ -98,6 +99,387 @@
         }
         
         .form-group small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .platform-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .platform-option {
+            cursor: pointer;
+        }
+        
+        .platform-option input[type="radio"] {
+            display: none;
+        }
+        
+        .platform-card {
+            padding: 1.25rem 0.75rem;
+            background: rgba(10, 6, 18, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+        
+        .platform-option input[type="radio"]:checked + .platform-card {
+            border-color: var(--accent-purple);
+            background: rgba(155, 77, 255, 0.15);
+            box-shadow: 0 0 20px rgba(155, 77, 255, 0.3);
+        }
+        
+        .platform-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .platform-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .platform-name {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .form-message {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .form-message.success {
+            background: rgba(46, 160, 67, 0.2);
+            border: 1px solid #2ea043;
+            color: #3fb950;
+            display: block;
+        }
+        
+        .form-message.error {
+            background: rgba(248, 81, 73, 0.2);
+            border: 1px solid #f85149;
+            color: #ff7b72;
+            display: block;
+        }
+        
+        .info-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+        }
+        
+        .info-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .info-box li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .hashtag-requirement {
+            background: rgba(155, 77, 255, 0.1);
+            border: 1px solid var(--accent-purple);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .hashtag-requirement strong {
+            color: var(--accent-purple);
+            font-size: 1.1rem;
+        }
+        
+        .hashtag-requirement p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        @media (max-width: 600px) {
+            .platform-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch Games">
+                <span>ouch</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="creators.html">Creators</a></li>
+                <li><a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="submit-page">
+        <div class="submit-container">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            
+            <div class="submit-header">
+                <h1 class="submit-title">📹 Submit Your Content</h1>
+                <p class="submit-subtitle">Share your Ouch Games videos and get featured on our homepage!</p>
+            </div>
+
+            <form class="video-form" id="videoForm">
+                <div class="hashtag-requirement">
+                    <strong>#ouchgames</strong>
+                    <p>Your post must include this hashtag to be eligible for featuring</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Platform *</label>
+                    <div class="platform-selector">
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="X (Twitter)" required>
+                            <div class="platform-card">
+                                <span class="platform-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                </span>
+                                <span class="platform-name">X (Twitter)</span>
+                            </div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="TikTok">
+                            <div class="platform-card">
+                                <span class="platform-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                                </span>
+                                <span class="platform-name">TikTok</span>
+                            </div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="Instagram">
+                            <div class="platform-card">
+                                <span class="platform-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                </span>
+                                <span class="platform-name">Instagram</span>
+                            </div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="YouTube">
+                            <div class="platform-card">
+                                <span class="platform-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                                </span>
+                                <span class="platform-name">YouTube</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoUrl">Video URL *</label>
+                    <input type="url" id="videoUrl" name="videoUrl" placeholder="https://x.com/username/status/..." required>
+                    <small>Paste the direct link to your post/video</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="game">Which Ouch Game? *</label>
+                    <select id="game" name="game" required>
+                        <option value="">Select a game</option>
+                        <option value="DISTURBED">DISTURBED</option>
+                        <option value="SANITY">SANITY</option>
+                        <option value="EVICTED">EVICTED</option>
+                        <option value="HOMELESS">HOMELESS</option>
+                        <option value="TRAUMA">TRAUMA</option>
+                        <option value="RITUAL">RITUAL</option>
+                        <option value="BELOW">BELOW</option>
+                        <option value="DUMMY">DUMMY</option>
+                        <option value="MENTAL">MENTAL</option>
+                        <option value="SEALED (Project X)">SEALED (Project X)</option>
+                        <option value="Multiple/General">Multiple Games / General</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Your Username *</label>
+                    <input type="text" id="username" name="username" placeholder="@yourhandle" required>
+                    <small>Your username on the platform</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description (Optional)</label>
+                    <textarea id="description" name="description" placeholder="Tell us about your video..." rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="discordUsername">Discord Username (Optional)</label>
+                    <input type="text" id="discordUsername" name="discordUsername" placeholder="@username">
+                    <small>We'll DM you if your video gets featured!</small>
+                </div>
+
+                <div class="form-message" id="formMessage"></div>
+
+                <button type="submit" class="btn btn-primary submit-btn" id="submitBtn">
+                    Submit Video
+                </button>
+            </form>
+
+            <div class="info-box">
+                <h3>✨ What We Feature</h3>
+                <ul>
+                    <li>🎮 Gameplay highlights & funny moments</li>
+                    <li>😱 Epic scares & reactions</li>
+                    <li>🏆 Speedruns & challenges</li>
+                    <li>🎨 Creative content & theories</li>
+                    <li>👥 Community moments & collabs</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2025-2026 Ouch Games. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord</a>
+                <a href="https://x.com/ouchgamesuefn" target="_blank">X</a>
+                <a href="https://www.tiktok.com/@ouchgames" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/ouchgamesuefn/" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const form = document.getElementById('videoForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formMessage = document.getElementById('formMessage');
+
+        function showMessage(type, message) {
+            formMessage.className = `form-message ${type}`;
+            formMessage.textContent = message;
+            formMessage.style.display = 'block';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Discord webhook notification
+        async function sendToDiscord(data) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1466651904305270845/VeqVYVzOgAIcjwctNfdxAi8Yx-q2-3wAJyT-UZqmYXwz1E-FzTcANRXezI9M8378BUmL';
+            
+            const embed = {
+                title: '📹 New Video Submission',
+                color: 0xff4da6,
+                fields: [
+                    { name: 'Platform', value: data.platform, inline: true },
+                    { name: 'Game', value: data.game, inline: true },
+                    { name: 'Username', value: data.username, inline: true },
+                    { name: 'Video URL', value: `[Watch Video](${data.videoUrl})`, inline: false },
+                    { name: 'Description', value: data.description || 'None', inline: false },
+                    { name: 'Discord', value: data.discordUsername || 'Not provided', inline: true }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: { text: '⏳ Pending Review' }
+            };
+
+            try {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] })
+                });
+            } catch (error) {
+                console.error('Discord error:', error);
+            }
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                showMessage('error', 'System not ready. Please try again or contact us on Discord.');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                const formData = new FormData(form);
+                
+                const submission = {
+                    platform: formData.get('platform'),
+                    videoUrl: formData.get('videoUrl'),
+                    game: formData.get('game'),
+                    username: formData.get('username'),
+                    description: formData.get('description') || '',
+                    discordUsername: formData.get('discordUsername') || '',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending',
+                    featured: false
+                };
+                
+                await firebase.firestore().collection('video-submissions').add(submission);
+                sendToDiscord(submission);
+                
+                showMessage('success', '✅ Video submitted! We\'ll review it and reach out if it gets featured.');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                showMessage('error', 'Failed to submit. Please try again or contact us on Discord.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Video';
+            }
+        });
+    </script>
+</body>
+</html>
             display: block;
             color: var(--text-muted);
             font-size: 0.85rem;
