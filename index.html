@@ -600,8 +600,59 @@
                 // Get all cards in the carousel specifically
                 const cards = carousel.querySelectorAll('.speedrunner-card');
                 
-                // Map each card to its game based on the game label shown in the card
+                // Helper function to get Fortnite avatar URL
+                const getFortniteAvatar = (username) => {
+                    // Using fortnite.gg avatar endpoint - fall back to first letter if no avatar found
+                    return `https://fortnite.gg/img/avatars/${encodeURIComponent(username)}.png`;
+                };
+                
+                // Helper to update a card with player data
+                const updateCard = (card, player, showGame = false) => {
+                    const nameEl = card.querySelector('.speedrunner-name');
+                    const timeEl = card.querySelector('.speedrunner-time');
+                    const avatarContainer = card.querySelector('.speedrunner-avatar');
+                    const gameEl = card.querySelector('.speedrunner-game');
+                    const username = player.epicUsername || player.username || 'Unknown';
+                    
+                    if (nameEl) {
+                        nameEl.textContent = username;
+                        nameEl.classList.remove('placeholder');
+                    }
+                    if (timeEl) {
+                        timeEl.textContent = player.time || '--:--';
+                        timeEl.classList.remove('placeholder');
+                    }
+                    if (showGame && gameEl) {
+                        gameEl.textContent = player.game || 'Unknown';
+                    }
+                    
+                    // Add Fortnite avatar
+                    if (avatarContainer && username !== 'Unknown') {
+                        const firstLetter = username.charAt(0).toUpperCase();
+                        avatarContainer.innerHTML = `
+                            <img src="${getFortniteAvatar(username)}" 
+                                 alt="${username}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="avatar-placeholder" style="display:none;">${firstLetter}</div>
+                        `;
+                    }
+                    
+                    console.log(`Updated: ${username} - ${player.time} (${player.game})`);
+                };
+                
+                // Process each card
                 cards.forEach((card, index) => {
+                    // Check if this is the "Fastest Overall" featured card
+                    if (card.classList.contains('featured')) {
+                        // For the featured card, show the absolute fastest submission overall
+                        const fastestOverall = allSubmissions[0]; // Already sorted by timeInSeconds
+                        if (fastestOverall) {
+                            updateCard(card, fastestOverall, true); // true = update the game label too
+                        }
+                        return;
+                    }
+                    
+                    // For other cards, match by game name
                     const gameEl = card.querySelector('.speedrunner-game');
                     if (!gameEl) return;
                     
@@ -612,24 +663,7 @@
                     
                     if (gameSubmissions.length > 0) {
                         const fastest = gameSubmissions[0]; // Already sorted by timeInSeconds asc
-                        
-                        const nameEl = card.querySelector('.speedrunner-name');
-                        const timeEl = card.querySelector('.speedrunner-time');
-                        const avatarEl = card.querySelector('.avatar-placeholder');
-                        
-                        if (nameEl) {
-                            nameEl.textContent = fastest.epicUsername || fastest.username || 'Unknown';
-                            nameEl.classList.remove('placeholder');
-                        }
-                        if (timeEl) {
-                            timeEl.textContent = fastest.time || '--:--';
-                            timeEl.classList.remove('placeholder');
-                        }
-                        if (avatarEl && fastest.epicUsername) {
-                            avatarEl.textContent = (fastest.epicUsername || 'U').charAt(0).toUpperCase();
-                        }
-                        
-                        console.log(`Updated ${game}: ${fastest.epicUsername} - ${fastest.time}`);
+                        updateCard(card, fastest);
                     }
                 });
             } catch (error) {
@@ -653,6 +687,27 @@
                 return;
             }
             
+            // Helper to get thumbnail from video URL
+            const getThumbnail = (url, platform) => {
+                // YouTube thumbnail extraction
+                if (platform === 'YouTube') {
+                    const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                    if (ytMatch) {
+                        return `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+                    }
+                }
+                // For other platforms, use a gradient placeholder with platform icon
+                return null;
+            };
+            
+            // Platform icons and colors
+            const platformStyles = {
+                'X (Twitter)': { icon: '𝕏', color: '#1DA1F2', gradient: 'linear-gradient(135deg, #15202B 0%, #1DA1F2 100%)' },
+                'TikTok': { icon: '♪', color: '#ff0050', gradient: 'linear-gradient(135deg, #25F4EE 0%, #ff0050 100%)' },
+                'YouTube': { icon: '▶', color: '#FF0000', gradient: 'linear-gradient(135deg, #FF0000 0%, #282828 100%)' },
+                'Instagram': { icon: '📷', color: '#E4405F', gradient: 'linear-gradient(135deg, #405DE6 0%, #E4405F 50%, #FFDC80 100%)' }
+            };
+            
             try {
                 // Get all video submissions and filter in JS to avoid composite index
                 const snapshot = await firebase.firestore()
@@ -663,7 +718,7 @@
                 const videos = snapshot.docs
                     .map(doc => doc.data())
                     .filter(v => v.featured === true)
-                    .slice(0, 6);
+                    .slice(0, 15);
                 
                 console.log('Featured videos found:', videos.length);
                 
@@ -672,21 +727,26 @@
                     return;
                 }
                 
-                container.innerHTML = videos.map(v => {
-                    const platformIcon = v.platform === 'X (Twitter)' ? '𝕏' : v.platform === 'TikTok' ? '📱' : v.platform === 'YouTube' ? '▶' : '📷';
+                container.innerHTML = videos.map((v, index) => {
+                    const style = platformStyles[v.platform] || platformStyles['YouTube'];
+                    const thumbnail = getThumbnail(v.videoUrl, v.platform);
+                    
+                    const thumbnailHtml = thumbnail 
+                        ? `<img src="${thumbnail}" alt="Video thumbnail" onerror="this.parentElement.style.background='${style.gradient}';">`
+                        : `<div style="width:100%;height:100%;background:${style.gradient};display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${style.icon}</div>`;
                     
                     return `
-                        <div class="video-card">
+                        <div class="video-card" style="animation-delay: ${index * 0.15}s;">
                             <a href="${v.videoUrl}" target="_blank" class="video-link">
                                 <div class="video-thumbnail">
+                                    ${thumbnailHtml}
                                     <div class="play-overlay">▶</div>
                                 </div>
                             </a>
                             <div class="video-info">
-                                <span class="video-platform">${platformIcon} ${v.platform}</span>
+                                <span class="video-platform" style="color: ${style.color}">${style.icon} ${v.platform}</span>
                                 <p class="video-game">${v.game}</p>
-                                <p class="video-creator">${escapeHtml(v.username)}</p>
-                                <a href="${v.videoUrl}" target="_blank" class="btn btn-sm" style="margin-top: 0.75rem;">Watch Video →</a>
+                                <p class="video-creator">by ${escapeHtml(v.username)}</p>
                             </div>
                         </div>
                     `;
