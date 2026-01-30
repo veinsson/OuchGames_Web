@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT X - Coming Soon | Ouch Games</title>
+    
+    <!-- Open Graph / Link Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouchuefn.com/project-x">
+    <meta property="og:title" content="PROJECT X - A New Horror Experience | Ouch Games">
+    <meta property="og:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside. Coming soon.">
+    <meta property="og:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PROJECT X - Coming Soon | Ouch Games">
+    <meta name="twitter:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside.">
+    <meta name="twitter:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        /* Page Background */
+        body {
+            position: relative;
+        }
+        
+        .page-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: url('assets/ouchgamesTB.jpg') center center / cover no-repeat;
+        }
+        
+        .page-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, 
+                rgba(10, 10, 15, 0.85) 0%, 
+                rgba(10, 10, 15, 0.9) 30%,
+                rgba(10, 10, 15, 0.95) 60%,
+                rgba(10, 10, 15, 1) 100%);
+        }
+        
+        /* SEALED Page Styles */
+        .sealed-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sealed-hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        
+        .sealed-hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: saturate(0.7);
+        }
+        
+        .sealed-hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, 
+                rgba(10, 10, 15, 0.3) 0%, 
+                rgba(10, 10, 15, 0.6) 50%,
+                rgba(10, 10, 15, 1) 100%);
+        }
+        
+        .sealed-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(155, 77, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 51, 102, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 80%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .sealed-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+        
+        .year-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+        
+        .sealed-title {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 15vw, 9rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 80px rgba(155, 77, 255, 0.4);
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+        }
+        
+        .sealed-tagline {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .sealed-quote {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .dev-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        
+        .dev-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .dev-tag.status {
+            background: rgba(255, 51, 102, 0.15);
+            border: 1px solid rgba(255, 51, 102, 0.4);
+            color: #ff3366;
+        }
+        
+        .dev-tag.eta {
+            background: rgba(155, 77, 255, 0.15);
+            border: 1px solid rgba(155, 77, 255, 0.4);
+            color: var(--neon-purple);
+        }
+        
+        /* Progress Bar */
+        .dev-progress-container {
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+        
+        .dev-progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .dev-progress-label span:first-child {
+            color: var(--text-secondary);
+        }
+        
+        .dev-progress-label span:last-child {
+            color: var(--neon-purple);
+            font-weight: 600;
+        }
+        
+        .dev-progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .dev-progress-fill {
+            height: 100%;
+            width: 72%;
+            background: linear-gradient(90deg, var(--neon-purple), #ff3366);
+            border-radius: 10px;
+            position: relative;
+            animation: progressGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes progressGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(155, 77, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(155, 77, 255, 0.8), 0 0 30px rgba(255, 51, 102, 0.4); }
+        }
+        
+        /* Section Styles */
+        .sealed-section {
+            padding: 5rem 2rem;
+        }
+        
+        .sealed-section.alt {
+            background: var(--bg-secondary);
+        }
+        
+        .section-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(155, 77, 255, 0.4);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        /* Upgrades Grid */
+        .upgrades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+        
+        .upgrade-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .upgrade-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.15);
+        }
+        
+        .upgrade-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .upgrade-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upgrade-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        /* Alpha Tester CTA */
+        .alpha-cta {
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.15) 0%, rgba(155, 77, 255, 0.15) 100%);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .alpha-cta-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+        
+        .alpha-cta-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .alpha-cta-btn {
+            display: inline-block;
+            padding: 0.875rem 2.5rem;
+            background: linear-gradient(135deg, #ff3366 0%, var(--neon-purple) 100%);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 51, 102, 0.3);
+        }
+        
+        .alpha-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 51, 102, 0.5);
+        }
+        
+        /* Intel Grid */
+        .intel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .intel-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .intel-card:hover {
+            border-color: rgba(155, 77, 255, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .intel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .intel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--neon-purple);
+            letter-spacing: 0.1em;
+        }
+        
+        .intel-classification {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            background: rgba(57, 255, 20, 0.15);
+            color: #39ff14;
+            letter-spacing: 0.05em;
+        }
+        
+        .intel-classification.redacted {
+            background: rgba(255, 51, 102, 0.15);
+            color: #ff3366;
+        }
+        
+        .intel-content {
+            padding: 1.25rem;
+        }
+        
+        .intel-content h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .intel-content p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .redacted-text {
+            background: #ff3366;
+            color: #ff3366;
+            padding: 0 0.25rem;
+            border-radius: 2px;
+            user-select: none;
+        }
+        
+        .loot-tiers {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .loot-tiers li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .tier {
+            font-size: 0.9rem;
+        }
+        
+        .tier.common { color: #9ca3af; }
+        .tier.rare { color: #3b82f6; }
+        .tier.epic { color: #a855f7; }
+        .tier.legendary { color: #f59e0b; }
+        
+        /* Loot Tiers Section */
+        .loot-section {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+        
+        .loot-tier-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .loot-tier-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .loot-tier-card.common { border-color: rgba(156, 163, 175, 0.4); }
+        .loot-tier-card.uncommon { border-color: rgba(34, 197, 94, 0.4); }
+        .loot-tier-card.rare { border-color: rgba(59, 130, 246, 0.4); }
+        .loot-tier-card.epic { border-color: rgba(168, 85, 247, 0.4); }
+        .loot-tier-card.legendary { border-color: rgba(245, 158, 11, 0.4); }
+        
+        .loot-tier-card.common:hover { box-shadow: 0 10px 30px rgba(156, 163, 175, 0.2); }
+        .loot-tier-card.uncommon:hover { box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2); }
+        .loot-tier-card.rare:hover { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
+        .loot-tier-card.epic:hover { box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2); }
+        .loot-tier-card.legendary:hover { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2); }
+        
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tier-icon {
+            font-size: 1.25rem;
+        }
+        
+        .loot-tier-card.common .tier-icon { color: #9ca3af; }
+        .loot-tier-card.uncommon .tier-icon { color: #22c55e; }
+        .loot-tier-card.rare .tier-icon { color: #3b82f6; }
+        .loot-tier-card.epic .tier-icon { color: #a855f7; }
+        .loot-tier-card.legendary .tier-icon { color: #f59e0b; }
+        
+        .tier-name {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .tier-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .tier-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tier-items li {
+            padding: 0.35rem 0;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .tier-items li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Monsters Section */
+        .monsters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .monster-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .monster-card:hover {
+            border-color: rgba(255, 51, 102, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .monster-silhouette {
+            height: 120px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1) 0%, rgba(0,0,0,0.5) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(255, 51, 102, 0.5);
+            position: relative;
+        }
+        
+        .monster-card.classified .monster-silhouette {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        
+        .classified-stamp {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: #ff3366;
+            border: 2px solid #ff3366;
+            padding: 0.5rem 1rem;
+            transform: rotate(-10deg);
+            letter-spacing: 0.2em;
+        }
+        
+        .monster-info {
+            padding: 1.25rem;
+        }
+        
+        .monster-info h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+        
+        .monster-type, .monster-behavior {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .monster-threat {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .threat-high { color: #f59e0b; font-weight: 600; }
+        .threat-extreme { color: #ff3366; font-weight: 600; }
+        
+        /* Entity Cards (with images) */
+        .entities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .entities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .loot-section {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .entities-grid {
+                grid-template-columns: 1fr;
+            }
+            .loot-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .entity-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .entity-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 51, 102, 0.5);
+            box-shadow: 0 10px 40px rgba(255, 51, 102, 0.2);
+        }
+        
+        .entity-image {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .entity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.9);
+            transition: all 0.4s ease;
+        }
+        
+        .entity-card:hover .entity-image img {
+            transform: scale(1.05);
+            filter: saturate(1);
+        }
+        
+        .entity-info {
+            padding: 1.5rem;
+        }
+        
+        .entity-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .entity-tagline {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .entity-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .entity-threat {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        /* Roadmap Section */
+        .roadmap {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .roadmap-item {
+            display: flex;
+            gap: 1.25rem;
+            padding: 1.25rem 0;
+            border-left: 2px solid var(--glass-border);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 1.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--glass-border);
+        }
+        
+        .roadmap-item.completed::before {
+            background: #39ff14;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        
+        .roadmap-item.active::before {
+            background: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(155, 77, 255, 0.5);
+        }
+        
+        .roadmap-item.completed {
+            border-color: rgba(57, 255, 20, 0.3);
+        }
+        
+        .roadmap-item.active {
+            border-color: var(--neon-purple);
+        }
+        
+        .roadmap-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .roadmap-item.completed .roadmap-status { color: #39ff14; }
+        .roadmap-item.active .roadmap-status { color: var(--neon-purple); }
+        .roadmap-item.upcoming .roadmap-status { color: var(--text-secondary); }
+        
+        .roadmap-content h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .roadmap-item.upcoming .roadmap-content h4 {
+            color: var(--text-secondary);
+        }
+        
+        .roadmap-content p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        /* CTA Section */
+        .final-cta {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .cta-box {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+        }
+        
+        .cta-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-box p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            position: absolute;
+            top: 100px;
+            left: 2rem;
+        }
+        
+        .back-link:hover {
+            color: var(--neon-purple);
+        }
+        
+        @media (max-width: 768px) {
+            .back-link {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Background -->
+    <div class="page-bg"></div>
+    
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="creators.html">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            
+            <a href="apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="sealed-hero">
+        <div class="sealed-hero-bg">
+            <img src="assets/Project_X_TB_2.png" alt="">
+        </div>
+        <a href="/" class="back-link">← Back to Home</a>
+        
+        <div class="sealed-hero-content">
+            <div class="year-badge">1 9 8 7</div>
+            
+            <h1 class="sealed-title">PROJECT X</h1>
+            <p class="sealed-tagline">The next evolution of UEFN horror.</p>
+            <p class="sealed-quote">A violent storm hits the Pine Barrens. Everyone evacuates. You're sent to retrieve what's left behind. But the building has changed...</p>
+            
+            <div class="dev-info">
+                <span class="dev-tag status">⚠️ In Development</span>
+                <span class="dev-tag eta">ETA: 2026</span>
+            </div>
+            
+            <div class="dev-progress-container">
+                <div class="dev-progress-label">
+                    <span>Development Progress</span>
+                    <span>72%</span>
+                </div>
+                <div class="dev-progress-bar">
+                    <div class="dev-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Different -->
+    <section class="sealed-section alt">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">What Makes It Different</h2>
+                <p class="section-desc">Built with tech no other UEFN studio has implemented.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔀</div>
+                    <h3>Procedural Rooms</h3>
+                    <p>100+ rooms that rebuild every run. No two playthroughs are the same.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Extraction Loot</h3>
+                    <p>Risk vs reward. The deeper you go, the better the loot—and the worse the danger.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Adaptive AI</h3>
+                    <p>Entities that hunt by sound, react to theft, and learn your patterns.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Verse & SceneGraph</h3>
+                    <p>Powered by custom systems that push UEFN to its limits.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Persistent Progression</h3>
+                    <p>Unlock permanent upgrades, cosmetics, and abilities across runs.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌀</div>
+                    <h3>Dynamic Events</h3>
+                    <p>Random events that change the run. Blackouts. Lockdowns. Breaches.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loot Tiers Section -->
+    <section class="sealed-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">◆ Extraction Loot</h2>
+                <p class="section-desc">Every box could change your run. Risk it all or play it safe.</p>
+            </div>
+            
+            <div class="loot-section">
+                <div class="loot-tier-card common">
+                    <div class="tier-header">
+                        <span class="tier-icon">◆</span>
+                        <span class="tier-name">Common</span>
+                    </div>
+                    <p class="tier-desc">Mostly scrap. Not worth dying for.</p>
+                    <ul class="tier-items">
+                        <li>$ Est. Value: $5 - $20</li>
+                        <li>% Spawn Rate: 45%</li>
+                        <li>Broken parts, junk</li>
+                    </ul>
+                </div>
+                
+                <div class="loot-tier-card uncommon">
+                    <div class="tier-header">
+                        <span class="tier-icon">◆</span>
+                        <span class="tier-name">Uncommon</span>
+                    </div>
+                    <p class="tier-desc">Decent finds. Worth a quick grab.</p>
+                    <ul class="tier-items">
+                        <li>$ Est. Value: $25 - $75</li>
+                        <li>% Spawn Rate: 30%</li>
+                        <li>Tools, minor gear</li>
+                    </ul>
+                </div>
+                
+                <div class="loot-tier-card rare">
+                    <div class="tier-header">
+                        <span class="tier-icon">◆</span>
+                        <span class="tier-name">Rare</span>
+                    </div>
+                    <p class="tier-desc">Now we're talking. Risk starts here.</p>
+                    <ul class="tier-items">
+                        <li>$ Est. Value: $100 - $300</li>
+                        <li>% Spawn Rate: 15%</li>
+                        <li>Quality equipment</li>
+                    </ul>
+                </div>
+                
+                <div class="loot-tier-card epic">
+                    <div class="tier-header">
+                        <span class="tier-icon">◆</span>
+                        <span class="tier-name">Epic</span>
+                    </div>
+                    <p class="tier-desc">High value. High danger. Heart-pounding extracts.</p>
+                    <ul class="tier-items">
+                        <li>$ Est. Value: $400 - $700</li>
+                        <li>% Spawn Rate: 8.2%</li>
+                        <li>Prototype tech, rare cosmetics</li>
+                    </ul>
+                </div>
+                
+                <div class="loot-tier-card legendary">
+                    <div class="tier-header">
+                        <span class="tier-icon">◆</span>
+                        <span class="tier-name">Legendary</span>
+                    </div>
+                    <p class="tier-desc">The jackpot. Most players never see one.</p>
+                    <ul class="tier-items">
+                        <li>$ Est. Value: $800 - $2,000</li>
+                        <li>% Spawn Rate: 0.8%</li>
+                        <li>Game-changing artifacts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spend Your Cash Section -->
+    <section class="sealed-section alt">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">◆ Spend Your Cash</h2>
+                <p class="section-desc">Extract it. Spend it. Survive longer.</p>
+            </div>
+            
+            <div class="upgrades-grid">
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">🎒</div>
+                    <h3>Inventory Slots</h3>
+                    <p>Carry more loot per run. More space, more profit.</p>
+                </div>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">💀</div>
+                    <h3>Extra Revives</h3>
+                    <p>Go down? Get back up. Buy yourself another chance.</p>
+                </div>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">🏷️</div>
+                    <h3>Player Tags</h3>
+                    <p>Flex on the lobby. Exclusive titles and nameplates.</p>
+                </div>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">🧪</div>
+                    <h3>Potions</h3>
+                    <p>Temporary buffs. Speed, stealth, stamina—pick your edge.</p>
+                </div>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">🔦</div>
+                    <h3>Equipment</h3>
+                    <p>Better flashlights, sensors, and survival tools.</p>
+                </div>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade-icon">✨</div>
+                    <h3>& Much More</h3>
+                    <p>Cosmetics, abilities, and secrets yet to be revealed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alpha Tester CTA Section -->
+    <section class="sealed-section">
+        <div class="section-container">
+            <div class="alpha-cta">
+                <div class="alpha-cta-content">
+                    <h2 class="alpha-cta-title">🎮 Early Alpha Tester</h2>
+                    <p class="alpha-cta-desc">Be the first to explore the facility. Test unreleased builds. Shape the game before launch.</p>
+                    <a href="apply.html?role=alpha-tester" class="alpha-cta-btn">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classified Monsters Section -->
+    <section class="sealed-section alt">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">👁️ HOSTILE ENTITIES</h2>
+                <p class="section-desc">Four confirmed threats roaming the facility. Each one hunts differently. Learn them or die.</p>
+            </div>
+            
+            <div class="entities-grid">
+                <div class="entity-card">
+                    <div class="entity-image">
+                        <img src="assets/CardboardBox_Icon.png" alt="PACKAGE">
+                    </div>
+                    <div class="entity-info">
+                        <h4 class="entity-name">PACKAGE</h4>
+                        <p class="entity-tagline">"Sometimes it moves. Sometimes it waits."</p>
+                        <p class="entity-desc">Not every box is empty.</p>
+                        <p class="entity-threat">Threat Level: <span class="threat-high">HIGH</span></p>
+                    </div>
+                </div>
+                
+                <div class="entity-card">
+                    <div class="entity-image">
+                        <img src="assets/FireMan_Icon.png" alt="REACHER">
+                    </div>
+                    <div class="entity-info">
+                        <h4 class="entity-name">REACHER</h4>
+                        <p class="entity-tagline">"You'll see it before it touches you."</p>
+                        <p class="entity-desc">That won't help.</p>
+                        <p class="entity-threat">Threat Level: <span class="threat-extreme">EXTREME</span></p>
+                    </div>
+                </div>
+                
+                <div class="entity-card">
+                    <div class="entity-image">
+                        <img src="assets/LightMan_Icon.png" alt="FIXTURE">
+                    </div>
+                    <div class="entity-info">
+                        <h4 class="entity-name">FIXTURE</h4>
+                        <p class="entity-tagline">"It stands where light should feel safe."</p>
+                        <p class="entity-desc">Staring makes it worse.</p>
+                        <p class="entity-threat">Threat Level: <span class="threat-high">HIGH</span></p>
+                    </div>
+                </div>
+                
+                <div class="entity-card">
+                    <div class="entity-image">
+                        <img src="assets/Worm_icon.png" alt="UNDERTOW">
+                    </div>
+                    <div class="entity-info">
+                        <h4 class="entity-name">UNDERTOW</h4>
+                        <p class="entity-tagline">"Most players never see it."</p>
+                        <p class="entity-desc">The ones who do don't get a second look.</p>
+                        <p class="entity-threat">Threat Level: <span class="threat-extreme">CRITICAL</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dev Log / Roadmap Section -->
+    <section class="sealed-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">🔧 Development Roadmap</h2>
+                <p class="section-desc">Where we are and where we're headed.</p>
+            </div>
+            
+            <div class="roadmap">
+                <div class="roadmap-item completed">
+                    <div class="roadmap-status">✓</div>
+                    <div class="roadmap-content">
+                        <h4>Concept & Design</h4>
+                        <p>Core gameplay loop finalized. Art direction complete.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item completed">
+                    <div class="roadmap-status">✓</div>
+                    <div class="roadmap-content">
+                        <h4>Story & Lore</h4>
+                        <p>Full narrative written. Character backgrounds established.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item active">
+                    <div class="roadmap-status">→</div>
+                    <div class="roadmap-content">
+                        <h4>In Development</h4>
+                        <p>Building procedural systems, AI behaviors, and core gameplay.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item upcoming">
+                    <div class="roadmap-status">○</div>
+                    <div class="roadmap-content">
+                        <h4>Internal Testing</h4>
+                        <p>Closed alpha with team and select community members.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item upcoming">
+                    <div class="roadmap-status">○</div>
+                    <div class="roadmap-content">
+                        <h4>Public Beta</h4>
+                        <p>Open beta for all players. Final balancing.</p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-item upcoming">
+                    <div class="roadmap-status">○</div>
+                    <div class="roadmap-content">
+                        <h4>Launch</h4>
+                        <p>Full release. ETA: 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="final-cta">
+        <div class="cta-box">
+            <h3>Stay Updated</h3>
+            <p>Join our Discord for development updates and be the first to know when SEALED launches.</p>
+            
+            <div class="cta-buttons">
+                <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-primary">
+                    Join Discord
+                </a>
+                <a href="https://x.com/OuchUEFN" target="_blank" class="btn btn-secondary">
+                    Follow @OuchUEFN
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="footer-logo">
+                <span class="footer-name">ouch</span>
+            </div>
+            <p class="footer-tagline">Crafting nightmares in Fortnite Creative.</p>
+            <p class="footer-copyright">© 2026 Ouch Games. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

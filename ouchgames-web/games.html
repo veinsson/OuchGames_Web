@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Games | Ouch Games</title>
+    
+    <!-- Open Graph / Link Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouchuefn.com/games">
+    <meta property="og:title" content="All Games | Ouch Games">
+    <meta property="og:description" content="Explore our complete library of psychological horror experiences in Fortnite Creative. 155M+ minutes played.">
+    <meta property="og:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="All Games | Ouch Games">
+    <meta name="twitter:description" content="Explore our complete library of psychological horror experiences.">
+    <meta name="twitter:image" content="https://ouchuefn.com/assets/og-thumbnail.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        /* Games Page Styles */
+        .games-page-hero {
+            padding: 140px 2rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .games-page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(155, 77, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(255, 51, 102, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        .games-page-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .games-page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+        
+        .games-page-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .page-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .page-stat-value {
+            color: var(--neon-purple);
+            font-weight: 600;
+        }
+        
+        .page-stat-label {
+            color: var(--text-secondary);
+        }
+        
+        /* Filter Tabs */
+        .games-filter {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            border-color: rgba(155, 77, 255, 0.4);
+            color: #fff;
+        }
+        
+        .filter-btn.active {
+            background: var(--neon-purple);
+            border-color: var(--neon-purple);
+            color: #fff;
+        }
+        
+        /* Games Grid Full */
+        .games-full-section {
+            padding: 0 2rem 6rem;
+        }
+        
+        .games-full-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .games-full-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        /* Enhanced Game Card for this page */
+        .game-card-full {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .game-card-full:hover {
+            transform: translateY(-8px);
+            border-color: rgba(155, 77, 255, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(155, 77, 255, 0.1);
+        }
+        
+        .game-card-full .game-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .game-card-full .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .game-card-full:hover .game-image img {
+            transform: scale(1.05);
+        }
+        
+        .game-card-full .game-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.8) 100%);
+        }
+        
+        .game-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge-popular {
+            background: rgba(255, 51, 102, 0.9);
+            color: #fff;
+        }
+        
+        .badge-new {
+            background: rgba(57, 255, 20, 0.9);
+            color: #000;
+        }
+        
+        .badge-classic {
+            background: rgba(155, 77, 255, 0.9);
+            color: #fff;
+        }
+        
+        .game-card-full .game-content {
+            padding: 1.5rem;
+        }
+        
+        .game-card-full .game-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .game-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .game-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .game-meta-item span:first-child {
+            font-size: 0.9rem;
+        }
+        
+        .game-card-full .game-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+            margin-bottom: 1rem;
+        }
+        
+        .game-card-full .playing {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: #39ff14;
+        }
+        
+        .game-card-full .peak {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .game-card-full .game-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .game-card-full .btn-play {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        /* Coming Soon Card */
+        .game-card-soon {
+            background: linear-gradient(135deg, rgba(155, 77, 255, 0.05), rgba(255, 51, 102, 0.03));
+            border: 2px dashed rgba(155, 77, 255, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 400px;
+            transition: all 0.3s ease;
+        }
+        
+        .game-card-soon:hover {
+            border-color: rgba(155, 77, 255, 0.5);
+            background: linear-gradient(135deg, rgba(155, 77, 255, 0.08), rgba(255, 51, 102, 0.05));
+        }
+        
+        .soon-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+        }
+        
+        .soon-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .soon-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 250px;
+        }
+        
+        .soon-link {
+            margin-top: 1.5rem;
+            color: var(--neon-purple);
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: color 0.3s ease;
+        }
+        
+        .soon-link:hover {
+            color: #fff;
+        }
+        
+        /* PROJECT X Card Styling */
+        .project-x-card {
+            border-color: rgba(255, 51, 102, 0.4) !important;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(10, 6, 18, 0.95)) !important;
+        }
+        
+        .project-x-card:hover {
+            border-color: rgba(255, 51, 102, 0.6) !important;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.2);
+        }
+        
+        .project-x-card .soon-icon {
+            animation: pxPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pxPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .project-x-title {
+            color: #ff3366 !important;
+            text-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+        }
+        
+        .project-x-progress {
+            margin-top: 1rem;
+            width: 100%;
+            max-width: 200px;
+        }
+        
+        .px-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+        
+        .px-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff3366, #ff6b6b);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+        
+        .px-progress-text {
+            display: block;
+            margin-top: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: #ff3366;
+            letter-spacing: 0.5px;
+        }
+        
+        .project-x-link {
+            color: #ff3366 !important;
+        }
+        
+        .project-x-link:hover {
+            color: #ff6b6b !important;
+        }
+        
+        @media (max-width: 768px) {
+            .games-full-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .games-page-stats {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#stats">Stats</a>
+                <a href="creators.html">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+            
+            <a href="apply.html" class="btn btn-tertiary btn-nav">Join the Team</a>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="games-page-hero">
+        <h1 class="games-page-title">All Games</h1>
+        <p class="games-page-subtitle">Our complete library of psychological horror experiences. Each game crafted with atmospheric environments, immersive sound design, and gameplay that keeps you on edge.</p>
+        
+        <div class="games-page-stats">
+            <div class="page-stat">
+                <span class="page-stat-value">155M+</span>
+                <span class="page-stat-label">minutes played</span>
+            </div>
+            <div class="page-stat">
+                <span class="page-stat-value">557K+</span>
+                <span class="page-stat-label">favorites</span>
+            </div>
+            <div class="page-stat">
+                <span class="page-stat-value" id="total-live">0</span>
+                <span class="page-stat-label">playing now</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <div class="games-filter">
+        <button class="filter-btn active" data-filter="all">All Games</button>
+        <button class="filter-btn" data-filter="popular">Most Popular</button>
+        <button class="filter-btn" data-filter="solo">Solo Play</button>
+        <button class="filter-btn" data-filter="coop">Co-op</button>
+    </div>
+
+    <!-- Games Grid -->
+    <section class="games-full-section">
+        <div class="games-full-container">
+            <div class="games-full-grid">
+                
+                <!-- DISTURBED -->
+                <div class="game-card-full" data-island="3475-9207-2052" data-tags="popular,coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/AiHjklCxZQfuXVNuOX/image/landscape_comp_s.jpeg" alt="DISTURBED">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-popular">🔥 Popular</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">DISTURBED</h3>
+                        <p class="game-description">You're part of the investigation team sent to an abandoned Arctic research station. Document the site, recover what you can, and get out before the storm hits. As you move through the frozen corridors, you find traces of something left behind...</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 15-25 min</span>
+                            <span class="game-meta-item">😱 Extreme</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="disturbed">0</span> playing</span>
+                            <span class="peak">3,250 peak</span>
+                            <span class="game-code">3475-9207-2052</span>
+                        </div>
+                        
+                        <a href="games/disturbed.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SANITY -->
+                <div class="game-card-full" data-island="0555-4316-6085" data-tags="popular,coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/PCIxAxRbofsoeegLPe/image/landscape_comp_s.jpeg" alt="SANITY">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-popular">🔥 Popular</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">SANITY</h3>
+                        <p class="game-description">A house that won't let you leave. Corridors twist and stretch, doors vanish behind you, and something lurks in the dark. Each step pulls you further into its suffocating grip, leading you through impossible rooms and eerie whispers.</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 20-30 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="sanity">0</span> playing</span>
+                            <span class="peak">2,798 peak</span>
+                            <span class="game-code">0555-4316-6085</span>
+                        </div>
+                        
+                        <a href="games/sanity.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- EVICTED -->
+                <div class="game-card-full" data-island="9694-9799-9090" data-tags="popular,coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/VqOFyFxRznIwhtubra/image/landscape_comp_s.jpeg" alt="EVICTED">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-popular">🔥 Popular</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">EVICTED</h3>
+                        <p class="game-description">You're a student looking for a cheap room in Kowloon's winding concrete hive. The deeper you search, the stranger it gets—too many doors, too few exits. Tenants speak in riddles. Walls remember. And the building watches.</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 15-20 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="evicted">0</span> playing</span>
+                            <span class="peak">1,597 peak</span>
+                            <span class="game-code">9694-9799-9090</span>
+                        </div>
+                        
+                        <a href="games/evicted.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HOMELESS -->
+                <div class="game-card-full" data-island="4095-6376-8788" data-tags="popular,solo">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/lkxknFwEcHJnmevRBa/image/landscape_comp_s.jpeg" alt="HOMELESS">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-classic">⭐ Classic</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">HOMELESS</h3>
+                        <p class="game-description">You're the night shift security guard at a quiet city subway. It should be routine—just monitors, patrols, silence. But as the hours crawl by, something begins to stir in the stillness. In the tunnels below, reality starts to slip.</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👤 1 player</span>
+                            <span class="game-meta-item">⏱️ 10-15 min</span>
+                            <span class="game-meta-item">😱 Extreme</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="homeless">0</span> playing</span>
+                            <span class="peak">1,756 peak</span>
+                            <span class="game-code">4095-6376-8788</span>
+                        </div>
+                        
+                        <a href="games/homeless.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- TRAUMA -->
+                <div class="game-card-full" data-island="8985-1891-2904" data-tags="coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/WHssEuNrjGhuwPKxIh/image/landscape_comp_s.jpeg" alt="TRAUMA">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">TRAUMA</h3>
+                        <p class="game-description">A psychological horror game based on the fractured memories of a psychiatrist who survived a horrific incident at an experimental mental health facility. Reality blends with nightmare as you uncover the terrifying truth. Our first release.</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 20-25 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="trauma">0</span> playing</span>
+                            <span class="peak">1,521 peak</span>
+                            <span class="game-code">8985-1891-2904</span>
+                        </div>
+                        
+                        <a href="games/trauma.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RITUAL -->
+                <div class="game-card-full" data-island="1376-1111-7887" data-tags="coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/ovZtDDcREJatqJNBxK/image/landscape_comp_s.jpeg" alt="RITUAL">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">RITUAL</h3>
+                        <p class="game-description">Hired as the new night guard, you're sent to watch over Eastridge Cemetery. But beneath the quiet grounds lies a tunnel system hiding what ended the last shift...</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 15-20 min</span>
+                            <span class="game-meta-item">😱 Moderate</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="ritual">0</span> playing</span>
+                            <span class="peak">276 peak</span>
+                            <span class="game-code">1376-1111-7887</span>
+                        </div>
+                        
+                        <a href="games/ritual.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- BELOW -->
+                <div class="game-card-full" data-island="1503-0620-8537" data-tags="popular,coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/eiiMqAdhTtVkMIBqWt/image/landscape_comp_s.jpeg" alt="BELOW">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-new">🆕 New</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">BELOW</h3>
+                        <p class="game-description">When a drilling incident stirs something deep beneath the North Sea, you're stranded on a dying rig, fighting to escape the storm and whatever crawled up from the depths...</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 20-25 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="below">0</span> playing</span>
+                            <span class="peak">276 peak</span>
+                            <span class="game-code">1503-0620-8537</span>
+                        </div>
+                        
+                        <a href="games/below.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DUMMY -->
+                <div class="game-card-full" data-island="1079-2212-2195" data-tags="coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/zWaWlyFuommznbnUMR/image/landscape_comp_s.jpeg" alt="DUMMY">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">DUMMY</h3>
+                        <p class="game-description">A gas leak at a factory brings the mannequins to life, warping your reality into psychological misery. Survive the terror and escape before the factory devours your sanity. The haunting sequel to Trauma!</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 15-20 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="dummy">0</span> playing</span>
+                            <span class="peak">669 peak</span>
+                            <span class="game-code">1079-2212-2195</span>
+                        </div>
+                        
+                        <a href="games/dummy.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- MENTAL -->
+                <div class="game-card-full" data-island="2207-0222-0657" data-tags="coop">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/drwkaulGqWamlyFRYy/image/landscape_comp_s.jpeg" alt="MENTAL">
+                        <div class="game-image-overlay"></div>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">MENTAL</h3>
+                        <p class="game-description">You're stuck in a dark forest after a camping trip gone wrong. But something's out there. Solve puzzles, scavenge for supplies, and survive the night—or become its next victim!</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-4 players</span>
+                            <span class="game-meta-item">⏱️ 15-20 min</span>
+                            <span class="game-meta-item">😱 High</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="mental">0</span> playing</span>
+                            <span class="peak">405 peak</span>
+                            <span class="game-code">2207-0222-0657</span>
+                        </div>
+                        
+                        <a href="games/mental.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SNEAKY SNIPERS -->
+                <div class="game-card-full" data-island="5595-2594-5459" data-tags="pvp">
+                    <div class="game-image">
+                        <img src="https://cdn-0001.qstv.on.epicgames.com/oDvcBoysrchWlwnals/image/landscape_comp_s.jpeg" alt="SNEAKY SNIPERS">
+                        <div class="game-image-overlay"></div>
+                        <span class="game-badge badge-classic">🎯 PvP</span>
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">SNEAKY SNIPERS</h3>
+                        <p class="game-description">Become the ultimate silent sniper! Unlock new ghillie suits, climb the leaderboards, and dominate the forest. A competitive PvP experience.</p>
+                        
+                        <div class="game-meta">
+                            <span class="game-meta-item">👥 1-16 players</span>
+                            <span class="game-meta-item">⏱️ Infinite</span>
+                            <span class="game-meta-item">🎯 Competitive</span>
+                        </div>
+                        
+                        <div class="game-stats">
+                            <span class="playing"><span class="live-dot"></span><span class="player-count" data-game="sneaky">0</span> playing</span>
+                            <span class="peak">387 peak</span>
+                            <span class="game-code">5595-2594-5459</span>
+                        </div>
+                        
+                        <a href="games/sneaky-snipers.html" class="btn btn-play">
+                            <span>→</span> View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Coming Soon Card - PROJECT X -->
+                <div class="game-card-soon project-x-card">
+                    <div class="soon-icon">🔴</div>
+                    <h3 class="soon-title project-x-title">PROJECT X</h3>
+                    <p class="soon-text">Our most ambitious project yet. 100+ procedural rooms. Adaptive AI. Extraction horror.</p>
+                    <div class="project-x-progress">
+                        <div class="px-progress-bar">
+                            <div class="px-progress-fill" style="width: 72%;"></div>
+                        </div>
+                        <span class="px-progress-text">72% Complete • ETA: 2026</span>
+                    </div>
+                    <a href="project-x.html" class="soon-link project-x-link">
+                        View Intel →
+                    </a>
+                </div>
+
+                <!-- Coming Soon Card - More -->
+                <div class="game-card-soon">
+                    <div class="soon-icon">🚧</div>
+                    <h3 class="soon-title">More Coming</h3>
+                    <p class="soon-text">We're always working on new experiences. Follow us for updates.</p>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="soon-link">
+                        Join Discord →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="footer-logo">
+                <span class="footer-name">ouch</span>
+            </div>
+            <p class="footer-tagline">Crafting nightmares in Fortnite Creative.</p>
+            <p class="footer-copyright">© 2025 Ouch Games. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                const cards = document.querySelectorAll('.game-card-full');
+                
+                cards.forEach(card => {
+                    const tags = card.dataset.tags || '';
+                    
+                    if (filter === 'all' || tags.includes(filter)) {
+                        card.style.display = 'block';
+                        card.style.opacity = '1';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Update total live count
+        function updateTotalLive() {
+            let total = 0;
+            document.querySelectorAll('.player-count').forEach(el => {
+                total += parseInt(el.textContent) || 0;
+            });
+            const liveEl = document.getElementById('total-live');
+            if (liveEl) liveEl.textContent = total.toLocaleString();
+        }
+        
+        // Run after script.js updates player counts
+        setTimeout(updateTotalLive, 2000);
+        setInterval(updateTotalLive, 60000);
+    </script>
+</body>
+</html>
