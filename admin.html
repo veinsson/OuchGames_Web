@@ -462,12 +462,22 @@
             <!-- Dashboard -->
             <div class="admin-dashboard" id="adminDashboard">
                 <div class="admin-header">
-                    <h1 class="admin-title">🎮 Speedrun Submissions</h1>
+                    <h1 class="admin-title">🎮 Admin Dashboard</h1>
                     <div class="admin-user">
                         <span class="admin-email" id="userEmail"></span>
                         <button class="btn btn-tertiary logout-btn" onclick="logout()">Logout</button>
                     </div>
                 </div>
+                
+                <!-- Tabs -->
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchTab('speedruns')">🏆 Speedruns</button>
+                    <button class="admin-tab" onclick="switchTab('videos')">📹 Videos</button>
+                </div>
+                
+                <!-- Speedruns Tab -->
+                <div class="admin-tab-content" id="speedrunsTab">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">🎮 Speedrun Submissions</h2>
                 
                 <!-- Stats -->
                 <div class="admin-stats">
@@ -548,6 +558,68 @@
                         <p style="color: var(--text-secondary);">Loading...</p>
                     </div>
                 </div>
+                </div>
+                
+                <!-- Videos Tab -->
+                <div class="admin-tab-content" id="videosTab" style="display: none;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">📹 Video Submissions</h2>
+                    
+                    <!-- Video Stats -->
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalVideos">0</div>
+                            <div class="stat-label">Total Videos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pendingVideos">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="featuredVideos">0</div>
+                            <div class="stat-label">Featured</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Filters -->
+                    <div class="filter-bar">
+                        <select class="filter-select" id="filterVideoPlatform" onchange="renderVideoTable()">
+                            <option value="">All Platforms</option>
+                            <option value="X (Twitter)">X (Twitter)</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Instagram">Instagram</option>
+                        </select>
+                        <select class="filter-select" id="filterVideoStatus" onchange="renderVideoTable()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="featured">Featured</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Videos Table -->
+                    <div class="submissions-table-wrapper">
+                        <table class="submissions-table">
+                            <thead>
+                                <tr>
+                                    <th>Platform</th>
+                                    <th>Game</th>
+                                    <th>Username</th>
+                                    <th>Video</th>
+                                    <th>Status</th>
+                                    <th>Featured</th>
+                                    <th>Submitted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="videosBody">
+                                <tr>
+                                    <td colspan="8" class="empty-state">Loading videos...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -560,7 +632,24 @@
     
     <script>
         let submissions = [];
+        let videos = [];
         let currentUser = null;
+        
+        // Tab switching
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.admin-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'speedruns') {
+                document.getElementById('speedrunsTab').style.display = 'block';
+                document.getElementById('videosTab').style.display = 'none';
+            } else {
+                document.getElementById('speedrunsTab').style.display = 'none';
+                document.getElementById('videosTab').style.display = 'block';
+                loadVideos();
+            }
+        }
         
         // Authentication
         async function attemptLogin() {
@@ -807,6 +896,120 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
+        
+        // ===== VIDEO MANAGEMENT =====
+        async function loadVideos() {
+            try {
+                const snapshot = await firebase.firestore()
+                    .collection('video-submissions')
+                    .orderBy('submittedAt', 'desc')
+                    .get();
+                
+                videos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Update stats
+                document.getElementById('totalVideos').textContent = videos.length;
+                document.getElementById('pendingVideos').textContent = videos.filter(v => v.status === 'pending').length;
+                document.getElementById('featuredVideos').textContent = videos.filter(v => v.featured === true).length;
+                
+                renderVideoTable();
+            } catch (error) {
+                console.error('Error loading videos:', error);
+            }
+        }
+        
+        function renderVideoTable() {
+            const tbody = document.getElementById('videosBody');
+            const platformFilter = document.getElementById('filterVideoPlatform').value;
+            const statusFilter = document.getElementById('filterVideoStatus').value;
+            
+            let filtered = videos.filter(v => {
+                if (platformFilter && v.platform !== platformFilter) return false;
+                if (statusFilter && v.status !== statusFilter) return false;
+                return true;
+            });
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No videos found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filtered.map(v => {
+                const date = v.submittedAt?.toDate?.() ? v.submittedAt.toDate().toLocaleDateString() : 'N/A';
+                const platformIcon = v.platform === 'X (Twitter)' ? '𝕏' : v.platform === 'TikTok' ? '📱' : '📷';
+                
+                return `
+                    <tr>
+                        <td><strong>${platformIcon} ${v.platform}</strong></td>
+                        <td>${v.game}</td>
+                        <td>${escapeHtml(v.username)}</td>
+                        <td><button class="action-btn view" onclick="window.open('${v.videoUrl}', '_blank')">👁 Watch</button></td>
+                        <td><span class="status-badge ${v.status}">${v.status}</span></td>
+                        <td><span class="status-badge ${v.featured ? 'featured' : ''}">${v.featured ? '⭐ Yes' : 'No'}</span></td>
+                        <td>${date}</td>
+                        <td class="actions-cell">
+                            ${v.status === 'pending' ? `
+                                <button class="action-btn approve" onclick="updateVideoStatus('${v.id}', 'approved')">✓ Approve</button>
+                                <button class="action-btn reject" onclick="updateVideoStatus('${v.id}', 'rejected')">✕ Reject</button>
+                            ` : ''}
+                            ${v.status === 'approved' && !v.featured ? `
+                                <button class="action-btn feature" onclick="toggleVideoFeatured('${v.id}', true)">⭐ Feature</button>
+                            ` : ''}
+                            ${v.featured ? `
+                                <button class="action-btn" onclick="toggleVideoFeatured('${v.id}', false)">Remove Feature</button>
+                            ` : ''}
+                            <button class="action-btn delete" onclick="deleteVideo('${v.id}')">🗑</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        async function updateVideoStatus(id, newStatus) {
+            if (!confirm(`Are you sure you want to ${newStatus} this video?`)) return;
+            
+            try {
+                await firebase.firestore().collection('video-submissions').doc(id).update({
+                    status: newStatus,
+                    reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert(`Video ${newStatus}!`);
+                loadVideos();
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Failed to update video status');
+            }
+        }
+        
+        async function toggleVideoFeatured(id, featured) {
+            const action = featured ? 'feature' : 'unfeature';
+            if (!confirm(`Are you sure you want to ${action} this video on the homepage?`)) return;
+            
+            try {
+                await firebase.firestore().collection('video-submissions').doc(id).update({
+                    featured: featured,
+                    featuredAt: featured ? firebase.firestore.FieldValue.serverTimestamp() : null
+                });
+                alert(`Video ${featured ? 'featured' : 'unfeatured'}!`);
+                loadVideos();
+            } catch (error) {
+                console.error('Error toggling featured:', error);
+                alert('Failed to toggle featured status');
+            }
+        }
+        
+        async function deleteVideo(id) {
+            if (!confirm('Are you sure you want to delete this video submission? This cannot be undone.')) return;
+            
+            try {
+                await firebase.firestore().collection('video-submissions').doc(id).delete();
+                alert('Video deleted!');
+                loadVideos();
+            } catch (error) {
+                console.error('Error deleting video:', error);
+                alert('Failed to delete video');
+            }
+        }
     </script>
 </body>
 </html>

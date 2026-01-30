@@ -209,6 +209,25 @@
         </div>
     </section>
 
+    <!-- Featured Community Videos -->
+    <section class="featured-videos-section" id="featured-videos">
+        <div class="speedrunners-container">
+            <div class="section-header">
+                <h2 class="section-title">📹 Community Moments</h2>
+                <p class="section-subtitle">Featured content from X, TikTok, and Instagram</p>
+            </div>
+            
+            <div class="videos-carousel" id="featuredVideosCarousel">
+                <p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">Loading featured videos...</p>
+            </div>
+            
+            <div class="submit-time-cta" style="margin-top: 3rem;">
+                <span>Got epic content?</span>
+                <a href="submit-video.html" class="btn btn-secondary">Submit Your Video</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Featured Speedrunners Carousel -->
     <section class="speedrunners-section" id="speedrunners">
         <div class="speedrunners-container">
@@ -617,8 +636,62 @@
             return div.innerHTML;
         }
         
+        // Load Featured Videos
+        async function loadFeaturedVideos() {
+            const container = document.getElementById('featuredVideosCarousel');
+            if (!container) return;
+            
+            if (typeof firebase === 'undefined' || !firebase.apps.length) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+                return;
+            }
+            
+            try {
+                const snapshot = await firebase.firestore()
+                    .collection('video-submissions')
+                    .where('featured', '==', true)
+                    .orderBy('featuredAt', 'desc')
+                    .limit(6)
+                    .get();
+                
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+                    return;
+                }
+                
+                const videos = snapshot.docs.map(doc => doc.data());
+                
+                container.innerHTML = videos.map(v => {
+                    const platformIcon = v.platform === 'X (Twitter)' ? '𝕏' : v.platform === 'TikTok' ? '📱' : '📷';
+                    
+                    return `
+                        <div class="video-card">
+                            <a href="${v.videoUrl}" target="_blank" class="video-link">
+                                <div class="video-thumbnail">
+                                    <div class="play-overlay">▶</div>
+                                </div>
+                            </a>
+                            <div class="video-info">
+                                <span class="video-platform">${platformIcon} ${v.platform}</span>
+                                <p class="video-game">${v.game}</p>
+                                <p class="video-creator">${escapeHtml(v.username)}</p>
+                                <a href="${v.videoUrl}" target="_blank" class="btn btn-sm" style="margin-top: 0.75rem;">Watch Video →</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading featured videos:', error);
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">No featured videos yet. <a href="submit-video.html" style="color: var(--accent-purple);">Submit yours!</a></p>';
+            }
+        }
+        
         // Load on page ready
-        document.addEventListener('DOMContentLoaded', loadFeaturedSpeedrunners);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFeaturedSpeedrunners();
+            loadFeaturedVideos();
+        });
     </script>
 </body>
 </html>
