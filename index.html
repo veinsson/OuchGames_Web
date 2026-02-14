@@ -58,7 +58,9 @@
                 <a href="#socials">Socials</a>
             </nav>
             
-            <a href="/apply" class="btn btn-tertiary btn-nav">Join the Team</a>
+            <div class="nav-actions">
+                <a href="/apply" class="btn btn-tertiary btn-nav">Join the Team</a>
+            </div>
             
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
                 <span></span>
@@ -111,7 +113,8 @@
             
             <div class="hero-buttons">
                 <a href="#games" class="btn btn-primary">Explore Games</a>
-                <a href="#project-x" class="btn btn-secondary">What's Next?</a>
+                <a href="#speedrunners" class="btn btn-secondary">🏆 Speedrun Leaderboard</a>
+                <a href="#project-x" class="btn btn-tertiary">What's Next?</a>
             </div>
             
             <div class="scroll-indicator">
@@ -121,20 +124,20 @@
         </div>
     </section>
 
-    <!-- 1 Year Anniversary Banner -->
-    <section class="anniversary-banner">
+    <!-- Valentine's Day Banner -->
+    <section class="anniversary-banner valentine-banner">
         <div class="anniversary-container">
-            <div class="anniversary-badge">🎂</div>
+            <div class="anniversary-badge">💕</div>
             <div class="anniversary-content">
-                <h2 class="anniversary-title">1 YEAR OF TERROR</h2>
-                <p class="anniversary-text">One year ago, Ouch Games began its journey. <strong>155M+ minutes played</strong>, <strong>95.6K followers</strong>, and a community that keeps growing. Thank you for the screams, the speedruns, and the memories. 🖤</p>
+                <h2 class="anniversary-title">HAPPY VALENTINE'S DAY</h2>
+                <p class="anniversary-text">Ouch Games wishes everyone a <strong>Happy Valentine's Day</strong>! Whether you're spending it with someone special or speedrunning solo — we love every single one of you. Stay spooky, stay loved. 🖤</p>
             </div>
             <div class="anniversary-confetti">
-                <span class="confetti">🎉</span>
-                <span class="confetti">👻</span>
-                <span class="confetti">🎮</span>
+                <span class="confetti">❤️</span>
                 <span class="confetti">💀</span>
-                <span class="confetti">⚡</span>
+                <span class="confetti">💝</span>
+                <span class="confetti">🖤</span>
+                <span class="confetti">💘</span>
             </div>
         </div>
     </section>
@@ -328,9 +331,15 @@
                 <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">›</button>
             </div>
             
-            <div class="submit-time-cta">
-                <span>Got a faster time?</span>
-                <a href="/submit-time" class="btn btn-secondary">Submit Time</a>
+            <div class="submit-time-cta speedrun-cta-loud">
+                <div class="speedrun-cta-content">
+                    <span class="speedrun-cta-icon">⚡</span>
+                    <div class="speedrun-cta-text">
+                        <strong>Think you're faster?</strong>
+                        <span>Submit your speedrun and claim your spot on the leaderboard</span>
+                    </div>
+                </div>
+                <a href="/submit-time" class="btn btn-primary btn-large btn-glow">🏆 Submit Your Time</a>
             </div>
         </div>
     </section>
@@ -527,6 +536,7 @@
 
     <!-- Firebase SDK for Leaderboard -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
     
