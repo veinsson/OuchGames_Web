@@ -391,8 +391,13 @@
         .modal-content img,
         .modal-content video {
             max-width: 100%;
-            max-height: 80vh;
+            max-height: 70vh;
             border-radius: var(--radius-md);
+        }
+        
+        .modal-content iframe {
+            border-radius: var(--radius-md);
+            border: none;
         }
         
         .modal-close {
@@ -404,6 +409,22 @@
             color: #fff;
             font-size: 2rem;
             cursor: pointer;
+        }
+        
+        .proof-link-bar {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .proof-link-bar a {
+            color: var(--accent-purple-light, #b794f6);
+            font-size: 0.9rem;
+            word-break: break-all;
+            text-decoration: underline;
+        }
+        
+        .proof-link-bar a:hover {
+            color: #fff;
         }
         
         /* Responsive */
@@ -774,7 +795,10 @@
                         <td>${escapeHtml(s.epicUsername)}</td>
                         <td>${escapeHtml(s.discordUsername)}</td>
                         <td>
-                            ${s.proofUrl ? `<button class="action-btn view" onclick="viewProof('${s.proofUrl}')">👁 View</button>` : 'None'}
+                            ${s.proofUrl ? `
+                                <a href="${s.proofUrl}" target="_blank" class="action-btn view" style="text-decoration:none;">🔗 Open</a>
+                                <button class="action-btn view" onclick="viewProof('${s.proofUrl.replace(/'/g, "\\'")}')">👁 Preview</button>
+                            ` : 'None'}
                         </td>
                         <td><span class="status-badge ${s.status}">${s.status}</span></td>
                         <td>${date}</td>
@@ -872,12 +896,40 @@
             const modal = document.getElementById('proofModal');
             const content = document.getElementById('proofContent');
             
-            // Check if it's a video or image
-            if (url.includes('.mp4') || url.includes('.mov') || url.includes('.webm')) {
-                content.innerHTML = `<video src="${url}" controls autoplay style="max-width: 100%; max-height: 80vh;"></video>`;
-            } else {
-                content.innerHTML = `<img src="${url}" alt="Proof">`;
+            let mediaHtml = '';
+            
+            // YouTube
+            const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]+)/);
+            if (ytMatch) {
+                mediaHtml = `<iframe width="800" height="450" src="https://www.youtube.com/embed/${ytMatch[1]}" allowfullscreen></iframe>`;
             }
+            // TikTok
+            else if (url.includes('tiktok.com')) {
+                mediaHtml = `<p style="color:#fff; font-size:1.1rem;">TikTok video — open link below to view</p>`;
+            }
+            // Direct video file
+            else if (url.match(/\.(mp4|mov|webm)$/i)) {
+                mediaHtml = `<video src="${url}" controls autoplay style="max-width:100%; max-height:70vh;"></video>`;
+            }
+            // Direct image file
+            else if (url.match(/\.(png|jpg|jpeg|gif|webp)$/i) || url.includes('imgur.com') || url.includes('prnt.sc')) {
+                mediaHtml = `<img src="${url}" alt="Proof" onerror="this.outerHTML='<p style=color:#fff>Image failed to load — use link below</p>'">`;
+            }
+            // Twitter/X
+            else if (url.includes('x.com') || url.includes('twitter.com')) {
+                mediaHtml = `<p style="color:#fff; font-size:1.1rem;">X/Twitter post — open link below to view</p>`;
+            }
+            // Fallback: unknown link type
+            else {
+                mediaHtml = `<p style="color:#fff; font-size:1.1rem;">Proof link — open below to view</p>`;
+            }
+            
+            // Always show the clickable link
+            content.innerHTML = mediaHtml + `
+                <div class="proof-link-bar">
+                    <a href="${url}" target="_blank" rel="noopener">${url}</a>
+                </div>
+            `;
             
             modal.classList.add('active');
         }
