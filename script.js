@@ -52,13 +52,13 @@ async function fetchPlayerCounts() {
             ccuCache = data;
             ccuCacheTime = now;
             applyPlayerCounts(data);
-            console.log('Live CCU loaded from API');
+            const source = data._source || 'unknown';
+            console.log(`CCU loaded (source: ${source})`);
         } else {
             throw new Error(`API returned ${response.status}`);
         }
     } catch (error) {
-        console.warn('Failed to fetch live CCU, showing 0:', error.message);
-        // Show 0 instead of fake data
+        console.warn('CCU fetch failed:', error.message);
         applyPlayerCounts({});
     }
 }
