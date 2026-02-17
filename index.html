@@ -687,7 +687,9 @@
                     }
                 });
                 
-                // Second pass: fill game-specific cards, skipping the featured player's game entry
+                // Second pass: fill game-specific cards, skipping the featured player if same game
+                const featuredGame = allSubmissions[0]?.game || '';
+                
                 cards.forEach((card) => {
                     if (card.classList.contains('featured')) return;
                     
@@ -695,19 +697,22 @@
                     if (!gameEl) return;
                     
                     const game = gameEl.textContent.trim();
-                    const gameSubmissions = allSubmissions.filter(s => s.game === game);
+                    let gameSubmissions = allSubmissions.filter(s => s.game === game);
                     
                     console.log(`Game ${game}: ${gameSubmissions.length} submissions`);
                     
-                    if (gameSubmissions.length > 0) {
-                        // Skip the player already shown in the featured card for this game
-                        let fastest = gameSubmissions[0];
-                        const fastestName = (fastest.epicUsername || fastest.username || '').toLowerCase();
-                        if (fastestName === featuredPlayer && fastest.game === allSubmissions[0]?.game && gameSubmissions.length > 1) {
-                            fastest = gameSubmissions[1];
-                        }
-                        updateCard(card, fastest);
+                    // If this is the same game as the featured card, filter out the featured player
+                    if (game === featuredGame && featuredPlayer) {
+                        gameSubmissions = gameSubmissions.filter(s => {
+                            const name = (s.epicUsername || s.username || '').toLowerCase();
+                            return name !== featuredPlayer;
+                        });
                     }
+                    
+                    if (gameSubmissions.length > 0) {
+                        updateCard(card, gameSubmissions[0]);
+                    }
+                    // If no other submissions, leave as TBD placeholder
                 });
             } catch (error) {
                 console.error('Failed to load carousel champions:', error);

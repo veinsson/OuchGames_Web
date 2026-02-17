@@ -24,60 +24,70 @@ const islands = {
 
 // Store player counts
 let playerCounts = {};
+let ccuCache = null;
+let ccuCacheTime = 0;
+const CCU_CACHE_TTL = 120000; // Cache for 2 minutes
 
-// Fetch player counts from fortnite.gg API
+// Cloudflare Worker URL - deploy worker/ccu-worker.js to Cloudflare Workers
+// Then replace this URL with your worker URL (e.g., https://ouch-ccu.your-name.workers.dev)
+const CCU_WORKER_URL = 'https://ouch-ccu.veinsson.workers.dev';
+
+// Fetch all player counts in a single batch request via Cloudflare Worker
 async function fetchPlayerCounts() {
+    try {
+        // Check cache first
+        const now = Date.now();
+        if (ccuCache && (now - ccuCacheTime) < CCU_CACHE_TTL) {
+            applyPlayerCounts(ccuCache);
+            return;
+        }
+
+        const codes = Object.values(islands);
+        const response = await fetch(`${CCU_WORKER_URL}/batch?codes=${codes.join(',')}`, {
+            signal: AbortSignal.timeout(10000)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            ccuCache = data;
+            ccuCacheTime = now;
+            applyPlayerCounts(data);
+            console.log('Live CCU loaded from API');
+        } else {
+            throw new Error(`API returned ${response.status}`);
+        }
+    } catch (error) {
+        console.warn('Failed to fetch live CCU, showing 0:', error.message);
+        // Show 0 instead of fake data
+        applyPlayerCounts({});
+    }
+}
+
+// Apply player count data to the page
+function applyPlayerCounts(data) {
     let totalPlayers = 0;
-    
+
     for (const [game, code] of Object.entries(islands)) {
-        try {
-            // Using a CORS proxy or direct API call
-            // Note: fortnite.gg doesn't have a public API, so we'll simulate with realistic values
-            // In production, you'd want to scrape or use their API if available
-            const playerCount = await getIslandPlayers(code);
-            playerCounts[game] = playerCount;
-            totalPlayers += playerCount;
-            
-            // Update individual game card
-            const playerElement = document.querySelector(`[data-game="${game}"]`);
-            if (playerElement) {
-                playerElement.textContent = playerCount.toLocaleString();
-            }
-        } catch (error) {
-            console.log(`Could not fetch data for ${game}:`, error);
+        const count = data[code] || 0;
+        playerCounts[game] = count;
+        totalPlayers += count;
+
+        const playerElement = document.querySelector(`[data-game="${game}"]`);
+        if (playerElement) {
+            playerElement.textContent = count.toLocaleString();
         }
     }
-    
-    // Update total players in navbar
+
     const totalElement = document.getElementById('total-players');
     if (totalElement) {
         animateNumber(totalElement, totalPlayers);
     }
-    
-    return totalPlayers;
-}
 
-// Simulate getting island players (since there's no direct public API)
-// This will show realistic fluctuating numbers
-async function getIslandPlayers(code) {
-    // Base player counts (approximate based on the original site data)
-    const baseCounts = {
-        '3475-9207-2052': 133, // DISTURBED
-        '0555-4316-6085': 46,  // SANITY
-        '9694-9799-9090': 41,  // EVICTED
-        '4095-6376-8788': 30,  // HOMELESS
-        '8985-1891-2904': 2,   // TRAUMA
-        '1376-4468-8766': 8,   // RITUAL
-        '1503-0620-8537': 19,  // BELOW
-        '1079-2212-2195': 2,   // DUMMY
-        '2207-0222-0657': 2,   // MENTAL
-        '5595-2594-5459': 1    // SNEAKY SNIPERS
-    };
-    
-    const base = baseCounts[code] || 10;
-    // Add some random variation (-20% to +30%)
-    const variation = base * (0.8 + Math.random() * 0.5);
-    return Math.round(variation);
+    // Also update total-live on games page
+    const totalLive = document.getElementById('total-live');
+    if (totalLive) {
+        animateNumber(totalLive, totalPlayers);
+    }
 }
 
 // Animate number counting up
