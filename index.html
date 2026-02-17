@@ -103,7 +103,7 @@
             
             <div class="hero-badge">Indie Horror Studio</div>
             <h1 class="hero-title">ouch games</h1>
-            <p class="hero-subtitle">We're a small team of creators crafting horror experiences in UEFN.<br><span class="highlight">155M+ minutes played</span> and counting.</p>
+            <p class="hero-subtitle">We're a small team of creators crafting horror experiences in UEFN.<br><span class="highlight">158.8M+ minutes played</span> and counting.</p>
             
             <!-- Live player count -->
             <div class="live-players">
@@ -124,20 +124,20 @@
         </div>
     </section>
 
-    <!-- Valentine's Day Banner -->
+    <!-- 100K Followers Banner -->
     <section class="anniversary-banner valentine-banner">
         <div class="anniversary-container">
-            <div class="anniversary-badge">💕</div>
+            <div class="anniversary-badge">🎉</div>
             <div class="anniversary-content">
-                <h2 class="anniversary-title">HAPPY VALENTINE'S DAY</h2>
-                <p class="anniversary-text">Ouch Games wishes everyone a <strong>Happy Valentine's Day</strong>! Whether you're spending it with someone special or speedrunning solo — we love every single one of you. Stay spooky, stay loved. 🖤</p>
+                <h2 class="anniversary-title">100K FOLLOWERS</h2>
+                <p class="anniversary-text">We just hit <strong>100,000 followers</strong>! From our first map to 158M+ minutes played — none of this would be possible without you. Thank you for believing in us. This is just the beginning. 🖤</p>
             </div>
             <div class="anniversary-confetti">
-                <span class="confetti">❤️</span>
+                <span class="confetti">🏆</span>
                 <span class="confetti">💀</span>
-                <span class="confetti">💝</span>
+                <span class="confetti">🎮</span>
                 <span class="confetti">🖤</span>
-                <span class="confetti">💘</span>
+                <span class="confetti">⚡</span>
             </div>
         </div>
     </section>
@@ -148,21 +148,21 @@
             <div class="stat-item">
                 <div class="stat-icon">⏱️</div>
                 <div class="stat-info">
-                    <span class="stat-value">155M+</span>
+                    <span class="stat-value">158.8M</span>
                     <span class="stat-label">MINUTES PLAYED</span>
                 </div>
             </div>
             <div class="stat-item">
                 <div class="stat-icon">👥</div>
                 <div class="stat-info">
-                    <span class="stat-value">95.6K</span>
+                    <span class="stat-value">100.8K</span>
                     <span class="stat-label">FOLLOWERS</span>
                 </div>
             </div>
             <div class="stat-item">
                 <div class="stat-icon">❤️</div>
                 <div class="stat-info">
-                    <span class="stat-value">557K+</span>
+                    <span class="stat-value">571.3K</span>
                     <span class="stat-label">FAVORITES</span>
                 </div>
             </div>
@@ -674,18 +674,23 @@
                 };
                 
                 // Process each card
-                cards.forEach((card, index) => {
-                    // Check if this is the "Fastest Overall" featured card
+                let featuredPlayer = null;
+                
+                // First pass: find the fastest overall for the featured card
+                cards.forEach((card) => {
                     if (card.classList.contains('featured')) {
-                        // For the featured card, show the absolute fastest submission overall
-                        const fastestOverall = allSubmissions[0]; // Already sorted by timeInSeconds
+                        const fastestOverall = allSubmissions[0];
                         if (fastestOverall) {
-                            updateCard(card, fastestOverall, true); // true = update the game label too
+                            featuredPlayer = (fastestOverall.epicUsername || fastestOverall.username || '').toLowerCase();
+                            updateCard(card, fastestOverall, true);
                         }
-                        return;
                     }
+                });
+                
+                // Second pass: fill game-specific cards, skipping the featured player's game entry
+                cards.forEach((card) => {
+                    if (card.classList.contains('featured')) return;
                     
-                    // For other cards, match by game name
                     const gameEl = card.querySelector('.speedrunner-game');
                     if (!gameEl) return;
                     
@@ -695,7 +700,12 @@
                     console.log(`Game ${game}: ${gameSubmissions.length} submissions`);
                     
                     if (gameSubmissions.length > 0) {
-                        const fastest = gameSubmissions[0]; // Already sorted by timeInSeconds asc
+                        // Skip the player already shown in the featured card for this game
+                        let fastest = gameSubmissions[0];
+                        const fastestName = (fastest.epicUsername || fastest.username || '').toLowerCase();
+                        if (fastestName === featuredPlayer && fastest.game === allSubmissions[0]?.game && gameSubmissions.length > 1) {
+                            fastest = gameSubmissions[1];
+                        }
                         updateCard(card, fastest);
                     }
                 });

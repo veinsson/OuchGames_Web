@@ -9,9 +9,9 @@ Official website for **Ouch Games** - An indie horror studio creating immersive 
 ## About
 
 Ouch Games specializes in psychological horror experiences with:
-- **155M+** minutes played
-- **557K+** favorites  
-- **95.6K** followers
+- **158.8M+** minutes played
+- **571.3K+** favorites  
+- **100.8K** followers
 - **10 published horror games**
 
 ## Featured Games

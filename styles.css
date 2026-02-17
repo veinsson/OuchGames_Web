@@ -650,11 +650,11 @@ a {
     background: linear-gradient(90deg, var(--text-muted), transparent);
 }
 
-/* ===== Valentine's Day Banner ===== */
+/* ===== Milestone Banner ===== */
 .anniversary-banner {
-    background: linear-gradient(135deg, rgba(255, 77, 106, 0.12) 0%, rgba(255, 107, 157, 0.12) 50%, rgba(200, 50, 100, 0.1) 100%);
-    border-top: 2px solid #ff4d6a;
-    border-bottom: 2px solid #ff6b9d;
+    background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(155, 77, 255, 0.1) 50%, rgba(255, 170, 0, 0.08) 100%);
+    border-top: 2px solid #ffaa00;
+    border-bottom: 2px solid var(--accent-purple);
     padding: 3rem 2rem;
     position: relative;
     overflow: hidden;
@@ -669,7 +669,7 @@ a {
     height: 100%;
     background: linear-gradient(90deg, 
         transparent 0%, 
-        rgba(255, 77, 106, 0.12) 50%, 
+        rgba(255, 170, 0, 0.1) 50%, 
         transparent 100%
     );
     animation: shine 3s ease-in-out infinite;
@@ -709,7 +709,7 @@ a {
     font-family: var(--font-display);
     font-size: 2rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #ff4d6a, #ff6b9d, #ff4d6a);
+    background: linear-gradient(90deg, #ffaa00, var(--accent-purple), #ffaa00);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -730,7 +730,7 @@ a {
 }
 
 .anniversary-text strong {
-    color: #ff4d6a;
+    color: #ffaa00;
     font-weight: 600;
 }
 
@@ -1411,6 +1411,11 @@ a {
     font-weight: 600;
     color: #fff;
     margin-top: 0.25rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .speedrunner-name.placeholder {
@@ -1420,6 +1425,9 @@ a {
 
 .speedrunner-card.featured .speedrunner-name {
     font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .speedrunner-game {
