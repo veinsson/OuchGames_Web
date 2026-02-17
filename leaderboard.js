@@ -42,14 +42,14 @@ async function loadGameLeaderboard(gameName) {
         const runs = snapshot.docs
             .map(doc => doc.data())
             .filter(run => {
-                const matchesGame = run.game === gameName;
+                const matchesGame = run.game === game;
                 const isApproved = run.status === 'approved' || run.status === 'featured';
                 return matchesGame && isApproved;
             })
             .sort((a, b) => (a.timeInSeconds || 9999) - (b.timeInSeconds || 9999))
             .slice(0, 5);
         
-        console.log('Leaderboard runs for', gameName, ':', runs);
+        console.log('Leaderboard runs for', game, ':', runs);
         
         if (runs.length === 0) {
             container.innerHTML = '<p class="leaderboard-empty">No speedruns yet. Be the first!</p>';

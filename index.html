@@ -698,33 +698,49 @@
                     }
                 });
                 
-                // Second pass: fill game-specific cards, skipping the featured player if same game
+                // Second pass: collect best time per game, sort by time, fill cards in order
                 const featuredGame = allSubmissions[0]?.game || '';
                 
-                cards.forEach((card) => {
-                    if (card.classList.contains('featured')) return;
-                    
-                    const gameEl = card.querySelector('.speedrunner-game');
-                    if (!gameEl) return;
-                    
-                    const game = gameEl.textContent.trim();
-                    let gameSubmissions = allSubmissions.filter(s => s.game === game);
-                    
-                    console.log(`Game ${game}: ${gameSubmissions.length} submissions`);
-                    
-                    // If this is the same game as the featured card, filter out the featured player
-                    if (game === featuredGame && featuredPlayer) {
-                        gameSubmissions = gameSubmissions.filter(s => {
-                            const name = (s.epicUsername || s.username || '').toLowerCase();
-                            return name !== featuredPlayer;
-                        });
+                // Build list of best-per-game entries (excluding featured player's entry)
+                const gameMap = new Map();
+                allSubmissions.forEach(s => {
+                    const g = s.game;
+                    if (!g) return;
+                    // Skip the featured player's entry in the featured game
+                    if (g === featuredGame && featuredPlayer) {
+                        const name = (s.epicUsername || s.username || '').toLowerCase();
+                        if (name === featuredPlayer) return;
                     }
-                    
-                    if (gameSubmissions.length > 0) {
-                        updateCard(card, gameSubmissions[0]);
+                    if (!gameMap.has(g)) {
+                        gameMap.set(g, s); // already sorted, so first = fastest
                     }
-                    // If no other submissions, leave as TBD placeholder
                 });
+                
+                // Sort games by their best time
+                const sortedGames = [...gameMap.entries()]
+                    .sort((a, b) => (a[1].timeInSeconds || 9999) - (b[1].timeInSeconds || 9999));
+                
+                // Get non-featured cards
+                const nonFeaturedCards = [...cards].filter(c => !c.classList.contains('featured'));
+                
+                // Fill cards in time order
+                sortedGames.forEach((entry, i) => {
+                    if (i >= nonFeaturedCards.length) return;
+                    const [gameName, player] = entry;
+                    const card = nonFeaturedCards[i];
+                    
+                    // Update the game label on the card
+                    const gameEl = card.querySelector('.speedrunner-game');
+                    if (gameEl) gameEl.textContent = gameName;
+                    
+                    updateCard(card, player);
+                    console.log(`Game ${gameName}: filled card #${i + 1}`);
+                });
+                
+                // Hide any leftover cards that have no data
+                for (let i = sortedGames.length; i < nonFeaturedCards.length; i++) {
+                    // Leave as TBD placeholder
+                }
             } catch (error) {
                 console.error('Failed to load carousel champions:', error);
             }
