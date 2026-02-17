@@ -85,57 +85,42 @@ export default {
             return jsonResponse({ code, globalCCU: ccu.count, source: ccu.source });
         }
 
-        // ── /debug?code=3475-9207-2052
+        // ── /debug?test=gg|epic|raw|estimate&code=3475-9207-2052
+        // Tests ONE data source at a time to stay within CPU limits
         if (url.pathname === '/debug') {
             const code = url.searchParams.get('code') || '3475-9207-2052';
-            const debug = {};
+            const test = url.searchParams.get('test') || 'estimate';
+            const debug = { test, code, timestamp: new Date().toISOString() };
 
-            // Test Epic OAuth
             try {
-                const token = await getEpicToken();
-                debug.epicToken = token ? 'obtained' : 'failed';
-            } catch (e) { debug.epicToken = `error: ${e.message}`; }
-
-            // Test fortnite.gg island scraping (with HTML snippet for debugging)
-            try {
-                const result = await scrapeFortniteGG(code, true);
-                debug.fortniteGG = { ccu: result.ccu, status: 'ok', htmlSnippet: result.snippet };
-            } catch (e) { debug.fortniteGG = { error: e.message }; }
-
-            // Test fortnite.gg CREATOR page (all islands at once)
-            try {
-                const creatorResult = await scrapeCreatorPage(true);
-                debug.creatorPage = {
-                    total: creatorResult.total,
-                    islands: creatorResult.islands,
-                    status: 'ok',
-                    htmlSnippet: creatorResult.snippet,
-                };
-            } catch (e) { debug.creatorPage = { error: e.message }; }
-
-            // Dump raw HTML start from fortnite.gg (to see page structure)
-            try {
-                const rawResp = await fetch(FORTNITE_GG_ISLAND + code, {
-                    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
-                    cf: { cacheTtl: 120 },
-                });
-                const rawHtml = await rawResp.text();
-                debug.rawHtml = {
-                    status: rawResp.status,
-                    length: rawHtml.length,
-                    first1500: rawHtml.substring(0, 1500),
-                };
-            } catch (e) { debug.rawHtml = { error: e.message }; }
-
-            // Test Epic Links API
-            try {
-                const ccu = await fetchFromEpicAPI(code);
-                debug.epicLinks = { ccu, status: 'ok' };
-            } catch (e) { debug.epicLinks = { error: e.message }; }
-
-            // Fallback estimate
-            debug.fallback = getSmartEstimate(code);
-            debug.timestamp = new Date().toISOString();
+                if (test === 'gg') {
+                    // Test fortnite.gg island scraping
+                    const result = await scrapeFortniteGG(code, true);
+                    debug.result = { ccu: result.ccu, snippet: result.snippet };
+                } else if (test === 'creator') {
+                    // Test fortnite.gg creator page
+                    const result = await scrapeCreatorPage(true);
+                    debug.result = { total: result.total, islands: result.islands, snippet: result.snippet };
+                } else if (test === 'raw') {
+                    // Dump raw HTML from fortnite.gg (to see what CF Worker receives)
+                    const rawResp = await fetch(FORTNITE_GG_ISLAND + code, {
+                        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+                    });
+                    const rawHtml = await rawResp.text();
+                    debug.result = { status: rawResp.status, length: rawHtml.length, first1500: rawHtml.substring(0, 1500) };
+                } else if (test === 'epic') {
+                    // Test Epic OAuth + Links API
+                    const token = await getEpicToken();
+                    debug.epicToken = token ? 'obtained' : 'failed';
+                    const ccu = await fetchFromEpicAPI(code, token);
+                    debug.result = { ccu };
+                } else {
+                    // Default: show estimate
+                    debug.result = { ccu: getSmartEstimate(code) };
+                }
+            } catch (e) {
+                debug.error = e.message;
+            }
 
             return jsonResponse(debug);
         }
@@ -152,86 +137,18 @@ export default {
 // ── Data Fetching ────────────────────────────────────
 
 /**
- * Fetch CCU for all island codes using the best available source.
- * Tests ONE island first before committing to a data source.
+ * Fetch CCU for all island codes.
+ * Currently uses smart estimates (instant, no network).
+ * Can be upgraded to scraping once a working source is confirmed via /debug.
  */
 async function fetchAllCCU(codes) {
     const results = {};
-    let source = 'unknown';
-    const testCode = codes[0]; // Use first code as canary
 
-    // Strategy 1: Try fortnite.gg CREATOR page (1 request for all islands)
-    try {
-        const creatorData = await scrapeCreatorPage();
-        if (creatorData.total > 0 || Object.keys(creatorData.islands).length > 0) {
-            source = 'fortnite.gg-creator';
-            for (const code of codes) {
-                results[code] = creatorData.islands[code] || 0;
-            }
-            results._source = source;
-            return results;
-        }
-    } catch (e) { /* fall through */ }
-
-    // Strategy 2: Test ONE fortnite.gg island page first
-    let ggWorks = false;
-    try {
-        const testResult = await scrapeFortniteGG(testCode);
-        if (testResult.ccu > 0) {
-            ggWorks = true;
-            results[testCode] = testResult.ccu;
-        }
-    } catch (e) { /* fall through */ }
-
-    // If the test worked, scrape the rest in parallel
-    if (ggWorks) {
-        const remaining = codes.filter(c => c !== testCode);
-        const scraped = await Promise.all(
-            remaining.map(async (code) => {
-                try {
-                    const r = await scrapeFortniteGG(code);
-                    return { code, ccu: r.ccu > 0 ? r.ccu : 0 };
-                } catch {
-                    return { code, ccu: 0 };
-                }
-            })
-        );
-        for (const s of scraped) results[s.code] = s.ccu;
-        results._source = 'fortnite.gg';
-        return results;
-    }
-
-    // Strategy 3: Try Epic OAuth + Links API (test ONE first)
-    try {
-        const token = await getEpicToken();
-        if (token) {
-            const testCCU = await fetchFromEpicAPI(testCode, token);
-            if (testCCU > 0) {
-                results[testCode] = testCCU;
-                const remaining = codes.filter(c => c !== testCode);
-                const epicResults = await Promise.all(
-                    remaining.map(async (code) => {
-                        try {
-                            const ccu = await fetchFromEpicAPI(code, token);
-                            return { code, ccu: ccu > 0 ? ccu : 0 };
-                        } catch {
-                            return { code, ccu: 0 };
-                        }
-                    })
-                );
-                for (const r of epicResults) results[r.code] = r.ccu;
-                results._source = 'epic-api';
-                return results;
-            }
-        }
-    } catch (e) { /* fall through */ }
-
-    // Strategy 4: Smart fallback estimates (always works, no network needed)
-    source = 'estimate';
+    // Use smart estimates (zero network requests, always within CPU limits)
     for (const code of codes) {
         results[code] = getSmartEstimate(code);
     }
-    results._source = source;
+    results._source = 'estimate';
     return results;
 }
 
@@ -239,19 +156,6 @@ async function fetchAllCCU(codes) {
  * Fetch CCU for a single code
  */
 async function fetchSingleCCU(code) {
-    // Try fortnite.gg first
-    try {
-        const result = await scrapeFortniteGG(code);
-        if (result.ccu >= 0) return { count: result.ccu, source: 'fortnite.gg' };
-    } catch {}
-
-    // Try Epic API
-    try {
-        const ccu = await fetchFromEpicAPI(code);
-        if (ccu > 0) return { count: ccu, source: 'epic-api' };
-    } catch {}
-
-    // Fallback
     return { count: getSmartEstimate(code), source: 'estimate' };
 }
 
