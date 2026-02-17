@@ -30,7 +30,7 @@ const CCU_CACHE_TTL = 120000; // Cache for 2 minutes
 
 // Cloudflare Worker URL - deploy worker/ccu-worker.js to Cloudflare Workers
 // Then replace this URL with your worker URL (e.g., https://ouch-ccu.your-name.workers.dev)
-const CCU_WORKER_URL = 'https://ouch-ccu.veinsson.workers.dev';
+const CCU_WORKER_URL = 'https://ouch-ccu.ouchgamessocial.workers.dev';
 
 // Fetch all player counts in a single batch request via Cloudflare Worker
 async function fetchPlayerCounts() {
