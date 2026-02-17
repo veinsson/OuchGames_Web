@@ -96,11 +96,17 @@ export default {
                 debug.epicToken = token ? 'obtained' : 'failed';
             } catch (e) { debug.epicToken = `error: ${e.message}`; }
 
-            // Test fortnite.gg scraping
+            // Test fortnite.gg island scraping (with HTML snippet for debugging)
             try {
-                const ccu = await scrapeFortniteGG(code);
-                debug.fortniteGG = { ccu, status: 'ok' };
+                const result = await scrapeFortniteGG(code, true);
+                debug.fortniteGG = { ccu: result.ccu, status: 'ok', htmlSnippet: result.snippet };
             } catch (e) { debug.fortniteGG = { error: e.message }; }
+
+            // Test fortnite.gg CREATOR page (all islands at once)
+            try {
+                const creatorResult = await scrapeCreatorPage();
+                debug.creatorPage = { total: creatorResult.total, islands: creatorResult.islands, status: 'ok' };
+            } catch (e) { debug.creatorPage = { error: e.message }; }
 
             // Test Epic Links API
             try {
@@ -133,20 +139,35 @@ async function fetchAllCCU(codes) {
     const results = {};
     let source = 'unknown';
 
-    // Strategy 1: Try fortnite.gg scraping for all codes in parallel
+    // Strategy 1: Try fortnite.gg CREATOR page (1 request for all islands)
+    try {
+        const creatorData = await scrapeCreatorPage();
+        if (creatorData.total > 0 || Object.keys(creatorData.islands).length > 0) {
+            source = 'fortnite.gg';
+            for (const code of codes) {
+                results[code] = creatorData.islands[code] || 0;
+            }
+            results._source = source;
+            return results;
+        }
+    } catch (e) {
+        // Creator page failed, try individual pages
+    }
+
+    // Strategy 2: Try fortnite.gg individual island pages
     try {
         const scraped = await Promise.all(
             codes.map(async (code) => {
                 try {
-                    const ccu = await scrapeFortniteGG(code);
-                    return { code, ccu, ok: ccu >= 0 };
+                    const result = await scrapeFortniteGG(code);
+                    return { code, ccu: result.ccu, ok: result.ccu >= 0 };
                 } catch {
                     return { code, ccu: -1, ok: false };
                 }
             })
         );
 
-        const successCount = scraped.filter(s => s.ok).length;
+        const successCount = scraped.filter(s => s.ok && s.ccu > 0).length;
         if (successCount > 0) {
             source = 'fortnite.gg';
             for (const s of scraped) {
@@ -156,10 +177,10 @@ async function fetchAllCCU(codes) {
             return results;
         }
     } catch (e) {
-        // fortnite.gg failed entirely, try next source
+        // fortnite.gg failed entirely
     }
 
-    // Strategy 2: Try Epic OAuth + Links API
+    // Strategy 3: Try Epic OAuth + Links API
     try {
         const token = await getEpicToken();
         if (token) {
@@ -185,10 +206,10 @@ async function fetchAllCCU(codes) {
             }
         }
     } catch (e) {
-        // Epic API failed, use fallback
+        // Epic API failed
     }
 
-    // Strategy 3: Smart fallback estimates
+    // Strategy 4: Smart fallback estimates
     source = 'estimate';
     for (const code of codes) {
         results[code] = getSmartEstimate(code);
@@ -203,8 +224,8 @@ async function fetchAllCCU(codes) {
 async function fetchSingleCCU(code) {
     // Try fortnite.gg first
     try {
-        const ccu = await scrapeFortniteGG(code);
-        if (ccu >= 0) return { count: ccu, source: 'fortnite.gg' };
+        const result = await scrapeFortniteGG(code);
+        if (result.ccu >= 0) return { count: result.ccu, source: 'fortnite.gg' };
     } catch {}
 
     // Try Epic API
@@ -221,9 +242,9 @@ async function fetchSingleCCU(code) {
 
 /**
  * Scrape the player count from fortnite.gg island page HTML
- * Returns the "X PLAYERS RIGHT NOW" value
+ * Returns { ccu, snippet } — snippet only included when debug=true
  */
-async function scrapeFortniteGG(code) {
+async function scrapeFortniteGG(code, debug = false) {
     const response = await fetch(FORTNITE_GG_ISLAND + code, {
         headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -241,31 +262,117 @@ async function scrapeFortniteGG(code) {
     }
 
     const html = await response.text();
+    const result = { ccu: -1, snippet: '' };
 
-    // Pattern 1: Look for "X PLAYERS RIGHT NOW" (the main CCU display)
-    const match = html.match(/(\d[\d,]*)\s*(?:<[^>]*>\s*)*PLAYERS?\s*RIGHT\s*NOW/i);
-    if (match) {
-        return parseInt(match[1].replace(/,/g, ''), 10);
+    // Grab snippet around "PLAYER" for debugging
+    if (debug) {
+        const playerIdx = html.search(/player/i);
+        if (playerIdx >= 0) {
+            const start = Math.max(0, playerIdx - 200);
+            const end = Math.min(html.length, playerIdx + 300);
+            result.snippet = html.substring(start, end).replace(/[\n\r]+/g, ' ').substring(0, 500);
+        } else {
+            result.snippet = `No 'player' found. Length=${html.length}. First 500: ${html.substring(0, 500)}`;
+        }
     }
 
-    // Pattern 2: Look for player count in JSON-LD or meta tags
-    const metaMatch = html.match(/"playerCount"\s*:\s*(\d+)/i);
+    // Pattern 1: "X PLAYERS RIGHT NOW" with any junk (tags, text, ranking) in between
+    // fortnite.gg format: <number> <ranking like #406> PLAYERS RIGHT NOW
+    const match1 = html.match(/(\d[\d,]*)\s*(?:[^<]{0,50})?PLAYERS?\s*RIGHT\s*NOW/i);
+    if (match1) {
+        result.ccu = parseInt(match1[1].replace(/,/g, ''), 10);
+        return result;
+    }
+
+    // Pattern 2: Match with HTML tags AND text between number and PLAYERS
+    const match2 = html.match(/(\d[\d,]*)(?:\s|<[^>]*>|[^<]){0,200}PLAYERS?\s*RIGHT\s*NOW/i);
+    if (match2) {
+        result.ccu = parseInt(match2[1].replace(/,/g, ''), 10);
+        return result;
+    }
+
+    // Pattern 3: Look for "playerCount" in JSON or data attributes
+    const metaMatch = html.match(/["']playerCount["']\s*:\s*(\d+)/i);
     if (metaMatch) {
-        return parseInt(metaMatch[1], 10);
+        result.ccu = parseInt(metaMatch[1], 10);
+        return result;
     }
 
-    // Pattern 3: Look for concurrent count in any format
-    const concurrentMatch = html.match(/(\d[\d,]*)\s*(?:concurrent|active|playing|online)/i);
+    // Pattern 4: Look for "concurrent" count
+    const concurrentMatch = html.match(/(\d[\d,]*)\s*(?:concurrent|Concurrent)/i);
     if (concurrentMatch) {
-        return parseInt(concurrentMatch[1].replace(/,/g, ''), 10);
+        result.ccu = parseInt(concurrentMatch[1].replace(/,/g, ''), 10);
+        return result;
     }
 
     // If page loaded but no player count found, return 0 (might be truly empty)
     if (html.length > 5000) {
-        return 0;
+        result.ccu = 0;
+        return result;
     }
 
-    throw new Error('Page too short, likely blocked');
+    throw new Error(`Page too short (${html.length} chars), likely blocked`);
+}
+
+/**
+ * Scrape the creator page to get total CCU and per-island CCU in one request
+ * fortnite.gg/creator?name=ouch shows all islands with their CCU
+ */
+async function scrapeCreatorPage() {
+    const response = await fetch(FORTNITE_GG_CREATOR, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+        },
+        cf: { cacheTtl: 120 },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Creator page returned ${response.status}`);
+    }
+
+    const html = await response.text();
+    const result = { total: 0, islands: {} };
+
+    // Get total "X PLAYERS RIGHT NOW" from creator page
+    const totalMatch = html.match(/(\d[\d,]*)\s*(?:[^<]{0,50})?PLAYERS?\s*RIGHT\s*NOW/i);
+    if (totalMatch) {
+        result.total = parseInt(totalMatch[1].replace(/,/g, ''), 10);
+    }
+
+    // Find individual island codes and their CCU
+    // Pattern: island code appears near a player count
+    // fortnite.gg shows each island with its code and concurrent user count
+    const islandPattern = /(\d{4}-\d{4}-\d{4})/g;
+    const codes = [...new Set([...html.matchAll(islandPattern)].map(m => m[1]))];
+
+    // For each code found, try to find associated CCU
+    // The HTML typically has: code ... X Concurrent users or X PLAYERS RIGHT NOW
+    for (const code of codes) {
+        // Look for pattern: code followed (within 500 chars) by "X Concurrent"
+        const codeIdx = html.indexOf(code);
+        if (codeIdx >= 0) {
+            const after = html.substring(codeIdx, codeIdx + 500);
+            const ccuMatch = after.match(/(\d[\d,]*)\s*(?:concurrent|Concurrent|players?\s*right)/i);
+            if (ccuMatch) {
+                result.islands[code] = parseInt(ccuMatch[1].replace(/,/g, ''), 10);
+            }
+        }
+    }
+
+    // If we got a total but no individual breakdowns, distribute proportionally
+    if (result.total > 0 && Object.keys(result.islands).length === 0) {
+        // Use island weights to distribute total
+        const allCodes = Object.keys(ISLAND_WEIGHTS);
+        const totalWeight = allCodes.reduce((sum, c) => sum + (ISLAND_WEIGHTS[c] || 0.3), 0);
+        for (const c of allCodes) {
+            const weight = ISLAND_WEIGHTS[c] || 0.3;
+            result.islands[c] = Math.max(1, Math.round(result.total * weight / totalWeight));
+        }
+    }
+
+    return result;
 }
 
 // ── Epic OAuth + Links API ───────────────────────────
