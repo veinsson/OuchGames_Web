@@ -366,7 +366,7 @@ const ISLAND_WEIGHTS = {
     '4095-6376-8788': 0.45,  // HOMELESS
     '8985-1891-2904': 0.40,  // TRAUMA
     '1376-4468-8766': 0.35,  // RITUAL
-    '1503-0620-8537': 0.50,  // BELOW
+    '1503-0620-8537': 13.0,  // BELOW (Epic Picked — massively boosted)
     '1079-2212-2195': 0.30,  // DUMMY
     '2207-0222-0657': 0.25,  // MENTAL
     '5595-2594-5459': 0.20,  // SNEAKY
@@ -392,6 +392,7 @@ function getSmartEstimate(code) {
     const weight = ISLAND_WEIGHTS[code] || 0.30;
 
     // DISTURBED base peak CCU ~130 (from observed data)
+    // Epic Picked maps get high weights to reflect boosted traffic (BELOW ~1500 at peak)
     const basePeak = 130;
     const rawEstimate = Math.round(basePeak * baseMultiplier * weight);
 
