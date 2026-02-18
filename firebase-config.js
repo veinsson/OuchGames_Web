@@ -11,7 +11,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize services
+// Initialize services (only if SDK is loaded)
 const db = firebase.firestore();
-const storage = firebase.storage();
-const auth = firebase.auth();
+const storage = typeof firebase.storage === 'function' ? firebase.storage() : null;
+const auth = typeof firebase.auth === 'function' ? firebase.auth() : null;
