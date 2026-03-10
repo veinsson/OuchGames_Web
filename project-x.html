@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROJECT X - Coming Soon | Ouch Games</title>
+    <title>SEALED - Coming Soon | Ouch Games</title>
     
     <!-- Open Graph / Link Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouchuefn.com/project-x">
-    <meta property="og:title" content="PROJECT X - A New Horror Experience | Ouch Games">
+    <meta property="og:title" content="SEALED - A New Horror Experience | Ouch Games">
     <meta property="og:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside. Coming soon.">
     <meta property="og:image" content="https://ouchuefn.com/assets/ouchgamesTB.jpg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PROJECT X - Coming Soon | Ouch Games">
+    <meta name="twitter:title" content="SEALED - Coming Soon | Ouch Games">
     <meta name="twitter:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside.">
     <meta name="twitter:image" content="https://ouchuefn.com/assets/ouchgamesTB.jpg">
     
@@ -208,7 +208,7 @@
         
         .dev-progress-fill {
             height: 100%;
-            width: 78%;
+            width: 85%;
             background: linear-gradient(90deg, var(--neon-purple), #ff3366);
             border-radius: 10px;
             position: relative;
@@ -864,6 +864,157 @@
                 margin-bottom: 2rem;
             }
         }
+        
+        /* Moretti Voice Memo */
+        .moretti-memo {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+        }
+        
+        .moretti-render {
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(155, 77, 255, 0.3);
+        }
+        
+        .moretti-render img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .memo-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .memo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .memo-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ff3366;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .memo-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .memo-text {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .memo-play-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(155, 77, 255, 0.15);
+            border: 1px solid rgba(155, 77, 255, 0.4);
+            border-radius: 50px;
+            color: var(--neon-purple);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .memo-play-btn:hover {
+            background: rgba(155, 77, 255, 0.25);
+            box-shadow: 0 0 20px rgba(155, 77, 255, 0.3);
+        }
+        
+        .memo-play-btn.playing {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: rgba(255, 51, 102, 0.4);
+            color: #ff3366;
+        }
+        
+        .memo-play-btn.playing .play-icon { display: none; }
+        .memo-play-btn.playing .pause-icon { display: inline-block !important; }
+        .memo-play-btn:not(.playing) .pause-icon { display: none; }
+        
+        .memo-waveform {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 16px;
+        }
+        
+        .memo-waveform span {
+            display: block;
+            width: 3px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 2px;
+            opacity: 0.4;
+        }
+        
+        .memo-play-btn.playing .memo-waveform span {
+            animation: waveform 0.6s ease-in-out infinite alternate;
+            opacity: 1;
+        }
+        
+        .memo-waveform span:nth-child(1) { animation-delay: 0s; }
+        .memo-waveform span:nth-child(2) { animation-delay: 0.1s; }
+        .memo-waveform span:nth-child(3) { animation-delay: 0.2s; }
+        .memo-waveform span:nth-child(4) { animation-delay: 0.15s; }
+        .memo-waveform span:nth-child(5) { animation-delay: 0.25s; }
+        .memo-waveform span:nth-child(6) { animation-delay: 0.05s; }
+        .memo-waveform span:nth-child(7) { animation-delay: 0.2s; }
+        .memo-waveform span:nth-child(8) { animation-delay: 0.1s; }
+        
+        @keyframes waveform {
+            from { height: 4px; }
+            to { height: 16px; }
+        }
+        
+        @media (max-width: 600px) {
+            .moretti-memo {
+                flex-direction: column;
+                text-align: center;
+            }
+            .memo-header {
+                justify-content: center;
+            }
+        }
+        
+        /* Tease Embed */
+        .tease-embed {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .tease-embed .twitter-tweet {
+            margin: 0 auto !important;
+        }
     </style>
 </head>
 <body>
@@ -915,7 +1066,7 @@
         <div class="sealed-hero-content">
             <div class="year-badge">1 9 8 7</div>
             
-            <h1 class="sealed-title">PROJECT X</h1>
+            <h1 class="sealed-title">SEALED</h1>
             <p class="sealed-tagline">The next evolution of UEFN horror.</p>
             <p class="sealed-quote">A violent storm hits the Pine Barrens. Everyone evacuates. You're sent to retrieve what's left behind. But the building has changed...</p>
             
@@ -927,7 +1078,7 @@
             <div class="dev-progress-container">
                 <div class="dev-progress-label">
                     <span>Development Progress</span>
-                    <span>78%</span>
+                    <span>85%</span>
                 </div>
                 <div class="dev-progress-bar">
                     <div class="dev-progress-fill"></div>
@@ -1127,7 +1278,7 @@
         <div class="section-container">
             <div class="section-header">
                 <h2 class="section-title">👁️ HOSTILE ENTITIES</h2>
-                <p class="section-desc">Four confirmed threats roaming the facility. Each one hunts differently. Learn them or die.</p>
+                <p class="section-desc">Three confirmed threats roaming the facility. Each one hunts differently. Learn them or die.</p>
             </div>
             
             <div class="entities-grid">
@@ -1157,27 +1308,57 @@
                 
                 <div class="entity-card">
                     <div class="entity-image">
-                        <img src="assets/LightMan_Icon.png" alt="FIXTURE">
+                        <img src="assets/SmokeRender.png" alt="SMOKE">
                     </div>
                     <div class="entity-info">
-                        <h4 class="entity-name">FIXTURE</h4>
-                        <p class="entity-tagline">"It stands where light should feel safe."</p>
-                        <p class="entity-desc">Staring makes it worse.</p>
-                        <p class="entity-threat">Threat Level: <span class="threat-high">HIGH</span></p>
+                        <h4 class="entity-name">SMOKE</h4>
+                        <p class="entity-tagline">"You won't see it coming."</p>
+                        <p class="entity-desc">It fills the room before you even know it's there.</p>
+                        <p class="entity-threat">Threat Level: <span class="threat-extreme">EXTREME</span></p>
                     </div>
                 </div>
-                
-                <div class="entity-card">
-                    <div class="entity-image">
-                        <img src="assets/Worm_icon.png" alt="UNDERTOW">
-                    </div>
-                    <div class="entity-info">
-                        <h4 class="entity-name">UNDERTOW</h4>
-                        <p class="entity-tagline">"Most players never see it."</p>
-                        <p class="entity-desc">The ones who do don't get a second look.</p>
-                        <p class="entity-threat">Threat Level: <span class="threat-extreme">CRITICAL</span></p>
-                    </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moretti Voice Memo -->
+    <section class="sealed-section">
+        <div class="section-container">
+            <div class="moretti-memo">
+                <div class="moretti-render">
+                    <img src="assets/morettirender.png" alt="Moretti">
                 </div>
+                <div class="memo-content">
+                    <div class="memo-header">
+                        <span class="memo-label">📼 RECOVERED AUDIO — MORETTI</span>
+                        <span class="memo-date">DATE: ██/██/1987</span>
+                    </div>
+                    <p class="memo-text">"I don't know who sealed this place... but it wasn't enough."</p>
+                    <button class="memo-play-btn" id="morettiPlayBtn" onclick="toggleMorettiAudio()">
+                        <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <span class="memo-btn-text">Play Audio</span>
+                        <div class="memo-waveform">
+                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                    </button>
+                    <audio id="morettiAudio" src="assets/MorettiTease_SFX.mp3" preload="none"></audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tease Post -->
+    <section class="sealed-section alt">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">📡 Latest Transmission</h2>
+            </div>
+            <div class="tease-embed">
+                <blockquote class="twitter-tweet" data-theme="dark" data-conversation="none">
+                    <a href="https://x.com/OuchUEFN/status/2030748984327761962"></a>
+                </blockquote>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
         </div>
     </section>
@@ -1246,7 +1427,7 @@
     <section class="final-cta">
         <div class="cta-box">
             <h3>Stay Updated</h3>
-            <p>Join our Discord for development updates and be the first to know when Project_X launches.</p>
+            <p>Join our Discord for development updates and be the first to know when SEALED launches.</p>
             
             <div class="cta-buttons">
                 <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="btn btn-primary">
@@ -1272,5 +1453,21 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        function toggleMorettiAudio() {
+            const audio = document.getElementById('morettiAudio');
+            const btn = document.getElementById('morettiPlayBtn');
+            if (audio.paused) {
+                audio.play();
+                btn.classList.add('playing');
+            } else {
+                audio.pause();
+                btn.classList.remove('playing');
+            }
+            audio.onended = function() {
+                btn.classList.remove('playing');
+            };
+        }
+    </script>
 </body>
 </html>
