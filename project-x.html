@@ -9,19 +9,19 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouchuefn.com/project-x">
     <meta property="og:title" content="SEALED - A New Horror Experience | Ouch Games">
-    <meta property="og:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside. Coming soon.">
+    <meta property="og:description" content="1988. Pine Barrens. A storm. An abandoned facility. Something was sealed inside. Coming soon.">
     <meta property="og:image" content="https://ouchuefn.com/assets/ouchgamesTB.jpg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SEALED - Coming Soon | Ouch Games">
-    <meta name="twitter:description" content="1987. Meridian. A storm. An abandoned facility. Something was sealed inside.">
+    <meta name="twitter:description" content="1988. Pine Barrens. A storm. An abandoned facility. Something was sealed inside.">
     <meta name="twitter:image" content="https://ouchuefn.com/assets/ouchgamesTB.jpg">
     
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/ouch-logo.png">
     <style>
         /* Page Background */
@@ -33,7 +33,7 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: url('assets/ouchgamesTB.jpg') center center / cover no-repeat;
+            background: var(--bg-primary);
         }
         
         .page-bg::after {
@@ -41,10 +41,10 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(180deg, 
-                rgba(10, 10, 15, 0.85) 0%, 
-                rgba(10, 10, 15, 0.9) 30%,
-                rgba(10, 10, 15, 0.95) 60%,
-                rgba(10, 10, 15, 1) 100%);
+                rgba(8, 8, 12, 0.85) 0%, 
+                rgba(8, 8, 12, 0.9) 30%,
+                rgba(8, 8, 12, 0.95) 60%,
+                rgba(8, 8, 12, 1) 100%);
         }
         
         /* SEALED Page Styles */
@@ -69,18 +69,20 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.4;
-            filter: saturate(0.7);
+            opacity: 0.25;
+            filter: saturate(0.4) brightness(0.5) contrast(1.1);
         }
         
         .sealed-hero-bg::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, 
-                rgba(10, 10, 15, 0.3) 0%, 
-                rgba(10, 10, 15, 0.6) 50%,
-                rgba(10, 10, 15, 1) 100%);
+            background: 
+                radial-gradient(ellipse at center, transparent 30%, rgba(8,8,12,0.95) 100%),
+                linear-gradient(180deg, 
+                    rgba(8, 8, 12, 0.3) 0%, 
+                    rgba(8, 8, 12, 0.6) 50%,
+                    rgba(8, 8, 12, 1) 100%);
         }
         
         .sealed-hero::before {
@@ -88,9 +90,8 @@
             position: absolute;
             inset: 0;
             background: 
-                radial-gradient(circle at 30% 20%, rgba(155, 77, 255, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(255, 51, 102, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 80%);
+                radial-gradient(circle at 30% 20%, rgba(192, 57, 43, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(74, 144, 217, 0.05) 0%, transparent 40%);
             pointer-events: none;
             z-index: 1;
         }
@@ -104,81 +105,82 @@
         .year-badge {
             display: inline-block;
             padding: 0.5rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            letter-spacing: 0.3em;
             margin-bottom: 2rem;
         }
         
-        .sealed-title {
+        .sealed-hero .sealed-title {
             font-family: var(--font-display);
-            font-size: clamp(4rem, 15vw, 9rem);
-            font-weight: 700;
+            font-size: clamp(5rem, 15vw, 10rem);
+            font-weight: 400;
             color: #fff;
             margin-bottom: 1.5rem;
-            text-shadow: 0 0 80px rgba(155, 77, 255, 0.4);
-            letter-spacing: -0.02em;
+            text-shadow: 0 0 80px rgba(192, 57, 43, 0.2);
+            letter-spacing: 12px;
             line-height: 0.9;
         }
         
         .sealed-tagline {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
             margin-bottom: 1rem;
             font-weight: 300;
         }
         
         .sealed-quote {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-muted);
             margin-bottom: 2.5rem;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.7;
         }
         
         .dev-info {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
         }
         
         .dev-tag {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1.5px;
         }
         
         .dev-tag.status {
-            background: rgba(255, 51, 102, 0.15);
-            border: 1px solid rgba(255, 51, 102, 0.4);
-            color: #ff3366;
+            background: rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.3);
+            color: var(--accent-red-light);
         }
         
         .dev-tag.eta {
-            background: rgba(155, 77, 255, 0.15);
-            border: 1px solid rgba(155, 77, 255, 0.4);
-            color: var(--neon-purple);
+            background: rgba(74, 144, 217, 0.1);
+            border: 1px solid rgba(74, 144, 217, 0.3);
+            color: var(--accent-blue-light);
         }
         
         /* Progress Bar */
         .dev-progress-container {
-            max-width: 400px;
+            max-width: 350px;
             margin: 0 auto 2rem;
         }
         
@@ -186,38 +188,32 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
         }
         
         .dev-progress-label span:first-child {
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
         
         .dev-progress-label span:last-child {
-            color: var(--neon-purple);
+            color: var(--accent-red-light);
             font-weight: 600;
         }
         
         .dev-progress-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
             overflow: hidden;
         }
         
         .dev-progress-fill {
             height: 100%;
             width: 85%;
-            background: linear-gradient(90deg, var(--neon-purple), #ff3366);
-            border-radius: 10px;
+            background: var(--accent-red);
+            border-radius: 2px;
             position: relative;
-            animation: progressGlow 2s ease-in-out infinite;
-        }
-        
-        @keyframes progressGlow {
-            0%, 100% { box-shadow: 0 0 10px rgba(155, 77, 255, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(155, 77, 255, 0.8), 0 0 30px rgba(255, 51, 102, 0.4); }
         }
         
         /* Section Styles */
@@ -242,14 +238,16 @@
         .section-title {
             font-family: var(--font-display);
             font-size: clamp(1.75rem, 4vw, 2.5rem);
-            font-weight: 700;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
         
         .section-desc {
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.7;
@@ -263,9 +261,9 @@
         }
         
         .feature-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             padding: 2rem;
             text-align: center;
             transition: all 0.3s ease;
@@ -273,25 +271,27 @@
         
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(155, 77, 255, 0.4);
+            border-color: rgba(192, 57, 43, 0.3);
         }
         
         .feature-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
         
         .feature-card h3 {
             font-family: var(--font-display);
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.6;
         }
         
@@ -303,44 +303,46 @@
         }
         
         .upgrade-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
         }
         
         .upgrade-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(34, 197, 94, 0.5);
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.15);
+            transform: translateY(-4px);
+            border-color: rgba(34, 197, 94, 0.4);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.1);
         }
         
         .upgrade-icon {
-            font-size: 2rem;
+            font-size: 1.75rem;
             margin-bottom: 0.75rem;
         }
         
         .upgrade-card h3 {
             font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .upgrade-card p {
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             line-height: 1.5;
         }
         
         /* Alpha Tester CTA */
         .alpha-cta {
-            background: linear-gradient(135deg, rgba(255, 51, 102, 0.15) 0%, rgba(155, 77, 255, 0.15) 100%);
-            border: 1px solid rgba(255, 51, 102, 0.3);
-            border-radius: var(--radius-lg);
+            background: rgba(192, 57, 43, 0.06);
+            border: 1px solid rgba(192, 57, 43, 0.2);
+            border-radius: var(--radius-md);
             padding: 3rem 2rem;
             text-align: center;
         }
@@ -348,14 +350,16 @@
         .alpha-cta-title {
             font-family: var(--font-display);
             font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 700;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
         
         .alpha-cta-desc {
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.9rem;
             max-width: 500px;
             margin: 0 auto 1.5rem;
             line-height: 1.6;
@@ -363,21 +367,24 @@
         
         .alpha-cta-btn {
             display: inline-block;
-            padding: 0.875rem 2.5rem;
-            background: linear-gradient(135deg, #ff3366 0%, var(--neon-purple) 100%);
+            padding: 0.75rem 2rem;
+            background: var(--accent-red);
             color: #fff;
-            font-family: var(--font-display);
-            font-size: 1rem;
+            font-family: var(--font-main);
+            font-size: 0.75rem;
             font-weight: 600;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 4px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 51, 102, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .alpha-cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 51, 102, 0.5);
+            background: var(--accent-red-light);
+            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
         }
         
         /* Intel Grid */
@@ -388,15 +395,15 @@
         }
         
         .intel-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             overflow: hidden;
             transition: all 0.3s ease;
         }
         
         .intel-card:hover {
-            border-color: rgba(155, 77, 255, 0.4);
+            border-color: rgba(192, 57, 43, 0.3);
             transform: translateY(-3px);
         }
         
@@ -405,31 +412,32 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.75rem 1.25rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
         
         .intel-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
             font-weight: 600;
-            color: var(--neon-purple);
-            letter-spacing: 0.1em;
+            color: var(--accent-red);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
         .intel-classification {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            padding: 0.25rem 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 3px;
-            background: rgba(57, 255, 20, 0.15);
+            background: rgba(57, 255, 20, 0.1);
             color: #39ff14;
-            letter-spacing: 0.05em;
+            letter-spacing: 1px;
         }
         
         .intel-classification.redacted {
-            background: rgba(255, 51, 102, 0.15);
-            color: #ff3366;
+            background: rgba(192, 57, 43, 0.1);
+            color: var(--accent-red-light);
         }
         
         .intel-content {
@@ -438,10 +446,12 @@
         
         .intel-content h4 {
             font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .intel-content p {
@@ -451,8 +461,8 @@
         }
         
         .redacted-text {
-            background: #ff3366;
-            color: #ff3366;
+            background: var(--accent-red);
+            color: var(--accent-red);
             padding: 0 0.25rem;
             border-radius: 2px;
             user-select: none;
@@ -490,28 +500,29 @@
         }
         
         .loot-tier-card {
-            background: var(--glass-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             padding: 1.5rem;
             transition: all 0.3s ease;
+            border-top: 3px solid transparent;
         }
         
         .loot-tier-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
         }
         
-        .loot-tier-card.common { border-color: rgba(156, 163, 175, 0.4); }
-        .loot-tier-card.uncommon { border-color: rgba(34, 197, 94, 0.4); }
-        .loot-tier-card.rare { border-color: rgba(59, 130, 246, 0.4); }
-        .loot-tier-card.epic { border-color: rgba(168, 85, 247, 0.4); }
-        .loot-tier-card.legendary { border-color: rgba(245, 158, 11, 0.4); }
+        .loot-tier-card.common { border-top-color: #6b7280; }
+        .loot-tier-card.uncommon { border-top-color: #22c55e; }
+        .loot-tier-card.rare { border-top-color: #3b82f6; }
+        .loot-tier-card.epic { border-top-color: #a855f7; }
+        .loot-tier-card.legendary { border-top-color: #f59e0b; }
         
-        .loot-tier-card.common:hover { box-shadow: 0 10px 30px rgba(156, 163, 175, 0.2); }
-        .loot-tier-card.uncommon:hover { box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2); }
-        .loot-tier-card.rare:hover { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
-        .loot-tier-card.epic:hover { box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2); }
-        .loot-tier-card.legendary:hover { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2); }
+        .loot-tier-card.common:hover { box-shadow: 0 8px 24px rgba(107, 114, 128, 0.15); border-color: rgba(107, 114, 128, 0.3); }
+        .loot-tier-card.uncommon:hover { box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.3); }
+        .loot-tier-card.rare:hover { box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); }
+        .loot-tier-card.epic:hover { box-shadow: 0 8px 24px rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); }
+        .loot-tier-card.legendary:hover { box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); }
         
         .tier-header {
             display: flex;
@@ -532,9 +543,11 @@
         
         .tier-name {
             font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 400;
             color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .tier-desc {
@@ -569,38 +582,38 @@
         }
         
         .monster-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             overflow: hidden;
             transition: all 0.3s ease;
         }
         
         .monster-card:hover {
-            border-color: rgba(255, 51, 102, 0.4);
+            border-color: rgba(192, 57, 43, 0.3);
             transform: translateY(-3px);
         }
         
         .monster-silhouette {
             height: 120px;
-            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1) 0%, rgba(0,0,0,0.5) 100%);
+            background: linear-gradient(135deg, rgba(192, 57, 43, 0.08) 0%, rgba(0,0,0,0.5) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
-            color: rgba(255, 51, 102, 0.5);
+            color: rgba(192, 57, 43, 0.4);
             position: relative;
         }
         
         .monster-card.classified .monster-silhouette {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0,0,0,0.8) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(0,0,0,0.8) 100%);
         }
         
         .classified-stamp {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 1rem;
-            color: #ff3366;
-            border: 2px solid #ff3366;
+            color: var(--accent-red);
+            border: 2px solid var(--accent-red);
             padding: 0.5rem 1rem;
             transform: rotate(-10deg);
             letter-spacing: 0.2em;
@@ -612,10 +625,12 @@
         
         .monster-info h4 {
             font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .monster-type, .monster-behavior {
@@ -633,12 +648,12 @@
         }
         
         .threat-high { color: #f59e0b; font-weight: 600; }
-        .threat-extreme { color: #ff3366; font-weight: 600; }
+        .threat-extreme { color: var(--accent-red-light); font-weight: 600; }
         
         /* Entity Cards (with images) */
         .entities-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
         
@@ -661,17 +676,18 @@
         }
         
         .entity-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
             overflow: hidden;
             transition: all 0.3s ease;
+            position: relative;
         }
         
         .entity-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 51, 102, 0.5);
-            box-shadow: 0 10px 40px rgba(255, 51, 102, 0.2);
+            border-color: rgba(192, 57, 43, 0.4);
+            box-shadow: 0 10px 40px rgba(192, 57, 43, 0.15);
         }
         
         .entity-image {
@@ -701,11 +717,12 @@
         
         .entity-name {
             font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.5rem;
-            letter-spacing: 0.05em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
         .entity-tagline {
@@ -722,10 +739,29 @@
         }
         
         .entity-threat {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            font-size: 0.7rem;
+            color: var(--text-muted);
             padding-top: 0.75rem;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .entity-threat .threat-high,
+        .entity-threat .threat-extreme {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+        }
+        .entity-threat .threat-high {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .entity-threat .threat-extreme {
+            background: rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.3);
         }
         
         /* Roadmap Section */
@@ -756,12 +792,18 @@
         
         .roadmap-item.completed::before {
             background: #39ff14;
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
         }
         
         .roadmap-item.active::before {
-            background: var(--neon-purple);
-            box-shadow: 0 0 10px rgba(155, 77, 255, 0.5);
+            background: var(--accent-red);
+            box-shadow: 0 0 8px rgba(192, 57, 43, 0.5);
+            animation: activeGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes activeGlow {
+            0%, 100% { box-shadow: 0 0 8px rgba(192, 57, 43, 0.5); }
+            50% { box-shadow: 0 0 16px rgba(192, 57, 43, 0.8); }
         }
         
         .roadmap-item.completed {
@@ -769,11 +811,11 @@
         }
         
         .roadmap-item.active {
-            border-color: var(--neon-purple);
+            border-color: var(--accent-red);
         }
         
         .roadmap-status {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 1rem;
             width: 24px;
             text-align: center;
@@ -781,15 +823,17 @@
         }
         
         .roadmap-item.completed .roadmap-status { color: #39ff14; }
-        .roadmap-item.active .roadmap-status { color: var(--neon-purple); }
+        .roadmap-item.active .roadmap-status { color: var(--accent-red); }
         .roadmap-item.upcoming .roadmap-status { color: var(--text-secondary); }
         
         .roadmap-content h4 {
             font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 0.25rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .roadmap-item.upcoming .roadmap-content h4 {
@@ -812,17 +856,19 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 2.5rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
         }
         
         .cta-box h3 {
             font-family: var(--font-display);
             font-size: 1.75rem;
-            font-weight: 700;
+            font-weight: 400;
             color: #fff;
             margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
         
         .cta-box p {
@@ -854,7 +900,7 @@
         }
         
         .back-link:hover {
-            color: var(--neon-purple);
+            color: var(--accent-red-light);
         }
         
         @media (max-width: 768px) {
@@ -883,9 +929,9 @@
             flex-shrink: 0;
             width: 120px;
             height: 120px;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid rgba(155, 77, 255, 0.3);
+            border: 1px solid rgba(192, 57, 43, 0.3);
         }
         
         .moretti-render img {
@@ -911,18 +957,18 @@
         }
         
         .memo-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
             font-weight: 600;
-            color: #ff3366;
+            color: var(--accent-red);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1.5px;
         }
         
         .memo-date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.3);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
         }
         
         .memo-text {
@@ -937,27 +983,27 @@
             display: inline-flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.6rem 1.2rem;
-            background: rgba(155, 77, 255, 0.15);
-            border: 1px solid rgba(155, 77, 255, 0.4);
-            border-radius: 50px;
-            color: var(--neon-purple);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.3);
+            border-radius: 4px;
+            color: var(--accent-red-light);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .memo-play-btn:hover {
-            background: rgba(155, 77, 255, 0.25);
-            box-shadow: 0 0 20px rgba(155, 77, 255, 0.3);
+            background: rgba(192, 57, 43, 0.2);
+            box-shadow: 0 0 15px rgba(192, 57, 43, 0.2);
         }
         
         .memo-play-btn.playing {
-            background: rgba(255, 51, 102, 0.15);
-            border-color: rgba(255, 51, 102, 0.4);
-            color: #ff3366;
+            background: rgba(192, 57, 43, 0.15);
+            border-color: rgba(192, 57, 43, 0.5);
+            color: var(--accent-red-light);
         }
         
         .memo-play-btn.playing .play-icon { display: none; }
@@ -1026,10 +1072,10 @@
         }
         
         .tease-card:hover {
-            border-color: rgba(155, 77, 255, 0.4);
-            background: rgba(155, 77, 255, 0.06);
+            border-color: rgba(192, 57, 43, 0.3);
+            background: rgba(192, 57, 43, 0.04);
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(155, 77, 255, 0.15);
+            box-shadow: 0 8px 30px rgba(192, 57, 43, 0.1);
         }
         
         .tease-card-header {
@@ -1078,15 +1124,15 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background: rgba(155, 77, 255, 0.15);
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            color: var(--neon-purple);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            background: rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.3);
+            color: var(--accent-red-light);
+            padding: 0.25rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1.5px;
             margin-bottom: 1rem;
         }
         
@@ -1108,7 +1154,7 @@
         
         .tease-cta {
             margin-left: auto;
-            color: var(--neon-purple);
+            color: var(--accent-red-light);
             font-weight: 600;
         }
     </style>
@@ -1160,7 +1206,7 @@
         <a href="/" class="back-link">← Back to Home</a>
         
         <div class="sealed-hero-content">
-            <div class="year-badge">1 9 8 7</div>
+            <div class="year-badge">1 9 8 8</div>
             
             <h1 class="sealed-title">SEALED</h1>
             <p class="sealed-tagline">The next evolution of UEFN horror.</p>
@@ -1168,7 +1214,7 @@
             
             <div class="dev-info">
                 <span class="dev-tag status">⚠️ In Development</span>
-                <span class="dev-tag eta">ETA: 2026</span>
+                <span class="dev-tag eta">ETA: Coming Soon</span>
             </div>
             
             <div class="dev-progress-container">
@@ -1427,7 +1473,7 @@
                 <div class="memo-content">
                     <div class="memo-header">
                         <span class="memo-label">📼 RECOVERED AUDIO — MORETTI</span>
-                        <span class="memo-date">DATE: ██/██/1987</span>
+                        <span class="memo-date">DATE: ██/██/1988</span>
                     </div>
                     <p class="memo-text">"I don't know who sealed this place... but it wasn't enough."</p>
                     <button class="memo-play-btn" id="morettiPlayBtn" onclick="toggleMorettiAudio()">
@@ -1524,7 +1570,7 @@
                     <div class="roadmap-status">○</div>
                     <div class="roadmap-content">
                         <h4>Launch</h4>
-                        <p>Full release. ETA: 2026</p>
+                        <p>Full release. Coming soon.</p>
                     </div>
                 </div>
             </div>
