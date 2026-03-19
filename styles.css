@@ -1520,36 +1520,65 @@ a {
     }
 }
 
-/* ===== Discord Banner ===== */
-.discord-banner {
-    padding: 3rem 2rem;
+/* ===== Discord CTA Section ===== */
+.discord-cta-section {
+    padding: 5rem 2rem;
     text-align: center;
-    background: var(--bg-primary);
-    border-top: 1px solid var(--glass-border);
-    border-bottom: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-secondary);
 }
 
-.discord-banner-content {
+.discord-cta-container {
     max-width: 600px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
 }
 
-.discord-banner-text {
+.discord-cta-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(88, 101, 242, 0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.discord-cta-icon {
+    color: #5865F2;
+    margin-bottom: 1.25rem;
+    filter: drop-shadow(0 0 12px rgba(88, 101, 242, 0.5));
+}
+
+.discord-cta-title {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
     color: var(--text-primary);
-    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
 }
 
-.discord-banner-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+.discord-cta-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+}
+
+.discord-cta-btn {
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    background: #5865F2;
+    border-color: #5865F2;
+}
+
+.discord-cta-btn:hover {
+    background: #4752c4;
+    box-shadow: 0 0 30px rgba(88, 101, 242, 0.4);
 }
 
 /* ===== Games Section ===== */
