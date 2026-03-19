@@ -1520,6 +1520,38 @@ a {
     }
 }
 
+/* ===== Discord Banner ===== */
+.discord-banner {
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.discord-banner-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.discord-banner-text {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+}
+
+.discord-banner-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 /* ===== Games Section ===== */
 .games-section {
     padding: 6rem 2rem;
