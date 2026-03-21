@@ -447,7 +447,7 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   width:96%;height:96%;
   background:var(--screen-bg);
   border-radius:2rem;
-  z-index:90;
+  z-index:35;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -470,7 +470,7 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
 /* BOOT TITLE (center → header) */
 .boot-title{
   position:fixed;
-  z-index:95;
+  z-index:40;
   top:38%;
   left:50%;
   transform:translate(-50%,-50%) scale(1);
@@ -482,15 +482,148 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   pointer-events:none;
   letter-spacing:0.15em;
 }
-/* Phase 1: fade in with glow pulse */
+/* RGB ghost pseudo-elements for chromatic aberration */
+.boot-title::before,
+.boot-title::after{
+  content:'SEALED';
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  opacity:0;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+.boot-title::before{color:#ff0040;text-shadow:none}
+.boot-title::after{color:#00ffff;text-shadow:none}
+
+/* Phase 1a: Glitch entrance */
+.boot-title.glitch-enter{
+  opacity:1;
+  animation:glitchReveal 2s steps(1) forwards;
+}
+.boot-title.glitch-enter::before{
+  opacity:0.7;
+  animation:glitchR 2s steps(1) forwards;
+}
+.boot-title.glitch-enter::after{
+  opacity:0.7;
+  animation:glitchB 2s steps(1) forwards;
+}
+
+@keyframes glitchReveal{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(1.5);filter:brightness(4)}
+  3%{opacity:1;clip-path:inset(30% 0 45% 0)}
+  5%{clip-path:inset(60% 0 10% 0)}
+  7%{opacity:0;clip-path:none}
+  10%{opacity:1;transform:translate(-52%,-47%) scale(1.15) skewX(12deg);clip-path:inset(5% 0 65% 0)}
+  13%{transform:translate(-48%,-53%) scale(0.9) skewX(-8deg);clip-path:inset(45% 0 20% 0)}
+  16%{opacity:0;clip-path:none}
+  20%{opacity:1;transform:translate(-50%,-50%) scale(1.25);clip-path:inset(70% 0 0% 0)}
+  23%{clip-path:inset(0% 0 60% 0)}
+  26%{clip-path:inset(25% 0 40% 0)}
+  30%{clip-path:none;transform:translate(-50%,-50%) scale(1.08)}
+  35%{opacity:0.5;transform:translate(-50.8%,-49.2%)}
+  38%{opacity:1;transform:translate(-49.2%,-50.8%) skewX(5deg)}
+  42%{transform:translate(-50%,-50%) skewX(0)}
+  50%{opacity:0}
+  54%{opacity:1;transform:translate(-50%,-50%) scale(1.3);filter:brightness(2.5)}
+  57%{clip-path:inset(15% 0 55% 0)}
+  60%{clip-path:inset(50% 0 20% 0)}
+  63%{clip-path:inset(5% 0 70% 0)}
+  66%{clip-path:none;filter:brightness(1)}
+  70%{transform:translate(-50%,-50%) scale(1.05)}
+  75%{opacity:0.8;transform:translate(-50.3%,-50%) skewX(2deg)}
+  78%{opacity:1;transform:translate(-50%,-50%) skewX(0) scale(1)}
+  85%{text-shadow:0 0 40px rgba(20,253,206,0.6),0 0 80px rgba(20,253,206,0.25)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+
+@keyframes glitchR{
+  0%{opacity:0;transform:translate(0)}
+  3%{opacity:0.8;transform:translate(-8px,3px)}
+  7%{opacity:0}
+  10%{opacity:0.9;transform:translate(10px,-4px);clip-path:inset(15% 0 55% 0)}
+  13%{transform:translate(-12px,5px);clip-path:inset(50% 0 15% 0)}
+  16%{opacity:0;clip-path:none}
+  20%{opacity:0.7;transform:translate(6px,-2px)}
+  30%{transform:translate(-4px,1px)}
+  35%{opacity:0}
+  38%{opacity:0.6;transform:translate(8px,0)}
+  42%{opacity:0}
+  50%{opacity:0}
+  54%{opacity:0.9;transform:translate(-15px,4px)}
+  60%{transform:translate(8px,-2px)}
+  66%{opacity:0}
+  75%{opacity:0.3;transform:translate(-3px,1px)}
+  78%{opacity:0}
+  100%{opacity:0;transform:translate(0)}
+}
+
+@keyframes glitchB{
+  0%{opacity:0;transform:translate(0)}
+  3%{opacity:0.8;transform:translate(8px,-3px)}
+  7%{opacity:0}
+  10%{opacity:0.9;transform:translate(-10px,4px);clip-path:inset(55% 0 15% 0)}
+  13%{transform:translate(12px,-5px);clip-path:inset(10% 0 60% 0)}
+  16%{opacity:0;clip-path:none}
+  20%{opacity:0.7;transform:translate(-6px,2px)}
+  30%{transform:translate(4px,-1px)}
+  35%{opacity:0}
+  38%{opacity:0.6;transform:translate(-8px,0)}
+  42%{opacity:0}
+  50%{opacity:0}
+  54%{opacity:0.9;transform:translate(15px,-4px)}
+  60%{transform:translate(-8px,2px)}
+  66%{opacity:0}
+  75%{opacity:0.3;transform:translate(3px,-1px)}
+  78%{opacity:0}
+  100%{opacity:0;transform:translate(0)}
+}
+
+/* Phase 1b: Ongoing subtle glitch idle */
 .boot-title.vis{
   opacity:1;
-  animation:titlePulse 2s ease-in-out infinite;
+  animation:titleGlitchIdle 4s infinite;
 }
-@keyframes titlePulse{
-  0%,100%{text-shadow:0 0 40px rgba(20,253,206,0.6),0 0 80px rgba(20,253,206,0.25)}
-  50%{text-shadow:0 0 60px rgba(20,253,206,0.9),0 0 120px rgba(20,253,206,0.4),0 0 200px rgba(20,253,206,0.15)}
+.boot-title.vis::before{
+  animation:idleR 4s infinite;
 }
+.boot-title.vis::after{
+  animation:idleB 4s infinite;
+}
+
+@keyframes titleGlitchIdle{
+  0%,100%{text-shadow:0 0 40px rgba(20,253,206,0.6),0 0 80px rgba(20,253,206,0.25);clip-path:none;transform:translate(-50%,-50%)}
+  5%{text-shadow:0 0 60px rgba(20,253,206,0.9),0 0 120px rgba(20,253,206,0.4),0 0 200px rgba(20,253,206,0.15)}
+  22%{clip-path:none;transform:translate(-50%,-50%)}
+  23%{transform:translate(-50.5%,-49.5%) skewX(3deg);clip-path:inset(25% 0 50% 0)}
+  24.5%{transform:translate(-49.5%,-50.5%) skewX(-2deg);clip-path:inset(55% 0 15% 0)}
+  26%{transform:translate(-50%,-50%) skewX(0);clip-path:none}
+  50%{text-shadow:0 0 40px rgba(20,253,206,0.6),0 0 80px rgba(20,253,206,0.25)}
+  72%{clip-path:none;transform:translate(-50%,-50%)}
+  73%{opacity:0}
+  74%{opacity:1;transform:translate(-50.4%,-50%)}
+  75%{transform:translate(-50%,-50%)}
+}
+
+@keyframes idleR{
+  0%,100%{opacity:0;transform:translate(0)}
+  23%{opacity:0.5;transform:translate(-5px,2px)}
+  24.5%{opacity:0.6;transform:translate(4px,-1px)}
+  26%{opacity:0;transform:translate(0)}
+  73%{opacity:0.4;transform:translate(-3px,0)}
+  75%{opacity:0;transform:translate(0)}
+}
+
+@keyframes idleB{
+  0%,100%{opacity:0;transform:translate(0)}
+  23%{opacity:0.5;transform:translate(5px,-2px)}
+  24.5%{opacity:0.6;transform:translate(-4px,1px)}
+  26%{opacity:0;transform:translate(0)}
+  73%{opacity:0.4;transform:translate(3px,0)}
+  75%{opacity:0;transform:translate(0)}
+}
+
 /* Phase 2: slide to header */
 .boot-title.settle{
   animation:none;
@@ -501,6 +634,11 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   font-size:clamp(2rem,6vw,4rem);
   text-shadow:0 0 20px rgba(20,253,206,0.4);
   letter-spacing:0.05em;
+}
+.boot-title.settle::before,
+.boot-title.settle::after{
+  animation:none;
+  opacity:0;
 }
 
 /* CRT power-on flicker */
@@ -845,8 +983,10 @@ The work begins at midnight.
     '> _'
   ];
 
-  // Phase 1: CRT power on + title fade in
-  setTimeout(function(){titleEl.classList.add('vis')},400);
+  // Phase 1: CRT power on + glitch entrance
+  setTimeout(function(){titleEl.classList.add('glitch-enter')},400);
+  // After glitch entrance finishes, switch to subtle idle glitch
+  setTimeout(function(){titleEl.classList.remove('glitch-enter');titleEl.classList.add('vis')},2400);
 
   var startDelay=1400;
   bootLines.forEach(function(text,i){
@@ -864,6 +1004,7 @@ The work begins at midnight.
   var totalTime=startDelay+bootLines.length*180+1000;
   setTimeout(function(){
     // Phase 2: title slides to header + screen reveals
+    titleEl.classList.remove('vis');
     titleEl.classList.add('settle');
     setTimeout(function(){
       overlay.style.transition='opacity 1s ease';
