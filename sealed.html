@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEALED - Ouch Games</title>
+<meta property="og:title" content="SEALED - A New Horror Experience | Ouch Games">
+<meta property="og:description" content="1988. Meridian. A storm. An abandoned facility. Something was sealed inside.">
+<meta property="og:image" content="https://ouchuefn.com/assets/sealedtb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/ouch-logo.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    cursor: default;
+  }
+
+  canvas#bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+  .scene {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* === MAIN TITLE === */
+  .title-wrap {
+    position: relative;
+    perspective: 800px;
+  }
+
+  .title {
+    font-size: clamp(48px, 10vw, 140px);
+    letter-spacing: 0.12em;
+    color: #c0101a;
+    text-shadow:
+      0 0 4px #ff1a1a,
+      0 0 20px #c0101a88,
+      0 0 60px #8b000066,
+      0 0 120px #5a000044;
+    position: relative;
+    user-select: none;
+    display: flex;
+    gap: 0;
+  }
+
+  .title.idle { animation: titlePulse 4s ease-in-out infinite alternate; }
+
+  @keyframes titlePulse {
+    0%   { text-shadow: 0 0 4px #ff1a1a, 0 0 20px #c0101a88, 0 0 60px #8b000066, 0 0 120px #5a000044; filter: brightness(1); }
+    50%  { text-shadow: 0 0 6px #ff2222, 0 0 30px #c0101aaa, 0 0 80px #8b000088, 0 0 140px #5a000066; filter: brightness(1.08); }
+    100% { text-shadow: 0 0 4px #ff1a1a, 0 0 18px #c0101a77, 0 0 55px #8b000055, 0 0 110px #5a000033; filter: brightness(0.95); }
+  }
+
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    position: relative;
+  }
+
+  .title::before,
+  .title::after {
+    content: 'SEALED';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    letter-spacing: 0.12em;
+    pointer-events: none;
+    display: none;
+  }
+  .title.idle::before {
+    display: block;
+    color: #00ffff;
+    mix-blend-mode: screen;
+    opacity: 0;
+    animation: chromaR 8s ease-in-out infinite;
+  }
+  .title.idle::after {
+    display: block;
+    color: #ff0040;
+    mix-blend-mode: screen;
+    opacity: 0;
+    animation: chromaB 8s ease-in-out infinite;
+  }
+
+  @keyframes chromaR {
+    0%, 88%, 100% { opacity: 0; transform: translate(0,0); }
+    90% { opacity: 0.35; transform: translate(-3px, 1px); }
+    92% { opacity: 0; transform: translate(0,0); }
+    94% { opacity: 0.25; transform: translate(2px, -1px); }
+    96% { opacity: 0; }
+  }
+  @keyframes chromaB {
+    0%, 88%, 100% { opacity: 0; transform: translate(0,0); }
+    90% { opacity: 0.35; transform: translate(3px, -1px); }
+    92% { opacity: 0; transform: translate(0,0); }
+    94% { opacity: 0.25; transform: translate(-2px, 1px); }
+    96% { opacity: 0; }
+  }
+
+  .glitch-slice {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    color: #c0101a;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+    letter-spacing: 0.12em;
+  }
+  .title.idle .glitch-slice { display: block; }
+  .title.idle .glitch-slice.s1 { animation: glitchSlice1 6s step-end infinite; clip-path: inset(20% 0 60% 0); }
+  .title.idle .glitch-slice.s2 { animation: glitchSlice2 6s step-end infinite; clip-path: inset(55% 0 20% 0); }
+  .title.idle .glitch-slice.s3 { animation: glitchSlice3 6s step-end infinite; clip-path: inset(40% 0 40% 0); }
+
+  @keyframes glitchSlice1 {
+    0%, 84%, 100% { opacity: 0; transform: translateX(0); }
+    85% { opacity: 1; transform: translateX(-8px); }
+    86% { opacity: 1; transform: translateX(5px); }
+    87% { opacity: 0; transform: translateX(0); }
+  }
+  @keyframes glitchSlice2 {
+    0%, 89%, 100% { opacity: 0; transform: translateX(0); }
+    90% { opacity: 1; transform: translateX(10px); }
+    91% { opacity: 1; transform: translateX(-4px); }
+    92% { opacity: 0; transform: translateX(0); }
+  }
+  @keyframes glitchSlice3 {
+    0%, 93%, 100% { opacity: 0; transform: translateX(0); }
+    94% { opacity: 1; transform: translateX(-6px); }
+    95% { opacity: 1; transform: translateX(8px); }
+    96% { opacity: 0; }
+  }
+
+  .underline {
+    width: clamp(240px, 52vw, 720px);
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #c0101a 15%, #ff2020 50%, #c0101a 85%, transparent);
+    margin-top: 6px;
+    box-shadow: 0 0 12px #c0101a88, 0 0 30px #8b000044;
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .underline.show {
+    animation: barReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards, barFlicker 5s ease-in-out 0.6s infinite alternate;
+  }
+
+  @keyframes barReveal {
+    0% { opacity: 0; transform: scaleX(0); }
+    100% { opacity: 1; transform: scaleX(1); }
+  }
+
+  @keyframes barFlicker {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+    78% { opacity: 0.9; }
+    80% { opacity: 0.4; }
+    82% { opacity: 0.95; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+  }
+
+  .vhs-track {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.04);
+    z-index: 11;
+    pointer-events: none;
+    animation: vhsTrack 7s linear infinite;
+    box-shadow: 0 0 20px 8px rgba(255,255,255,0.015);
+  }
+  @keyframes vhsTrack {
+    0%   { top: -3px; }
+    100% { top: 100vh; }
+  }
+
+  .vignette {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 9;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+  }
+
+  .drip-wrap { position: relative; display: inline-block; }
+  .drip {
+    position: absolute;
+    bottom: -8px;
+    width: 3px;
+    background: linear-gradient(180deg, #c0101a, #6b0a0e 60%, transparent);
+    border-radius: 0 0 2px 2px;
+    opacity: 0;
+    height: 0;
+  }
+  .drip.active { animation: drip 4s ease-in infinite; }
+  @keyframes drip {
+    0%   { height: 0; opacity: 0; }
+    10%  { opacity: 0.8; }
+    60%  { height: 35px; opacity: 0.6; }
+    100% { height: 50px; opacity: 0; }
+  }
+  .drip.d1 { left: 15%; animation-delay: 3s; }
+  .drip.d2 { left: 75%; animation-delay: 7s; }
+  .drip.d3 { left: 45%; animation-delay: 11s; }
+
+  .intro-flash {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 20;
+    pointer-events: none;
+    background: #fff;
+    opacity: 0;
+  }
+
+  canvas#noise {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .shockwave {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    margin: -5px 0 0 -5px;
+    border: 2px solid rgba(255, 30, 30, 0.6);
+    border-radius: 50%;
+    z-index: 14;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .impact-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 200%; height: 200%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(200,20,30,0.4) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* === ENTER BUTTON === */
+  .enter-btn {
+    margin-top: 2.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 2;
+  }
+
+  .enter-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .enter-btn a {
+    display: inline-block;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 1.8vw, 14px);
+    color: #c0101a;
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    padding: 0.8em 2em;
+    border: 1px solid rgba(192, 16, 26, 0.4);
+    position: relative;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(192, 16, 26, 0.5);
+  }
+
+  .enter-btn a:hover {
+    color: #ff2020;
+    border-color: rgba(255, 32, 32, 0.6);
+    text-shadow: 0 0 15px rgba(255, 32, 32, 0.7);
+    box-shadow: 0 0 20px rgba(192, 16, 26, 0.2), inset 0 0 20px rgba(192, 16, 26, 0.05);
+  }
+
+  .enter-btn a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: #c0101a;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px #c0101a;
+  }
+
+  .enter-btn a:hover::after {
+    width: 100%;
+  }
+
+  /* Blink animation for the arrow */
+  .enter-arrow {
+    display: inline-block;
+    animation: arrowBlink 1.5s step-end infinite;
+  }
+
+  @keyframes arrowBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<canvas id="noise"></canvas>
+<div class="vignette"></div>
+<div class="scanlines"></div>
+<div class="vhs-track"></div>
+<div class="intro-flash" id="introFlash"></div>
+
+<div class="scene" id="scene">
+  <div class="title-wrap">
+    <div class="title" data-text="SEALED" id="title">
+      <span class="letter" id="L0"><span class="drip-wrap">S<span class="drip d1"></span></span></span>
+      <span class="letter" id="L1">E</span>
+      <span class="letter" id="L2"><span class="drip-wrap">A<span class="drip d2"></span></span></span>
+      <span class="letter" id="L3">L</span>
+      <span class="letter" id="L4"><span class="drip-wrap">E<span class="drip d3"></span></span></span>
+      <span class="letter" id="L5">D</span>
+      <span class="glitch-slice s1" aria-hidden="true">SEALED</span>
+      <span class="glitch-slice s2" aria-hidden="true">SEALED</span>
+      <span class="glitch-slice s3" aria-hidden="true">SEALED</span>
+      <div class="impact-glow" id="impactGlow"></div>
+    </div>
+  </div>
+  <div class="underline" id="underline"></div>
+  <div class="enter-btn" id="enterBtn">
+    <a href="/project-x">ENTER <span class="enter-arrow">▸</span></a>
+  </div>
+</div>
+
+<div class="shockwave" id="shockwave1"></div>
+<div class="shockwave" id="shockwave2"></div>
+
+<script>
+// === STATIC NOISE ===
+(function() {
+  var noise = document.getElementById('noise');
+  var nCtx = noise.getContext('2d');
+  var nW, nH;
+
+  function resizeNoise() {
+    nW = noise.width = Math.ceil(window.innerWidth / 4);
+    nH = noise.height = Math.ceil(window.innerHeight / 4);
+  }
+  window.addEventListener('resize', resizeNoise);
+  resizeNoise();
+
+  var noiseActive = true;
+
+  window._setNoiseOpacity = function(v) { noise.style.opacity = v; };
+  window._stopNoise = function() { noiseActive = false; noise.style.opacity = 0; };
+
+  function drawNoise() {
+    if (!noiseActive) return;
+    var img = nCtx.createImageData(nW, nH);
+    var d = img.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var v = Math.random() * 255;
+      d[i] = d[i+1] = d[i+2] = v;
+      d[i+3] = 180;
+    }
+    nCtx.putImageData(img, 0, 0);
+    requestAnimationFrame(drawNoise);
+  }
+  drawNoise();
+})();
+
+// === PARTICLE BACKGROUND ===
+(function() {
+  var canvas = document.getElementById('bg');
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  var particles = [];
+  var PARTICLE_COUNT = 120;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function Particle() { this.reset(true); }
+  Particle.prototype.reset = function(init) {
+    this.x = Math.random() * W;
+    this.y = init ? Math.random() * H : -4;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = Math.random() * 0.4 + 0.1;
+    this.size = Math.random() * 1.5 + 0.5;
+    this.alpha = Math.random() * 0.25 + 0.05;
+    this.color = Math.random() > 0.85 ? '180,16,26' : '120,100,95';
+  };
+  Particle.prototype.update = function() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.y > H + 5 || this.x < -5 || this.x > W + 5) this.reset(false);
+  };
+  Particle.prototype.draw = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(' + this.color + ',' + this.alpha + ')';
+    ctx.fill();
+  };
+
+  for (var i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+  var flashAlpha = 0;
+  var flashTarget = 0;
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    var grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.7);
+    grd.addColorStop(0, '#0a0204');
+    grd.addColorStop(1, '#000000');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+
+    if (Math.random() < 0.003) flashTarget = 0.04 + Math.random() * 0.04;
+    flashAlpha += (flashTarget - flashAlpha) * 0.05;
+    if (flashAlpha > 0.005) {
+      ctx.fillStyle = 'rgba(140,10,20,' + flashAlpha + ')';
+      ctx.fillRect(0, 0, W, H);
+    }
+    if (flashAlpha > 0.01) flashTarget = 0;
+
+    for (var i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// === INTRO ANIMATION SEQUENCE ===
+(function() {
+  var title = document.getElementById('title');
+  var scene = document.getElementById('scene');
+  var flash = document.getElementById('introFlash');
+  var underline = document.getElementById('underline');
+  var impactGlow = document.getElementById('impactGlow');
+  var shockwave1 = document.getElementById('shockwave1');
+  var shockwave2 = document.getElementById('shockwave2');
+  var enterBtn = document.getElementById('enterBtn');
+  var letters = [];
+  for (var i = 0; i < 6; i++) letters.push(document.getElementById('L' + i));
+
+  function shake(el, intensity, duration) {
+    var start = Date.now();
+    function step() {
+      var elapsed = Date.now() - start;
+      if (elapsed > duration) { el.style.transform = ''; return; }
+      var decay = 1 - (elapsed / duration);
+      var x = (Math.random() - 0.5) * intensity * decay * 2;
+      var y = (Math.random() - 0.5) * intensity * decay * 2;
+      el.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      requestAnimationFrame(step);
+    }
+    step();
+  }
+
+  function fireShockwave(el, delay) {
+    setTimeout(function() {
+      el.style.transition = 'none';
+      el.style.opacity = '0.7';
+      el.style.transform = 'scale(0)';
+      void el.offsetWidth;
+      el.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out';
+      el.style.transform = 'scale(80)';
+      el.style.opacity = '0';
+    }, delay);
+  }
+
+  function screenFlash(duration, peakOpacity) {
+    flash.style.transition = 'none';
+    flash.style.opacity = String(peakOpacity || 1);
+    void flash.offsetWidth;
+    flash.style.transition = 'opacity ' + duration + 'ms ease-out';
+    flash.style.opacity = '0';
+  }
+
+  function redFlash(duration, peakOpacity) {
+    flash.style.transition = 'none';
+    flash.style.background = '#c0101a';
+    flash.style.opacity = String(peakOpacity || 0.5);
+    void flash.offsetWidth;
+    flash.style.transition = 'opacity ' + duration + 'ms ease-out';
+    flash.style.opacity = '0';
+    setTimeout(function() { flash.style.background = '#fff'; }, duration);
+  }
+
+  // PHASE 0: Static noise
+  window._setNoiseOpacity(0.7);
+
+  var flickerTimes = [150, 350, 500, 650, 800, 950, 1050, 1150, 1250];
+  flickerTimes.forEach(function(t) {
+    setTimeout(function() {
+      window._setNoiseOpacity(Math.random() * 0.2 + 0.05);
+      setTimeout(function() {
+        window._setNoiseOpacity(Math.random() * 0.5 + 0.4);
+      }, 25 + Math.random() * 35);
+    }, t);
+  });
+
+  setTimeout(function() { redFlash(200, 0.3); }, 600);
+  setTimeout(function() { redFlash(150, 0.2); }, 1000);
+
+  // PHASE 1: Letters SLAM in
+  var slamOrder = [3, 0, 5, 1, 4, 2];
+  var slamStart = 1500;
+  var slamInterval = 160;
+
+  setTimeout(function() { window._setNoiseOpacity(0); }, slamStart - 80);
+  setTimeout(function() { redFlash(120, 0.4); }, slamStart - 60);
+
+  slamOrder.forEach(function(idx, i) {
+    var t = slamStart + i * slamInterval;
+    var isLast = i === slamOrder.length - 1;
+
+    setTimeout(function() {
+      var letter = letters[idx];
+      letter.style.transition = 'none';
+      letter.style.transform = 'scale(3.5) translateY(-120px) rotate(' + (Math.random() * 20 - 10) + 'deg)';
+      letter.style.opacity = '0';
+      letter.style.filter = 'brightness(5) blur(10px)';
+      void letter.offsetWidth;
+
+      letter.style.transition = 'transform 0.15s cubic-bezier(0.22, 0, 0.36, 1), opacity 0.06s ease-out, filter 0.2s ease-out';
+      letter.style.transform = 'scale(1) translateY(0) rotate(0deg)';
+      letter.style.opacity = '1';
+      letter.style.filter = 'brightness(1) blur(0)';
+
+      screenFlash(120, isLast ? 0.8 : 0.25 + i * 0.05);
+      window._setNoiseOpacity(0.2 + i * 0.03);
+      setTimeout(function() { window._setNoiseOpacity(0); }, 50);
+      shake(scene, 5 + i * 2.5, 180);
+
+      if (isLast) {
+        setTimeout(function() {
+          letter.style.transition = 'transform 0.12s ease-out';
+          letter.style.transform = 'scale(1.15)';
+          setTimeout(function() {
+            letter.style.transition = 'transform 0.2s ease-in-out';
+            letter.style.transform = 'scale(1)';
+          }, 120);
+        }, 150);
+      }
+    }, t);
+  });
+
+  // PHASE 2: Shockwave + glitch storm
+  var stormStart = slamStart + slamOrder.length * slamInterval + 200;
+
+  setTimeout(function() {
+    screenFlash(600, 1.0);
+    fireShockwave(shockwave1, 0);
+    fireShockwave(shockwave2, 100);
+    shake(scene, 18, 600);
+
+    impactGlow.style.transition = 'none';
+    impactGlow.style.opacity = '1';
+    void impactGlow.offsetWidth;
+    impactGlow.style.transition = 'opacity 1.2s ease-out';
+    impactGlow.style.opacity = '0';
+
+    var stormDuration = 900;
+    var stormBegin = Date.now();
+    function stormStep() {
+      var elapsed = Date.now() - stormBegin;
+      if (elapsed > stormDuration) {
+        letters.forEach(function(l) { l.style.transform = ''; l.style.filter = ''; });
+        return;
+      }
+      var decay = 1 - (elapsed / stormDuration);
+      decay = decay * decay;
+      letters.forEach(function(l) {
+        if (Math.random() < 0.5 * decay) {
+          var ox = (Math.random() - 0.5) * 30 * decay;
+          var oy = (Math.random() - 0.5) * 15 * decay;
+          var sk = (Math.random() - 0.5) * 20 * decay;
+          var sc = 1 + (Math.random() - 0.5) * 0.3 * decay;
+          l.style.transform = 'translate(' + ox + 'px,' + oy + 'px) skewX(' + sk + 'deg) scale(' + sc + ')';
+          l.style.filter = 'brightness(' + (1.5 + Math.random() * 1.5 * decay) + ') hue-rotate(' + (Math.random() * 50 - 25) + 'deg)';
+        } else {
+          l.style.transform = '';
+          l.style.filter = '';
+        }
+      });
+      requestAnimationFrame(stormStep);
+    }
+    stormStep();
+
+    window._setNoiseOpacity(0.5);
+    setTimeout(function() { window._setNoiseOpacity(0.2); }, 200);
+    setTimeout(function() { window._setNoiseOpacity(0.08); }, 400);
+    setTimeout(function() { window._setNoiseOpacity(0.03); }, 650);
+    setTimeout(function() { window._setNoiseOpacity(0); }, 850);
+  }, stormStart);
+
+  // PHASE 3: Settle into idle + show Enter button
+  var settleTime = stormStart + 1100;
+
+  setTimeout(function() {
+    window._stopNoise();
+    title.classList.add('idle');
+    underline.classList.add('show');
+    document.querySelectorAll('.drip').forEach(function(d) { d.classList.add('active'); });
+    redFlash(400, 0.12);
+
+    letters.forEach(function(l) {
+      l.style.transition = '';
+      l.style.transform = '';
+      l.style.filter = '';
+      l.style.opacity = '1';
+    });
+
+    // Show Enter button after a short pause
+    setTimeout(function() {
+      enterBtn.classList.add('show');
+    }, 800);
+  }, settleTime);
+
+  // POST-INTRO: Random glitch bursts
+  setTimeout(function() {
+    function glitchBurst() {
+      var intensity = Math.random() * 6 + 2;
+      title.style.transform = 'translate(' + (Math.random()*intensity - intensity/2) + 'px,' + (Math.random()*intensity - intensity/2) + 'px) skewX(' + (Math.random()*2-1) + 'deg)';
+      setTimeout(function() { title.style.transform = ''; }, 50 + Math.random() * 150);
+      setTimeout(glitchBurst, 3000 + Math.random() * 8000);
+    }
+    glitchBurst();
+  }, settleTime + 2000);
+
+  setTimeout(function() {
+    var scanlines = document.querySelector('.scanlines');
+    function staticFlash() {
+      scanlines.style.background = 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.03) 1px, rgba(255,255,255,0.03) 2px)';
+      setTimeout(function() { scanlines.style.background = ''; }, 80 + Math.random() * 60);
+      setTimeout(staticFlash, 5000 + Math.random() * 12000);
+    }
+    staticFlash();
+  }, settleTime + 3000);
+})();
+</script>
+</body>
+</html>
