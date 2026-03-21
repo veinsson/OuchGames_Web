@@ -177,7 +177,7 @@
                 <h2 class="sealed-title">SEALED</h2>
                 <div class="sealed-status">
                     <span class="status-text">STATUS: IN DEVELOPMENT</span>
-                    <span class="status-eta">• ETA: 2026</span>
+                    <span class="status-eta">• ETA: APRIL</span>
                 </div>
                 <div class="progress-container">
                     <div class="progress-bar">
@@ -219,7 +219,7 @@
                         <p class="warning-text">"Some things were sealed away for a reason."</p>
                     </div>
                     
-                    <a href="/sealed" class="btn btn-primary sealed-cta-btn">
+                    <a href="/sealed" class="btn btn-primary sealed-cta-btn" id="sealedLaunchBtn" onclick="launchSealed(event)">
                         View Full Intel →
                     </a>
                 </div>
@@ -810,6 +810,38 @@
             loadFeaturedSpeedrunners();
             loadFeaturedVideos();
         });
+
+        // === SEALED PC BOOT TRANSITION ===
+        function launchSealed(e){
+          e.preventDefault();
+          // Create fullscreen CRT overlay
+          var ov=document.createElement('div');
+          ov.id='crtBootOverlay';
+          ov.style.cssText='position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s';
+          var inner=document.createElement('div');
+          inner.style.cssText='width:90%;max-width:700px;text-align:center';
+          inner.innerHTML='<div style="font-family:VT323,monospace;color:#14fdce;font-size:1.3rem;margin-bottom:1rem;opacity:0;animation:crtFadeIn 0.3s 0.3s forwards">BOOTING CPS-NJ07 TERMINAL...</div>'
+            +'<div style="width:100%;height:6px;border:1px solid rgba(20,253,206,0.3);margin:0 auto;overflow:hidden;opacity:0;animation:crtFadeIn 0.3s 0.5s forwards"><div id="crtBar" style="width:0;height:100%;background:#14fdce;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)"></div></div>'
+            +'<div style="font-family:VT323,monospace;color:rgba(20,253,206,0.5);font-size:0.9rem;margin-top:0.75rem;opacity:0;animation:crtFadeIn 0.3s 0.7s forwards">MERIDIAN SYSTEMS 1988</div>';
+          ov.appendChild(inner);
+          // Add animation keyframe
+          var st=document.createElement('style');
+          st.textContent='@keyframes crtFadeIn{from{opacity:0}to{opacity:1}}';
+          document.head.appendChild(st);
+          document.body.appendChild(ov);
+          // Animate in
+          requestAnimationFrame(function(){
+            ov.style.opacity='1';
+            setTimeout(function(){
+              var bar=document.getElementById('crtBar');
+              if(bar)bar.style.width='100%';
+            },600);
+            // Navigate after animation
+            setTimeout(function(){
+              window.location.href='/sealed';
+            },2200);
+          });
+        }
     </script>
 </body>
 </html>
