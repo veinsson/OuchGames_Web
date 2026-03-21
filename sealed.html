@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="assets/ouch-logo.png">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='22' viewBox='0 0 16 22'%3E%3Cpath d='M1 1L1 18L5 14L9 21L12 19L8 13L14 13Z' fill='%2314fdce' stroke='%23031e11' stroke-width='1'/%3E%3C/svg%3E") 0 0, auto}
 
 :root{
   --green:#14fdce;
@@ -168,31 +168,57 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   color:var(--green-dim);
 }
 
-/* === TASKBAR === */
-.taskbar{
-  display:flex;
-  align-items:center;
-  gap:0.5rem;
-  padding:8px 0;
-  border-bottom:1px solid rgba(20,253,206,0.2);
+/* === DESKTOP ICONS === */
+.desktop{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,88px);
+  gap:0.75rem;
+  padding:1rem 0;
   margin-bottom:1.5rem;
-  font-size:0.9rem;
-  color:var(--green-dim);
-  flex-wrap:wrap;
+  border-bottom:1px solid rgba(20,253,206,0.2);
 }
-.taskbar-item{
-  padding:4px 12px;
-  border:1px solid rgba(20,253,206,0.3);
-  cursor:pointer;
+.desktop-icon{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:8px 4px;
+  text-align:center;
   transition:all 0.15s;
-  white-space:nowrap;
 }
-.taskbar-item:hover,.taskbar-item.active{
-  background:rgba(20,253,206,0.15);
+.desktop-icon:hover{
+  background:rgba(20,253,206,0.08);
+  outline:1px dotted rgba(20,253,206,0.4);
+}
+.desktop-icon.active{
+  background:rgba(20,253,206,0.12);
+  outline:1px solid var(--green);
+}
+.desktop-icon svg{
+  width:36px;
+  height:36px;
+  margin-bottom:6px;
+  display:block;
+}
+.desktop-icon .icon-label{
+  font-size:0.7rem;
   color:var(--green);
-  border-color:var(--green);
+  line-height:1.2;
+  font-family:'VT323',monospace;
 }
-.taskbar-right{margin-left:auto;font-size:0.85rem}
+.desktop-icon .icon-badge{
+  color:var(--red);
+  font-size:0.6rem;
+  display:block;
+  margin-top:2px;
+}
+.desktop-clock{
+  grid-column:1/-1;
+  text-align:right;
+  font-size:0.85rem;
+  color:var(--green-dim);
+  padding-top:0.5rem;
+  border-top:1px solid rgba(20,253,206,0.1);
+}
 
 /* === VIEWS (app panels) === */
 .view{display:none}
@@ -425,22 +451,36 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   flex-direction:column;
   padding:3rem;
   font-size:1.1rem;
-  transition:opacity 0.6s ease;
+  transition:opacity 0.8s ease;
 }
-.boot-overlay.off{opacity:0;pointer-events:none}
 .boot-overlay .boot-line{opacity:0;margin-bottom:0.3rem;transition:opacity 0.3s}
 .boot-overlay .boot-line.vis{opacity:1}
-.boot-overlay .boot-title{
-  font-family:'Press Start 2P',monospace;
-  font-size:clamp(1.5rem,5vw,3rem);
-  margin-bottom:2rem;
-  text-shadow:0 0 20px rgba(20,253,206,0.4);
-  opacity:0;
-  transition:opacity 0.5s;
-}
-.boot-overlay .boot-title.vis{opacity:1}
 .boot-overlay .boot-cursor{animation:blink 0.7s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* BOOT TITLE (animates from center to header) */
+.boot-title{
+  position:fixed;
+  z-index:95;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(2.5rem,8vw,5rem);
+  color:var(--green);
+  text-shadow:0 0 30px rgba(20,253,206,0.5);
+  opacity:0;
+  transition:opacity 0.5s,top 1.2s cubic-bezier(0.4,0,0.2,1),left 1.2s cubic-bezier(0.4,0,0.2,1),transform 1.2s cubic-bezier(0.4,0,0.2,1),font-size 1.2s cubic-bezier(0.4,0,0.2,1),text-shadow 1.2s ease;
+  pointer-events:none;
+}
+.boot-title.vis{opacity:1}
+.boot-title.settle{
+  top:calc(2% + 5rem);
+  left:calc(2% + 3rem);
+  transform:translate(0,0);
+  font-size:clamp(2rem,6vw,4rem);
+  text-shadow:0 0 20px rgba(20,253,206,0.4);
+}
 
 /* CRT power-on flicker */
 body.booting .screen{animation:powerOn 0.4s ease-out}
@@ -455,6 +495,7 @@ body.booting .screen{animation:powerOn 0.4s ease-out}
 
 @media(max-width:768px){
   .boot-overlay{top:0;left:0;width:100%;height:100%;border-radius:0;padding:1.5rem}
+  .boot-title.settle{top:4rem;left:1rem}
 }
 
 /* === RESPONSIVE === */
@@ -467,8 +508,9 @@ body.booting .screen{animation:powerOn 0.4s ease-out}
   .output{padding:1.5rem 1rem}
   .entity-grid{grid-template-columns:1fr}
   .memo-block{flex-direction:column;text-align:center}
-  .taskbar{gap:0.25rem}
-  .taskbar-item{padding:3px 8px;font-size:0.8rem}
+  .desktop{grid-template-columns:repeat(auto-fill,72px);gap:0.5rem}
+  .desktop-icon svg{width:28px;height:28px}
+  .desktop-icon .icon-label{font-size:0.6rem}
 }
 
 /* === KEYFRAMES === */
@@ -498,9 +540,11 @@ body.booting .screen{animation:powerOn 0.4s ease-out}
 <div class="glow"></div>
 <div class="scan-line"></div>
 
+<!-- BOOT TITLE (animates from center to header) -->
+<div class="boot-title" id="bootTitle">SEALED</div>
+
 <!-- BOOT OVERLAY -->
 <div class="boot-overlay" id="bootOverlay">
-  <div class="boot-title" id="bootTitle">SEALED</div>
   <div id="bootLines"></div>
 </div>
 
@@ -513,29 +557,50 @@ body.booting .screen{animation:powerOn 0.4s ease-out}
 
   <!-- HEADER -->
   <div class="header">
-    <h1>SEALED</h1>
+    <h1 id="headerTitle" style="opacity:0;transition:opacity 0.3s">SEALED</h1>
     <div class="sub">CPS-NJ07 FACILITY TERMINAL // MERIDIAN SYSTEMS 1988 // AUTHORIZED ACCESS ONLY</div>
   </div>
 
-  <!-- TASKBAR -->
-  <div class="taskbar">
-    <div class="taskbar-item active" onclick="showView('about')">ABOUT.exe</div>
-    <div class="taskbar-item" onclick="showView('features')">SPECS.exe</div>
-    <div class="taskbar-item" onclick="showView('loot')">LOOT.exe</div>
-    <div class="taskbar-item" onclick="showView('upgrades')">SHOP.exe</div>
-    <div class="taskbar-item" onclick="showView('entities')">ENTITIES.exe</div>
-    <div class="taskbar-item" onclick="showView('mail')">MAIL.exe <span style="color:var(--red)">[1 NEW]</span></div>
-    <div class="taskbar-item" onclick="showView('cctv')">CCTV.exe</div>
-    <div class="taskbar-item" onclick="showView('logs')">LOGS.exe</div>
-    <div class="taskbar-item" onclick="showView('memo')">AUDIO.exe</div>
-    <div class="taskbar-item" onclick="showView('roadmap')">ROADMAP.exe</div>
-    <div class="taskbar-right" id="clock">03.14.88 23:47</div>
+  <!-- DESKTOP ICONS -->
+  <div class="desktop">
+    <div class="desktop-icon active" onclick="showView('about',this)">
+      <svg viewBox="0 0 16 16"><path d="M3 1h7l3 3v11H3V1z" fill="none" stroke="#14fdce" stroke-width="1"/><path d="M10 1v3h3" fill="none" stroke="#14fdce" stroke-width="1"/><line x1="5" y1="7" x2="11" y2="7" stroke="#14fdce"/><line x1="5" y1="9" x2="11" y2="9" stroke="#14fdce"/><line x1="5" y1="11" x2="9" y2="11" stroke="#14fdce"/></svg>
+      <div class="icon-label">ABOUT</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('features',this)">
+      <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="#14fdce" stroke-width="1"/><rect x="7" y="1" width="2" height="2" fill="#14fdce"/><rect x="7" y="13" width="2" height="2" fill="#14fdce"/><rect x="1" y="7" width="2" height="2" fill="#14fdce"/><rect x="13" y="7" width="2" height="2" fill="#14fdce"/></svg>
+      <div class="icon-label">SPECS</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('loot',this)">
+      <svg viewBox="0 0 16 16"><rect x="2" y="7" width="12" height="7" fill="none" stroke="#14fdce" stroke-width="1"/><path d="M2 7L4 3h8l2 4" fill="none" stroke="#14fdce" stroke-width="1"/><rect x="7" y="9" width="2" height="2" fill="#14fdce"/></svg>
+      <div class="icon-label">LOOT</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('upgrades',this)">
+      <svg viewBox="0 0 16 16"><rect x="3" y="6" width="10" height="9" fill="none" stroke="#14fdce" stroke-width="1"/><path d="M5 6V4a3 3 0 0 1 6 0v2" fill="none" stroke="#14fdce" stroke-width="1"/></svg>
+      <div class="icon-label">SHOP</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('entities',this)">
+      <svg viewBox="0 0 16 16"><ellipse cx="8" cy="8" rx="7" ry="4" fill="none" stroke="#14fdce" stroke-width="1"/><circle cx="8" cy="8" r="2" fill="#14fdce"/></svg>
+      <div class="icon-label">ENTITIES</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('mail',this)">
+      <svg viewBox="0 0 16 16"><rect x="1" y="4" width="14" height="10" fill="none" stroke="#14fdce" stroke-width="1"/><path d="M1 4l7 5 7-5" fill="none" stroke="#14fdce" stroke-width="1"/></svg>
+      <div class="icon-label">MAIL</div>
+      <span class="icon-badge">[1 NEW]</span>
+    </div>
+    <div class="desktop-icon" onclick="showView('logs',this)">
+      <svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" fill="none" stroke="#14fdce" stroke-width="1"/><line x1="1" y1="5" x2="15" y2="5" stroke="#14fdce" stroke-width="1"/><path d="M3 8l2 2-2 2" fill="none" stroke="#14fdce" stroke-width="1"/><line x1="7" y1="12" x2="12" y2="12" stroke="#14fdce" stroke-width="0.5"/></svg>
+      <div class="icon-label">LOGS</div>
+    </div>
+    <div class="desktop-icon" onclick="showView('roadmap',this)">
+      <svg viewBox="0 0 16 16"><path d="M3 14V2" stroke="#14fdce" stroke-width="1"/><path d="M3 3h9v5H3" fill="none" stroke="#14fdce" stroke-width="1"/><circle cx="7" cy="12" r="1" fill="#14fdce"/><circle cx="10" cy="10" r="1" fill="#14fdce"/></svg>
+      <div class="icon-label">ROADMAP</div>
+    </div>
+    <div class="desktop-clock" id="clock">03.14.88 23:47</div>
   </div>
 
   <!-- ========== ABOUT ========== -->
   <div class="view active" id="view-about">
-    <img src="assets/sealedtb.png" alt="SEALED" class="hero-img">
-
     <div class="status-bar">
       <div class="status-tag warn">&#9888; IN DEVELOPMENT</div>
       <div class="status-tag ok">YEAR: 1988</div>
@@ -691,22 +756,7 @@ The work begins at midnight.
     </div>
   </div>
 
-  <!-- ========== CCTV ========== -->
-  <div class="view" id="view-cctv">
-    <div class="sec-title">// CCTV.exe — LIVE FEED</div>
-    <div class="cctv-controls">
-      <button class="cam-btn active" onclick="switchCam(0,this)">CAM-01</button>
-      <button class="cam-btn" onclick="switchCam(1,this)">CAM-02</button>
-      <button class="cam-btn" onclick="switchCam(2,this)">CAM-03</button>
-    </div>
-    <div class="cctv-viewport" id="cctvViewport">
-      <div class="cctv-hud" id="cctvLabel">CAM-01 NORTH CORRIDOR</div>
-      <div class="cctv-rec">&#9679; REC</div>
-      <div class="cctv-time" id="cctvTime">03.14.88 23:47:12</div>
-      <div class="cctv-entity" id="cctvEntity">ENTITY DETECTED: PACKAGE</div>
-      <img id="cctvFeed" src="assets/CardboardBox_Icon.png" alt="Camera Feed">
-    </div>
-  </div>
+
 
   <!-- ========== LOGS ========== -->
   <div class="view" id="view-logs">
@@ -714,22 +764,7 @@ The work begins at midnight.
     <div class="log-content" id="logContent"></div>
   </div>
 
-  <!-- ========== AUDIO MEMO ========== -->
-  <div class="view" id="view-memo">
-    <div class="sec-title">// RECOVERED AUDIO — CLASSIFIED</div>
-    <div class="memo-block">
-      <img src="assets/morettirender.png" alt="Moretti">
-      <div>
-        <div style="color:var(--red);font-size:0.85rem;margin-bottom:0.5rem">&#9608; RECOVERED AUDIO — MORETTI // DATE: &#9608;&#9608;/&#9608;&#9608;/1987</div>
-        <div class="memo-text">"I don't know who sealed this place... but it wasn't enough."</div>
-        <button class="memo-play" id="morettiPlayBtn" onclick="toggleAudio()">
-          &#9654; PLAY
-          <div class="waveform"><span></span><span></span><span></span><span></span><span></span></div>
-        </button>
-        <audio id="morettiAudio" src="assets/MorettiTease_SFX.mp3" preload="none"></audio>
-      </div>
-    </div>
-  </div>
+
 
   <!-- ========== ROADMAP ========== -->
   <div class="view" id="view-roadmap">
@@ -763,6 +798,7 @@ The work begins at midnight.
   var titleEl=document.getElementById('bootTitle');
   var linesEl=document.getElementById('bootLines');
   var screen=document.getElementById('screen');
+  var headerTitle=document.getElementById('headerTitle');
 
   var bootLines=[
     'CPS-NJ07 FACILITY TERMINAL',
@@ -775,7 +811,6 @@ The work begins at midnight.
     'SCANNING FACILITY NETWORK...',
     'NODE: SUB-LEVEL C .... CONNECTED',
     'NODE: EAST WING ..... CONNECTED',
-    'NODE: CCTV ARRAY .... ONLINE',
     '',
     'WARNING: 3 CONTAINMENT ANOMALIES DETECTED',
     'WARNING: 1 UNREAD MESSAGE IN MAILBOX',
@@ -784,10 +819,8 @@ The work begins at midnight.
     '> _'
   ];
 
-  // Show title first
   setTimeout(function(){titleEl.classList.add('vis')},300);
 
-  // Type boot lines one by one
   var startDelay=1200;
   bootLines.forEach(function(text,i){
     setTimeout(function(){
@@ -801,23 +834,30 @@ The work begins at midnight.
     },startDelay+i*180);
   });
 
-  // After all lines, fade out overlay and reveal screen
   var totalTime=startDelay+bootLines.length*180+800;
   setTimeout(function(){
-    overlay.classList.add('off');
-    screen.style.transition='opacity 0.5s ease';
+    linesEl.style.transition='opacity 0.5s';
+    linesEl.style.opacity='0';
+    titleEl.classList.add('settle');
+    overlay.style.transition='opacity 0.8s ease';
+    overlay.style.opacity='0';
+    screen.style.transition='opacity 0.5s ease 0.3s';
     screen.style.opacity='1';
     document.body.classList.remove('booting');
-    setTimeout(function(){overlay.remove()},700);
+    setTimeout(function(){
+      if(headerTitle)headerTitle.style.opacity='1';
+      titleEl.style.display='none';
+      overlay.remove();
+    },1300);
   },totalTime);
 })();
 
 // === VIEW SWITCHER ===
-function showView(name){
+function showView(name,el){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
   document.getElementById('view-'+name).classList.add('active');
-  document.querySelectorAll('.taskbar-item').forEach(function(t){t.classList.remove('active')});
-  event.target.classList.add('active');
+  document.querySelectorAll('.desktop-icon').forEach(function(t){t.classList.remove('active')});
+  if(el)el.classList.add('active');
   document.getElementById('screen').scrollTop=0;
   if(name==='logs')startLogs();
   if(name==='mail'&&mailAccepted)showAccepted();
@@ -852,31 +892,6 @@ function handleMail(choice){
 function showAccepted(){
   document.getElementById('mailBody').innerHTML='<div class="accepted-msg"><div class="stamp">JOB ACCEPTED</div><pre class="mail-pre">\nReport to the south entrance at 23:55.\nLocker 14. You know the combination.\n\nDo not be late.\n\n- M</pre></div>';
 }
-
-// === CCTV ===
-var cameras=[
-  {name:'CAM-01 NORTH CORRIDOR',img:'assets/CardboardBox_Icon.png',entity:'PACKAGE'},
-  {name:'CAM-02 SUB-LEVEL C',img:'assets/FireMan_Icon.png',entity:'REACHER'},
-  {name:'CAM-03 EAST WING',img:'assets/SmokeRender.png',entity:'PAU-ERROR'}
-];
-function switchCam(idx,btn){
-  document.querySelectorAll('.cam-btn').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  var vp=document.getElementById('cctvViewport');
-  vp.classList.add('static');
-  setTimeout(function(){
-    document.getElementById('cctvFeed').src=cameras[idx].img;
-    document.getElementById('cctvLabel').textContent=cameras[idx].name;
-    document.getElementById('cctvEntity').textContent='ENTITY DETECTED: '+cameras[idx].entity;
-    vp.classList.remove('static');
-  },400);
-}
-setInterval(function(){
-  var el=document.getElementById('cctvTime');
-  if(!el)return;
-  var d=new Date();
-  el.textContent='03.14.88 23:'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');
-},1000);
 
 // === LOGS ===
 var logLines=[
@@ -915,24 +930,6 @@ function startLogs(){
   },450);
 }
 
-// === AUDIO ===
-function toggleAudio(){
-  var audio=document.getElementById('morettiAudio');
-  var btn=document.getElementById('morettiPlayBtn');
-  if(audio.paused){
-    audio.play();
-    btn.classList.add('playing');
-    btn.innerHTML='\u25A0 STOP <div class="waveform"><span></span><span></span><span></span><span></span><span></span></div>';
-  }else{
-    audio.pause();
-    btn.classList.remove('playing');
-    btn.innerHTML='\u25B6 PLAY <div class="waveform"><span></span><span></span><span></span><span></span><span></span></div>';
-  }
-  audio.onended=function(){
-    btn.classList.remove('playing');
-    btn.innerHTML='\u25B6 PLAY <div class="waveform"><span></span><span></span><span></span><span></span><span></span></div>';
-  };
-}
 </script>
 </body>
 </html>
