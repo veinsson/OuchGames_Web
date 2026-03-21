@@ -411,6 +411,52 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
   font-size:0.8rem;
 }
 
+/* === BOOT INTRO === */
+.boot-overlay{
+  position:fixed;
+  top:2%;left:2%;
+  width:96%;height:96%;
+  background:var(--screen-bg);
+  border-radius:2rem;
+  z-index:90;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:3rem;
+  font-size:1.1rem;
+  transition:opacity 0.6s ease;
+}
+.boot-overlay.off{opacity:0;pointer-events:none}
+.boot-overlay .boot-line{opacity:0;margin-bottom:0.3rem;transition:opacity 0.3s}
+.boot-overlay .boot-line.vis{opacity:1}
+.boot-overlay .boot-title{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(1.5rem,5vw,3rem);
+  margin-bottom:2rem;
+  text-shadow:0 0 20px rgba(20,253,206,0.4);
+  opacity:0;
+  transition:opacity 0.5s;
+}
+.boot-overlay .boot-title.vis{opacity:1}
+.boot-overlay .boot-cursor{animation:blink 0.7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* CRT power-on flicker */
+body.booting .screen{animation:powerOn 0.4s ease-out}
+@keyframes powerOn{
+  0%{opacity:0;transform:scaleY(0.005)}
+  40%{opacity:0.8;transform:scaleY(0.005)}
+  50%{opacity:1;transform:scaleY(1.1) scaleX(0.98)}
+  65%{transform:scaleY(0.98) scaleX(1.01)}
+  80%{transform:scaleY(1.02)}
+  100%{transform:scaleY(1) scaleX(1)}
+}
+
+@media(max-width:768px){
+  .boot-overlay{top:0;left:0;width:100%;height:100%;border-radius:0;padding:1.5rem}
+}
+
 /* === RESPONSIVE === */
 @media(max-width:768px){
   body{padding:0}
@@ -452,8 +498,14 @@ a:active,a:focus,a:hover{background-color:var(--green);color:var(--screen-bg)}
 <div class="glow"></div>
 <div class="scan-line"></div>
 
+<!-- BOOT OVERLAY -->
+<div class="boot-overlay" id="bootOverlay">
+  <div class="boot-title" id="bootTitle">SEALED</div>
+  <div id="bootLines"></div>
+</div>
+
 <!-- SCREEN -->
-<div class="screen" id="screen">
+<div class="screen" id="screen" style="opacity:0">
 <div class="output">
 
   <!-- BACK BUTTON -->
@@ -704,6 +756,62 @@ The work begins at midnight.
 
 <!-- ==================== SCRIPTS ==================== -->
 <script>
+// === BOOT SEQUENCE ===
+(function(){
+  document.body.classList.add('booting');
+  var overlay=document.getElementById('bootOverlay');
+  var titleEl=document.getElementById('bootTitle');
+  var linesEl=document.getElementById('bootLines');
+  var screen=document.getElementById('screen');
+
+  var bootLines=[
+    'CPS-NJ07 FACILITY TERMINAL',
+    'BIOS v2.1.4 // MERIDIAN SYSTEMS 1988',
+    '',
+    'MEMORY TEST... 640K OK',
+    'DISK CHECK... C:\\ OK',
+    'LOADING HEROS v1.0.0...',
+    '',
+    'SCANNING FACILITY NETWORK...',
+    'NODE: SUB-LEVEL C .... CONNECTED',
+    'NODE: EAST WING ..... CONNECTED',
+    'NODE: CCTV ARRAY .... ONLINE',
+    '',
+    'WARNING: 3 CONTAINMENT ANOMALIES DETECTED',
+    'WARNING: 1 UNREAD MESSAGE IN MAILBOX',
+    '',
+    'SYSTEM READY.',
+    '> _'
+  ];
+
+  // Show title first
+  setTimeout(function(){titleEl.classList.add('vis')},300);
+
+  // Type boot lines one by one
+  var startDelay=1200;
+  bootLines.forEach(function(text,i){
+    setTimeout(function(){
+      var p=document.createElement('p');
+      p.className='boot-line';
+      p.textContent=text;
+      if(text.indexOf('WARNING')===0)p.style.color='var(--amber)';
+      if(text.indexOf('SYSTEM READY')===0)p.style.color='var(--green)';
+      linesEl.appendChild(p);
+      setTimeout(function(){p.classList.add('vis')},30);
+    },startDelay+i*180);
+  });
+
+  // After all lines, fade out overlay and reveal screen
+  var totalTime=startDelay+bootLines.length*180+800;
+  setTimeout(function(){
+    overlay.classList.add('off');
+    screen.style.transition='opacity 0.5s ease';
+    screen.style.opacity='1';
+    document.body.classList.remove('booting');
+    setTimeout(function(){overlay.remove()},700);
+  },totalTime);
+})();
+
 // === VIEW SWITCHER ===
 function showView(name){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
