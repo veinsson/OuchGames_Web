@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,58 +10,78 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="assets/ouch-logo.png">
     <style>
-        /* === HERO === */
+        /* =============== HERO =============== */
         .partner-hero {
-            min-height: 70vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 10rem 2rem 6rem;
+            padding: 8rem 2rem 6rem;
             position: relative;
             overflow: hidden;
         }
 
-        .partner-hero::before {
+        .partner-hero .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(155, 77, 255, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(100, 50, 180, 0.25) 0%, transparent 50%),
+                linear-gradient(180deg, #1a0a2e 0%, #0a0612 50%, #050308 100%);
+        }
+
+        .partner-hero .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: brightness(0.6) saturate(0.7);
+        }
+
+        .partner-hero .hero-bg::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 30% 30%, rgba(155, 77, 255, 0.2) 0%, transparent 55%),
-                radial-gradient(ellipse at 70% 70%, rgba(255, 77, 166, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(77, 255, 255, 0.06) 0%, transparent 60%);
-            z-index: 0;
+                radial-gradient(ellipse at 30% 20%, rgba(155, 77, 255, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(191, 127, 255, 0.4) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(10, 6, 18, 0.4) 0%, rgba(10, 6, 18, 0.7) 100%);
+            z-index: 1;
         }
 
-        .partner-hero::after {
+        .partner-hero .hero-bg::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background: linear-gradient(to top, var(--bg-primary), transparent);
-            z-index: 1;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 6, 18, 0.8) 100%);
+            z-index: 2;
+        }
+
+        .partner-hero .crt-overlay {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.5;
         }
 
         .partner-hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 4;
             max-width: 800px;
-        }
-
-        .partner-badge {
-            display: inline-block;
-            padding: 0.4rem 1.2rem;
-            background: rgba(155, 77, 255, 0.15);
-            border: 1px solid rgba(155, 77, 255, 0.3);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent-purple-light);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .partner-title {
@@ -73,19 +93,18 @@
             margin-bottom: 1.5rem;
         }
 
-        .partner-title span {
-            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .partner-title .cyan {
+            color: var(--accent-cyan);
+            -webkit-text-fill-color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(77, 255, 255, 0.5);
         }
 
         .partner-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
             max-width: 600px;
-            margin: 0 auto 2.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .hero-cta-row {
@@ -95,40 +114,7 @@
             flex-wrap: wrap;
         }
 
-        .hero-cta-row a {
-            padding: 0.85rem 2rem;
-            border-radius: var(--radius-md);
-            font-family: var(--font-main);
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-
-        .cta-primary {
-            background: var(--accent-purple);
-            color: #fff;
-        }
-
-        .cta-primary:hover {
-            background: var(--accent-purple-light);
-            box-shadow: 0 0 30px var(--accent-purple-glow);
-            transform: translateY(-2px);
-        }
-
-        .cta-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .cta-secondary:hover {
-            border-color: var(--accent-purple);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
-        /* === STATS STRIP === */
+        /* =============== STATS STRIP =============== */
         .stats-strip {
             padding: 3rem 2rem;
             border-top: 1px solid rgba(155, 77, 255, 0.1);
@@ -145,9 +131,7 @@
             flex-wrap: wrap;
         }
 
-        .strip-stat {
-            text-align: center;
-        }
+        .strip-stat { text-align: center; }
 
         .strip-stat-num {
             font-family: var(--font-display);
@@ -165,7 +149,7 @@
             margin-top: 0.25rem;
         }
 
-        /* === SERVICES === */
+        /* =============== SERVICES =============== */
         .services-section {
             padding: 6rem 2rem;
             background: var(--bg-secondary);
@@ -203,11 +187,11 @@
         }
 
         .service-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: rgba(26, 15, 46, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.15);
             border-radius: var(--radius-lg);
             padding: 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -215,23 +199,23 @@
         .service-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            inset: 0;
+            background: linear-gradient(135deg, rgba(155, 77, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            border-radius: var(--radius-lg);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .service-card:hover {
-            border-color: var(--accent-purple);
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(155, 77, 255, 0.12);
-        }
+        .service-card:hover::before { opacity: 1; }
 
-        .service-card:hover::before {
-            opacity: 1;
+        .service-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--accent-purple);
+            box-shadow:
+                0 0 40px rgba(155, 77, 255, 0.3),
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .service-icon {
@@ -265,64 +249,253 @@
             line-height: 1.6;
         }
 
-        /* === FORMS SECTION === */
-        .forms-section {
+        /* =============== HOW IT WORKS =============== */
+        .how-section {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+            border-top: 1px solid rgba(155, 77, 255, 0.08);
+        }
+
+        .how-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .how-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .how-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.75rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+
+        .how-steps::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(155, 77, 255, 0.3), rgba(77, 255, 255, 0.3), transparent);
+        }
+
+        .how-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(155, 77, 255, 0.1);
+            border: 2px solid var(--accent-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-purple-light);
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(155, 77, 255, 0.2);
+        }
+
+        .how-step h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .how-step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* =============== CODE EDITOR =============== */
+        .code-section {
+            padding: 5rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid rgba(155, 77, 255, 0.08);
+        }
+
+        .code-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .code-window {
+            background: #0d0a14;
+            border-radius: 10px;
+            border: 1px solid rgba(155, 77, 255, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(155, 77, 255, 0.1);
+        }
+
+        .code-titlebar {
+            display: flex;
+            align-items: center;
+            padding: 0.65rem 1rem;
+            background: #100c18;
+            border-bottom: 1px solid rgba(155, 77, 255, 0.1);
+            gap: 0.5rem;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .code-dots span:nth-child(1) { background: #ff5f57; }
+        .code-dots span:nth-child(2) { background: #febc2e; }
+        .code-dots span:nth-child(3) { background: #28c840; }
+
+        .code-tab {
+            margin-left: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(155, 77, 255, 0.1);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .code-watermark {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .code-body {
+            padding: 1.25rem 0;
+            min-height: 380px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.7;
+            overflow: hidden;
+        }
+
+        .code-line {
+            display: flex;
+            padding: 0 1.25rem;
+            min-height: 1.7em;
+        }
+
+        .line-num {
+            width: 35px;
+            text-align: right;
+            color: #3d2a5c;
+            user-select: none;
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .line-content {
+            white-space: pre;
+            flex: 1;
+        }
+
+        .code-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent-cyan);
+            vertical-align: text-bottom;
+            animation: cursorBlink 1s step-end infinite;
+            box-shadow: 0 0 6px rgba(77, 255, 255, 0.5);
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Syntax colors */
+        .kw { color: #9b4dff; }
+        .fn { color: #e0e0e0; }
+        .str { color: var(--accent-cyan); }
+        .cm { color: #3d2a5c; }
+        .op { color: #b8a9d4; }
+        .num { color: #febc2e; }
+
+        /* =============== FORM SECTION =============== */
+        .form-section {
             padding: 6rem 2rem;
             background: var(--bg-primary);
             position: relative;
         }
 
-        .forms-section::before {
+        .form-section::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 25% 50%, rgba(155, 77, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 75% 50%, rgba(255, 77, 166, 0.06) 0%, transparent 50%);
+                radial-gradient(ellipse at 50% 20%, rgba(155, 77, 255, 0.08) 0%, transparent 50%);
             pointer-events: none;
         }
 
-        .forms-container {
-            max-width: 1100px;
+        .form-container {
+            max-width: 700px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
-        .forms-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
         .form-panel {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
+            background: rgba(26, 15, 46, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.15);
             border-radius: var(--radius-lg);
             padding: 2.5rem;
         }
 
         .form-panel-header {
+            text-align: center;
             margin-bottom: 2rem;
         }
 
         .form-panel-tag {
             display: inline-block;
-            padding: 0.3rem 0.8rem;
+            padding: 0.35rem 0.9rem;
             background: rgba(155, 77, 255, 0.15);
-            border-radius: 6px;
+            border: 1px solid var(--accent-purple);
+            border-radius: 100px;
             font-size: 0.7rem;
             font-weight: 700;
             color: var(--accent-purple-light);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(155, 77, 255, 0.2);
         }
 
         .form-panel-header h2 {
             font-family: var(--font-display);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 0.4rem;
@@ -330,12 +503,11 @@
 
         .form-panel-header p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        .partner-form,
-        .contact-form-panel {
+        .partner-form {
             display: flex;
             flex-direction: column;
             gap: 1.15rem;
@@ -360,12 +532,12 @@
         .form-group textarea {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
+            border-radius: 4px;
             padding: 0.7rem 0.9rem;
             color: var(--text-primary);
             font-family: var(--font-main);
             font-size: 0.9rem;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
             width: 100%;
         }
 
@@ -383,7 +555,7 @@
         }
 
         .form-group textarea {
-            min-height: 110px;
+            min-height: 120px;
             resize: vertical;
         }
 
@@ -409,7 +581,7 @@
             gap: 0.35rem;
         }
 
-        .checkbox-group label.group-label {
+        .checkbox-group .group-label {
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-secondary);
@@ -431,7 +603,7 @@
             padding: 0.5rem 0.65rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.15s ease;
         }
@@ -445,7 +617,7 @@
             width: 16px;
             height: 16px;
             border: 2px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 3px;
             background: transparent;
             cursor: pointer;
             flex-shrink: 0;
@@ -486,27 +658,48 @@
 
         .form-submit {
             margin-top: 0.5rem;
-            padding: 0.8rem 1.75rem;
-            background: var(--accent-purple);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: var(--font-main);
-            font-size: 0.9rem;
+            padding: 1rem 2rem;
+            font-size: 0.875rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-family: var(--font-main);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(155, 77, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .form-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 2px,
+                rgba(255, 255, 255, 0.03) 4px
+            );
+            pointer-events: none;
         }
 
         .form-submit:hover {
-            background: var(--accent-purple-light);
-            box-shadow: 0 0 20px var(--accent-purple-glow);
+            background: linear-gradient(135deg, var(--accent-purple-light) 0%, var(--accent-purple) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(155, 77, 255, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
         .form-submit:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .form-success {
@@ -550,7 +743,7 @@
             font-size: 0.9rem;
         }
 
-        /* === RESPONSIVE === */
+        /* =============== RESPONSIVE =============== */
         @media (max-width: 1024px) {
             .services-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -571,20 +764,27 @@
                 grid-template-columns: 1fr;
             }
 
-            .forms-grid {
+            .how-steps {
                 grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .how-steps::before {
+                display: none;
             }
 
             .form-panel {
                 padding: 1.75rem;
             }
 
-            .form-row {
+            .form-row,
+            .checkbox-options {
                 grid-template-columns: 1fr;
             }
 
-            .checkbox-options {
-                grid-template-columns: 1fr;
+            .code-body {
+                font-size: 0.75rem;
+                min-height: 320px;
             }
         }
     </style>
@@ -625,20 +825,25 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- ============ HERO ============ -->
     <section class="partner-hero">
+        <div class="hero-bg">
+            <img src="assets/hero_bg2.png" alt="">
+        </div>
+        <div class="crt-overlay"></div>
+
         <div class="partner-hero-content">
-            <div class="partner-badge">Now Accepting Partners</div>
-            <h1 class="partner-title">Working on something <span>scary?</span></h1>
+            <div class="hero-badge">Now Accepting Partners</div>
+            <h1 class="partner-title">Working on something <span class="cyan">scary?</span></h1>
             <p class="partner-subtitle">We help horror creators in UEFN ship faster, look better, and reach more players. Let's build something terrifying together.</p>
             <div class="hero-cta-row">
-                <a href="#apply" class="cta-primary">Apply to Partner</a>
-                <a href="#services" class="cta-secondary">See What We Offer</a>
+                <a href="#apply" class="btn btn-primary">Apply to Partner</a>
+                <a href="#services" class="btn btn-tertiary">See What We Offer</a>
             </div>
         </div>
     </section>
 
-    <!-- Stats Strip -->
+    <!-- ============ STATS ============ -->
     <div class="stats-strip">
         <div class="stats-strip-inner">
             <div class="strip-stat">
@@ -660,14 +865,13 @@
         </div>
     </div>
 
-    <!-- Services Section -->
+    <!-- ============ SERVICES ============ -->
     <section class="services-section" id="services">
         <div class="services-container">
             <div class="services-header">
                 <h2>What We Bring to the Table</h2>
                 <p>Everything your horror project needs to go from concept to launch — and beyond.</p>
             </div>
-
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
@@ -676,7 +880,6 @@
                     <h3>Environment Design</h3>
                     <p>Atmospheric horror environments built to the highest standards. Dark hallways, abandoned facilities, spaces that feel alive.</p>
                 </div>
-
                 <div class="service-card">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
@@ -684,7 +887,6 @@
                     <h3>Verse Systems</h3>
                     <p>Custom AI behaviors, procedural generation, and game mechanics. The invisible systems that make horror games terrifying.</p>
                 </div>
-
                 <div class="service-card">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
@@ -692,7 +894,6 @@
                     <h3>Level Design</h3>
                     <p>Pacing, tension, and player flow designed to keep hearts racing. Every corner, every corridor — deliberate.</p>
                 </div>
-
                 <div class="service-card">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -700,7 +901,6 @@
                     <h3>Optimization</h3>
                     <p>Performance tuning, server stability, and load time optimization. Smooth gameplay, zero excuses.</p>
                 </div>
-
                 <div class="service-card">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -708,7 +908,6 @@
                     <h3>Marketing</h3>
                     <p>Access to our 185K+ audience, social content strategy, and launch playbook. We know how to get eyes on horror.</p>
                 </div>
-
                 <div class="service-card">
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -720,147 +919,136 @@
         </div>
     </section>
 
-    <!-- Forms Section -->
-    <section class="forms-section" id="apply">
-        <div class="forms-container">
-            <div class="forms-grid">
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how-section">
+        <div class="how-container">
+            <div class="how-header">
+                <h2>How It Works</h2>
+            </div>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="step-number">1</div>
+                    <h3>Apply</h3>
+                    <p>Fill out the form below with your project details and what kind of help you're looking for.</p>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">2</div>
+                    <h3>We Review</h3>
+                    <p>Our team reviews every application and evaluates how we can best help your project succeed.</p>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">3</div>
+                    <h3>We Reach Out</h3>
+                    <p>If it's a fit, we'll reach out on Discord or Twitter to start the conversation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Partner Application -->
-                <div class="form-panel">
-                    <div class="form-panel-header">
-                        <div class="form-panel-tag">Partner Application</div>
-                        <h2>Apply to Partner</h2>
-                        <p>Tell us about your project and how we can help take it further.</p>
+    <!-- ============ CODE EDITOR ============ -->
+    <section class="code-section">
+        <div class="code-container">
+            <div class="code-window">
+                <div class="code-titlebar">
+                    <div class="code-dots">
+                        <span></span><span></span><span></span>
                     </div>
+                    <div class="code-tab">horror_core.verse</div>
+                    <div class="code-watermark">// OUCH Games</div>
+                </div>
+                <div class="code-body" id="codeBody"></div>
+            </div>
+        </div>
+    </section>
 
-                    <form class="partner-form" id="partnerForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="studioName">Studio / Creator Name</label>
-                                <input type="text" id="studioName" required placeholder="Your studio or name">
-                            </div>
-                            <div class="form-group">
-                                <label for="twitter">Twitter / X Handle</label>
-                                <input type="text" id="twitter" placeholder="@yourhandle">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="mapName">Map Name</label>
-                                <input type="text" id="mapName" required placeholder="Your map's name">
-                            </div>
-                            <div class="form-group">
-                                <label for="islandCode">Island Code</label>
-                                <input type="text" id="islandCode" placeholder="1234-5678-9012">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="projectStage">What stage is your project?</label>
-                            <select id="projectStage" required>
-                                <option value="" disabled selected>Select a stage</option>
-                                <option value="Concept">Concept — just an idea</option>
-                                <option value="In Development">In Development — actively building</option>
-                                <option value="Nearly Done">Nearly Done — polishing & finishing</option>
-                            </select>
-                        </div>
-
-                        <div class="checkbox-group">
-                            <label class="group-label">What kind of help are you looking for?</label>
-                            <div class="checkbox-options">
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Environment Design">
-                                    <span>Environment Design</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Verse Systems">
-                                    <span>Verse Systems</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Level Design">
-                                    <span>Level Design</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Optimization">
-                                    <span>Optimization</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Marketing">
-                                    <span>Marketing</span>
-                                </label>
-                                <label class="checkbox-option">
-                                    <input type="checkbox" name="help" value="Creative Direction">
-                                    <span>Creative Direction</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="projectDesc">Tell us about your project</label>
-                            <textarea id="projectDesc" required placeholder="What's the concept? What makes it unique? What are you struggling with?"></textarea>
-                        </div>
-
-                        <button type="submit" class="form-submit" id="partnerSubmit">Submit Application</button>
-                    </form>
-
-                    <div class="form-success" id="partnerSuccess">
-                        <div class="form-success-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <h3>Application Sent</h3>
-                        <p>We'll review your project and reach out soon.</p>
-                    </div>
+    <!-- ============ APPLICATION FORM ============ -->
+    <section class="form-section" id="apply">
+        <div class="form-container">
+            <div class="form-panel">
+                <div class="form-panel-header">
+                    <div class="form-panel-tag">Partner Application</div>
+                    <h2>Apply to Partner</h2>
+                    <p>Tell us about your project and how we can help take it further.</p>
                 </div>
 
-                <!-- General Contact -->
-                <div class="form-panel">
-                    <div class="form-panel-header">
-                        <div class="form-panel-tag">General Inquiry</div>
-                        <h2>Get in Touch</h2>
-                        <p>Collabs, press, brand deals, or just want to say hi — drop us a line.</p>
+                <form class="partner-form" id="partnerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studioName">Studio / Creator Name</label>
+                            <input type="text" id="studioName" required placeholder="Your studio or name">
+                        </div>
+                        <div class="form-group">
+                            <label for="twitter">Twitter / X Handle</label>
+                            <input type="text" id="twitter" placeholder="@yourhandle">
+                        </div>
                     </div>
 
-                    <form class="contact-form-panel" id="contactForm">
+                    <div class="form-row">
                         <div class="form-group">
-                            <label for="contactName">Name</label>
-                            <input type="text" id="contactName" required placeholder="Your name">
+                            <label for="mapName">Map Name</label>
+                            <input type="text" id="mapName" required placeholder="Your map's name">
                         </div>
-
                         <div class="form-group">
-                            <label for="contactEmail">Email</label>
-                            <input type="email" id="contactEmail" required placeholder="you@example.com">
+                            <label for="islandCode">Island Code</label>
+                            <input type="text" id="islandCode" placeholder="1234-5678-9012">
                         </div>
-
-                        <div class="form-group">
-                            <label for="contactSubject">Subject</label>
-                            <select id="contactSubject" required>
-                                <option value="" disabled selected>Select a subject</option>
-                                <option value="General Inquiry">General Inquiry</option>
-                                <option value="Brand Deal">Brand Deal</option>
-                                <option value="Content Creator Collab">Content Creator Collab</option>
-                                <option value="Press / Media">Press / Media</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="contactMessage">Message</label>
-                            <textarea id="contactMessage" required placeholder="What's on your mind?"></textarea>
-                        </div>
-
-                        <button type="submit" class="form-submit" id="contactSubmit">Send Message</button>
-                    </form>
-
-                    <div class="form-success" id="contactSuccess">
-                        <div class="form-success-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <h3>Message Sent</h3>
-                        <p>We'll get back to you as soon as possible.</p>
                     </div>
+
+                    <div class="form-group">
+                        <label for="projectStage">What stage is your project?</label>
+                        <select id="projectStage" required>
+                            <option value="" disabled selected>Select a stage</option>
+                            <option value="Concept">Concept — just an idea</option>
+                            <option value="In Development">In Development — actively building</option>
+                            <option value="Nearly Done">Nearly Done — polishing & finishing</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="group-label">What kind of help are you looking for?</label>
+                        <div class="checkbox-options">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Environment Design">
+                                <span>Environment Design</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Verse Systems">
+                                <span>Verse Systems</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Level Design">
+                                <span>Level Design</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Optimization">
+                                <span>Optimization</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Marketing">
+                                <span>Marketing</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="help" value="Creative Direction">
+                                <span>Creative Direction</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectDesc">Tell us about your project</label>
+                        <textarea id="projectDesc" required placeholder="What's the concept? What makes it unique? What are you struggling with?"></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit" id="partnerSubmit">Submit Application</button>
+                </form>
+
+                <div class="form-success" id="partnerSuccess">
+                    <div class="form-success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3>Application Sent</h3>
+                    <p>We'll review your project and reach out soon.</p>
                 </div>
-
             </div>
         </div>
     </section>
@@ -888,6 +1076,7 @@
     <script src="script.js"></script>
     <script>
     (function() {
+        // ============ DISCORD WEBHOOK ============
         var WEBHOOK = 'https://discord.com/api/webhooks/1466623780192260259/chvGbhxTjp3Sq_Q8McfCaGmc0ldxggWPO4NH0balL-7ZmzzYpFvf4MYdcapex_ETvLX9';
 
         async function sendWebhook(payload) {
@@ -903,7 +1092,7 @@
             }
         }
 
-        // === Partner Application ===
+        // ============ PARTNER FORM ============
         document.getElementById('partnerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             var btn = document.getElementById('partnerSubmit');
@@ -943,35 +1132,196 @@
             document.getElementById('partnerSuccess').classList.add('show');
         });
 
-        // === General Contact ===
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            var btn = document.getElementById('contactSubmit');
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
+        // ============ CODE TYPING ANIMATION ============
+        var snippets = [
+            [
+                {t:'// OUCH Games Studio', c:'cm'},
+                {t:'// building horror, one line at a time', c:'cm'},
+                {t:''},
+                {t:'var', c:'kw'}, {t:' tension_level : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'0.0', c:'num'},
+                {t:'var', c:'kw'}, {t:' active_players : ', c:'op'}, {t:'int', c:'str'}, {t:' = ', c:'op'}, {t:'0', c:'num'},
+                {t:''},
+                {t:'on', c:'kw'}, {t:' PlayerEnter', c:'fn'}, {t:'(player : ', c:'op'}, {t:'agent', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
+                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' tension_level += ', c:'op'}, {t:'0.4', c:'num'},
+                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' active_players += ', c:'op'}, {t:'1', c:'num'},
+                {t:'    spawn_event', c:'fn'}, {t:'(', c:'op'}, {t:'Whisper', c:'str'}, {t:', player.Position)', c:'op'},
+                {t:'    trigger_ambient', c:'fn'}, {t:'(', c:'op'}, {t:'Fear_03', c:'str'}, {t:')', c:'op'},
+                {t:''},
+                {t:'spawn_room', c:'fn'}, {t:'(seed : ', c:'op'}, {t:'int', c:'str'}, {t:') : ', c:'op'}, {t:'room', c:'str'}, {t:' =', c:'op'},
+                {t:'    layout := generate_layout', c:'fn'}, {t:'(seed)', c:'op'},
+                {t:'    apply_darkness', c:'fn'}, {t:'(layout, ', c:'op'}, {t:'Level.Extreme', c:'str'}, {t:')', c:'op'},
+                {t:'    ', c:''}, {t:'return', c:'kw'}, {t:' layout', c:'fn'}
+            ],
+            [
+                {t:'// Entity AI Behavior System', c:'cm'},
+                {t:'// autonomous horror NPCs', c:'cm'},
+                {t:''},
+                {t:'var', c:'kw'}, {t:' hunt_radius : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'45.0', c:'num'},
+                {t:'var', c:'kw'}, {t:' is_stalking : ', c:'op'}, {t:'logic', c:'str'}, {t:' = ', c:'op'}, {t:'false', c:'num'},
+                {t:''},
+                {t:'on', c:'kw'}, {t:' DetectPlayer', c:'fn'}, {t:'(target : ', c:'op'}, {t:'agent', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
+                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' is_stalking = ', c:'op'}, {t:'true', c:'num'},
+                {t:'    dim_lights', c:'fn'}, {t:'(', c:'op'}, {t:'Radius.Near', c:'str'}, {t:')', c:'op'},
+                {t:'    play_sfx', c:'fn'}, {t:'(', c:'op'}, {t:'Breath_Close', c:'str'}, {t:', ', c:'op'}, {t:'0.3', c:'num'}, {t:')', c:'op'},
+                {t:'    begin_pursuit', c:'fn'}, {t:'(target, hunt_radius)', c:'op'},
+                {t:''},
+                {t:'update_patrol', c:'fn'}, {t:'(dt : ', c:'op'}, {t:'float', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
+                {t:'    ', c:''}, {t:'if', c:'kw'}, {t:' (is_stalking):', c:'op'},
+                {t:'        move_toward_sound', c:'fn'}, {t:'(', c:'op'}, {t:'LastKnownPos', c:'str'}, {t:')', c:'op'},
+                {t:'    ', c:''}, {t:'else:', c:'kw'},
+                {t:'        wander_corridor', c:'fn'}, {t:'(dt)', c:'op'}
+            ],
+            [
+                {t:'// Procedural Environment Builder', c:'cm'},
+                {t:'// no two runs are the same', c:'cm'},
+                {t:''},
+                {t:'var', c:'kw'}, {t:' room_count : ', c:'op'}, {t:'int', c:'str'}, {t:' = ', c:'op'}, {t:'12', c:'num'},
+                {t:'var', c:'kw'}, {t:' fog_density : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'0.85', c:'num'},
+                {t:''},
+                {t:'build_facility', c:'fn'}, {t:'(seed : ', c:'op'}, {t:'int', c:'str'}, {t:') : ', c:'op'}, {t:'facility', c:'str'}, {t:' =', c:'op'},
+                {t:'    grid := create_grid', c:'fn'}, {t:'(', c:'op'}, {t:'8', c:'num'}, {t:', ', c:'op'}, {t:'8', c:'num'}, {t:')', c:'op'},
+                {t:'    ', c:''}, {t:'for', c:'kw'}, {t:' (i := ', c:'op'}, {t:'0', c:'num'}, {t:'..room_count):', c:'op'},
+                {t:'        place_room', c:'fn'}, {t:'(grid, ', c:'op'}, {t:'RoomType.Random', c:'str'}, {t:')', c:'op'},
+                {t:'    connect_corridors', c:'fn'}, {t:'(grid)', c:'op'},
+                {t:'    apply_fog', c:'fn'}, {t:'(grid, fog_density)', c:'op'},
+                {t:''},
+                {t:'on', c:'kw'}, {t:' RoomEnter', c:'fn'}, {t:'(room : ', c:'op'}, {t:'room_ref', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
+                {t:'    flicker_lights', c:'fn'}, {t:'(room, ', c:'op'}, {t:'0.2', c:'num'}, {t:')', c:'op'},
+                {t:'    ', c:''}, {t:'spawn', c:'kw'}, {t:' ambient_sound', c:'fn'}, {t:'(', c:'op'}, {t:'Drip_Echo', c:'str'}, {t:')', c:'op'},
+                {t:'    ', c:''}, {t:'if', c:'kw'}, {t:' (random() < ', c:'op'}, {t:'0.15', c:'num'}, {t:'):', c:'op'},
+                {t:'        trigger_event', c:'fn'}, {t:'(', c:'op'}, {t:'Scare.Subtle', c:'str'}, {t:')', c:'op'}
+            ]
+        ];
 
-            var name = document.getElementById('contactName').value.trim();
-            var email = document.getElementById('contactEmail').value.trim();
-            var subject = document.getElementById('contactSubject').value;
-            var message = document.getElementById('contactMessage').value.trim();
+        function buildLines(tokens) {
+            var lines = [];
+            var currentLine = [];
+            tokens.forEach(function(tk) {
+                if (tk.t === '') {
+                    if (currentLine.length > 0) lines.push(currentLine);
+                    lines.push([]);
+                    currentLine = [];
+                } else if (tk.t.charAt(0) === ' ' && tk.t.trim() === '' && currentLine.length === 0) {
+                    currentLine.push(tk);
+                } else {
+                    currentLine.push(tk);
+                }
+            });
+            if (currentLine.length > 0) lines.push(currentLine);
+            return lines;
+        }
 
-            await sendWebhook({
-                embeds: [{
-                    title: '\uD83D\uDCEC New Contact Message',
-                    color: 0xbf7fff,
-                    fields: [
-                        { name: 'Name', value: name, inline: true },
-                        { name: 'Email', value: email, inline: true },
-                        { name: 'Subject', value: subject, inline: false },
-                        { name: 'Message', value: message, inline: false }
-                    ],
-                    timestamp: new Date().toISOString()
-                }]
+        var codeBody = document.getElementById('codeBody');
+        var snippetIdx = 0;
+        var aborted = false;
+
+        function typeSnippet(cb) {
+            var lines = buildLines(snippets[snippetIdx]);
+            codeBody.innerHTML = '';
+            var lineEls = [];
+            for (var i = 0; i < lines.length; i++) {
+                var el = document.createElement('div');
+                el.className = 'code-line';
+                var numSpan = document.createElement('span');
+                numSpan.className = 'line-num';
+                numSpan.textContent = i + 1;
+                var contentSpan = document.createElement('span');
+                contentSpan.className = 'line-content';
+                el.appendChild(numSpan);
+                el.appendChild(contentSpan);
+                codeBody.appendChild(el);
+                lineEls.push(contentSpan);
+            }
+
+            function removeCursor() {
+                var c = codeBody.querySelector('.code-cursor');
+                if (c) c.remove();
+            }
+
+            function addCursor(el) {
+                removeCursor();
+                var cur = document.createElement('span');
+                cur.className = 'code-cursor';
+                el.appendChild(cur);
+            }
+
+            var typedChars = [];
+            lines.forEach(function(tokens, li) {
+                tokens.forEach(function(tk) {
+                    for (var c = 0; c < tk.t.length; c++) {
+                        typedChars.push({line: li, ch: tk.t[c], cls: tk.c || ''});
+                    }
+                });
+                typedChars.push({line: li, ch: '\n', cls: ''});
             });
 
-            this.style.display = 'none';
-            document.getElementById('contactSuccess').classList.add('show');
-        });
+            var idx = 0;
+
+            function typeNext() {
+                if (aborted) return;
+                if (idx >= typedChars.length) {
+                    setTimeout(function() {
+                        codeBody.style.transition = 'opacity 0.8s ease';
+                        codeBody.style.opacity = '0';
+                        setTimeout(function() {
+                            codeBody.style.opacity = '1';
+                            codeBody.style.transition = 'none';
+                            cb();
+                        }, 900);
+                    }, 2000);
+                    return;
+                }
+
+                var item = typedChars[idx];
+                var el = lineEls[item.line];
+
+                removeCursor();
+
+                if (item.ch !== '\n') {
+                    var lastChild = el.lastElementChild;
+                    var span;
+                    if (lastChild && !lastChild.classList.contains('code-cursor') && lastChild.className === item.cls) {
+                        span = lastChild;
+                    } else {
+                        span = document.createElement('span');
+                        if (item.cls) span.className = item.cls;
+                        el.appendChild(span);
+                    }
+                    span.textContent += item.ch;
+                }
+
+                addCursor(el);
+                idx++;
+
+                var delay = 35 + Math.random() * 30;
+                if (item.ch === ' ' || item.ch === '\n') delay = 15 + Math.random() * 15;
+                if (item.ch === '\n') delay = 80 + Math.random() * 120;
+                if (item.ch === '\n' && item.line < lines.length - 1 && lines[item.line].length > 0 && lines[item.line][0].c === 'cm') {
+                    delay = 200;
+                }
+
+                setTimeout(typeNext, delay);
+            }
+
+            addCursor(lineEls[0]);
+            setTimeout(typeNext, 600);
+        }
+
+        function cycleSnippets() {
+            typeSnippet(function() {
+                snippetIdx = (snippetIdx + 1) % snippets.length;
+                cycleSnippets();
+            });
+        }
+
+        var observer = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting) {
+                observer.disconnect();
+                cycleSnippets();
+            }
+        }, {threshold: 0.3});
+
+        observer.observe(document.querySelector('.code-section'));
     })();
     </script>
 </body>
