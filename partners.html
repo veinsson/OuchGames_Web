@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner With Us - Ouch Games</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        /* === HERO === */
+        .partner-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(155, 77, 255, 0.2) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 70%, rgba(255, 77, 166, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(77, 255, 255, 0.06) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .partner-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--bg-primary), transparent);
+            z-index: 1;
+        }
+
+        .partner-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .partner-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(155, 77, 255, 0.15);
+            border: 1px solid rgba(155, 77, 255, 0.3);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+        }
+
+        .partner-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .partner-title span {
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .partner-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-cta-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta-row a {
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius-md);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .cta-primary {
+            background: var(--accent-purple);
+            color: #fff;
+        }
+
+        .cta-primary:hover {
+            background: var(--accent-purple-light);
+            box-shadow: 0 0 30px var(--accent-purple-glow);
+            transform: translateY(-2px);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--accent-purple);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* === STATS STRIP === */
+        .stats-strip {
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(155, 77, 255, 0.1);
+            border-bottom: 1px solid rgba(155, 77, 255, 0.1);
+            background: rgba(155, 77, 255, 0.03);
+        }
+
+        .stats-strip-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .strip-stat {
+            text-align: center;
+        }
+
+        .strip-stat-num {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-purple-light);
+            display: block;
+        }
+
+        .strip-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 0.25rem;
+        }
+
+        /* === SERVICES === */
+        .services-section {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .services-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.75rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .services-header p {
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(155, 77, 255, 0.12);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background: rgba(155, 77, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .service-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-purple-light);
+        }
+
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* === FORMS SECTION === */
+        .forms-section {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .forms-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 25% 50%, rgba(155, 77, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 50%, rgba(255, 77, 166, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .forms-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .forms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .form-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+        }
+
+        .form-panel-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-panel-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(155, 77, 255, 0.15);
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-panel-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-panel-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .partner-form,
+        .contact-form-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 0.9rem;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236b5a8a'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Checkbox group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .checkbox-group label.group-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .checkbox-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.65rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .checkbox-option:hover {
+            border-color: rgba(155, 77, 255, 0.4);
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.15s ease;
+        }
+
+        .checkbox-option input[type="checkbox"]:checked {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+
+        .checkbox-option input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 4px;
+            width: 5px;
+            height: 8px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-option span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-option:has(input:checked) {
+            border-color: rgba(155, 77, 255, 0.5);
+            background: rgba(155, 77, 255, 0.05);
+        }
+
+        .checkbox-option:has(input:checked) span {
+            color: var(--text-primary);
+        }
+
+        .form-submit {
+            margin-top: 0.5rem;
+            padding: 0.8rem 1.75rem;
+            background: var(--accent-purple);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .form-submit:hover {
+            background: var(--accent-purple-light);
+            box-shadow: 0 0 20px var(--accent-purple-glow);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2.5rem 1rem;
+        }
+
+        .form-success.show {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-success-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(155, 77, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-success-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--accent-purple-light);
+        }
+
+        .form-success h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .form-success p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .partner-hero {
+                min-height: auto;
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .stats-strip-inner {
+                gap: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .forms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-panel {
+                padding: 1.75rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/#project-x">Sealed</a>
+                <a href="/creators">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+
+            <a href="/partners" class="btn btn-tertiary btn-nav active">Partner With Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="partner-hero">
+        <div class="partner-hero-content">
+            <div class="partner-badge">Now Accepting Partners</div>
+            <h1 class="partner-title">Working on something <span>scary?</span></h1>
+            <p class="partner-subtitle">We help horror creators in UEFN ship faster, look better, and reach more players. Let's build something terrifying together.</p>
+            <div class="hero-cta-row">
+                <a href="#apply" class="cta-primary">Apply to Partner</a>
+                <a href="#services" class="cta-secondary">See What We Offer</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+        <div class="stats-strip-inner">
+            <div class="strip-stat">
+                <span class="strip-stat-num">185K+</span>
+                <span class="strip-stat-label">Audience Reach</span>
+            </div>
+            <div class="strip-stat">
+                <span class="strip-stat-num">210M+</span>
+                <span class="strip-stat-label">Minutes Played</span>
+            </div>
+            <div class="strip-stat">
+                <span class="strip-stat-num">10</span>
+                <span class="strip-stat-label">Games Shipped</span>
+            </div>
+            <div class="strip-stat">
+                <span class="strip-stat-num">4</span>
+                <span class="strip-stat-label">Team Members</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="services-container">
+            <div class="services-header">
+                <h2>What We Bring to the Table</h2>
+                <p>Everything your horror project needs to go from concept to launch — and beyond.</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <h3>Environment Design</h3>
+                    <p>Atmospheric horror environments built to the highest standards. Dark hallways, abandoned facilities, spaces that feel alive.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+                    </div>
+                    <h3>Verse Systems</h3>
+                    <p>Custom AI behaviors, procedural generation, and game mechanics. The invisible systems that make horror games terrifying.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    </div>
+                    <h3>Level Design</h3>
+                    <p>Pacing, tension, and player flow designed to keep hearts racing. Every corner, every corridor — deliberate.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>Optimization</h3>
+                    <p>Performance tuning, server stability, and load time optimization. Smooth gameplay, zero excuses.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <h3>Marketing</h3>
+                    <p>Access to our 185K+ audience, social content strategy, and launch playbook. We know how to get eyes on horror.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    </div>
+                    <h3>Creative Direction</h3>
+                    <p>Concept development, narrative design, and world-building. We help shape your vision into something unforgettable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms Section -->
+    <section class="forms-section" id="apply">
+        <div class="forms-container">
+            <div class="forms-grid">
+
+                <!-- Partner Application -->
+                <div class="form-panel">
+                    <div class="form-panel-header">
+                        <div class="form-panel-tag">Partner Application</div>
+                        <h2>Apply to Partner</h2>
+                        <p>Tell us about your project and how we can help take it further.</p>
+                    </div>
+
+                    <form class="partner-form" id="partnerForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="studioName">Studio / Creator Name</label>
+                                <input type="text" id="studioName" required placeholder="Your studio or name">
+                            </div>
+                            <div class="form-group">
+                                <label for="twitter">Twitter / X Handle</label>
+                                <input type="text" id="twitter" placeholder="@yourhandle">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="mapName">Map Name</label>
+                                <input type="text" id="mapName" required placeholder="Your map's name">
+                            </div>
+                            <div class="form-group">
+                                <label for="islandCode">Island Code</label>
+                                <input type="text" id="islandCode" placeholder="1234-5678-9012">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectStage">What stage is your project?</label>
+                            <select id="projectStage" required>
+                                <option value="" disabled selected>Select a stage</option>
+                                <option value="Concept">Concept — just an idea</option>
+                                <option value="In Development">In Development — actively building</option>
+                                <option value="Nearly Done">Nearly Done — polishing & finishing</option>
+                            </select>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <label class="group-label">What kind of help are you looking for?</label>
+                            <div class="checkbox-options">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Environment Design">
+                                    <span>Environment Design</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Verse Systems">
+                                    <span>Verse Systems</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Level Design">
+                                    <span>Level Design</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Optimization">
+                                    <span>Optimization</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Marketing">
+                                    <span>Marketing</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="help" value="Creative Direction">
+                                    <span>Creative Direction</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectDesc">Tell us about your project</label>
+                            <textarea id="projectDesc" required placeholder="What's the concept? What makes it unique? What are you struggling with?"></textarea>
+                        </div>
+
+                        <button type="submit" class="form-submit" id="partnerSubmit">Submit Application</button>
+                    </form>
+
+                    <div class="form-success" id="partnerSuccess">
+                        <div class="form-success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h3>Application Sent</h3>
+                        <p>We'll review your project and reach out soon.</p>
+                    </div>
+                </div>
+
+                <!-- General Contact -->
+                <div class="form-panel">
+                    <div class="form-panel-header">
+                        <div class="form-panel-tag">General Inquiry</div>
+                        <h2>Get in Touch</h2>
+                        <p>Collabs, press, brand deals, or just want to say hi — drop us a line.</p>
+                    </div>
+
+                    <form class="contact-form-panel" id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Name</label>
+                            <input type="text" id="contactName" required placeholder="Your name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" required placeholder="you@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactSubject">Subject</label>
+                            <select id="contactSubject" required>
+                                <option value="" disabled selected>Select a subject</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Brand Deal">Brand Deal</option>
+                                <option value="Content Creator Collab">Content Creator Collab</option>
+                                <option value="Press / Media">Press / Media</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" required placeholder="What's on your mind?"></textarea>
+                        </div>
+
+                        <button type="submit" class="form-submit" id="contactSubmit">Send Message</button>
+                    </form>
+
+                    <div class="form-success" id="contactSuccess">
+                        <div class="form-success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h3>Message Sent</h3>
+                        <p>We'll get back to you as soon as possible.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2026 Ouch Games. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="social-link" title="X / Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@OuchUEFN" target="_blank" class="social-link" title="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="social-link" title="Discord">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    (function() {
+        var WEBHOOK = 'https://discord.com/api/webhooks/1466623780192260259/chvGbhxTjp3Sq_Q8McfCaGmc0ldxggWPO4NH0balL-7ZmzzYpFvf4MYdcapex_ETvLX9';
+
+        async function sendWebhook(payload) {
+            try {
+                await fetch(WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // === Partner Application ===
+        document.getElementById('partnerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('partnerSubmit');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            var studio = document.getElementById('studioName').value.trim();
+            var twitter = document.getElementById('twitter').value.trim();
+            var mapName = document.getElementById('mapName').value.trim();
+            var code = document.getElementById('islandCode').value.trim();
+            var stage = document.getElementById('projectStage').value;
+            var desc = document.getElementById('projectDesc').value.trim();
+
+            var checks = [];
+            document.querySelectorAll('input[name="help"]:checked').forEach(function(cb) {
+                checks.push(cb.value);
+            });
+
+            await sendWebhook({
+                embeds: [{
+                    title: '\uD83E\uDD1D New Partner Application',
+                    color: 0x9b4dff,
+                    fields: [
+                        { name: 'Studio / Creator', value: studio, inline: true },
+                        { name: 'Twitter / X', value: twitter || 'N/A', inline: true },
+                        { name: 'Map Name', value: mapName, inline: true },
+                        { name: 'Island Code', value: code || 'N/A', inline: true },
+                        { name: 'Project Stage', value: stage, inline: true },
+                        { name: 'Help Needed', value: checks.length ? checks.join(', ') : 'None specified', inline: false },
+                        { name: 'Project Description', value: desc, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            });
+
+            this.style.display = 'none';
+            document.getElementById('partnerSuccess').classList.add('show');
+        });
+
+        // === General Contact ===
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('contactSubmit');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            var name = document.getElementById('contactName').value.trim();
+            var email = document.getElementById('contactEmail').value.trim();
+            var subject = document.getElementById('contactSubject').value;
+            var message = document.getElementById('contactMessage').value.trim();
+
+            await sendWebhook({
+                embeds: [{
+                    title: '\uD83D\uDCEC New Contact Message',
+                    color: 0xbf7fff,
+                    fields: [
+                        { name: 'Name', value: name, inline: true },
+                        { name: 'Email', value: email, inline: true },
+                        { name: 'Subject', value: subject, inline: false },
+                        { name: 'Message', value: message, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            });
+
+            this.style.display = 'none';
+            document.getElementById('contactSuccess').classList.add('show');
+        });
+    })();
+    </script>
+</body>
+</html>
