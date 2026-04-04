@@ -12,11 +12,11 @@
     <style>
         /* =============== HERO =============== */
         .partner-hero {
-            min-height: 80vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8rem 2rem 6rem;
+            padding: 7rem 2rem 4rem;
             position: relative;
             overflow: hidden;
         }
@@ -32,21 +32,13 @@
                 linear-gradient(180deg, #1a0a2e 0%, #0a0612 50%, #050308 100%);
         }
 
-        .partner-hero .hero-bg img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
-            filter: brightness(0.6) saturate(0.7);
-        }
-
         .partner-hero .hero-bg::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 30% 20%, rgba(155, 77, 255, 0.5) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(191, 127, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 20%, rgba(155, 77, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(191, 127, 255, 0.3) 0%, transparent 50%),
                 linear-gradient(180deg, rgba(10, 6, 18, 0.4) 0%, rgba(10, 6, 18, 0.7) 100%);
             z-index: 1;
         }
@@ -77,20 +69,25 @@
         .partner-hero-content {
             position: relative;
             z-index: 4;
-            max-width: 800px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
             align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
         }
 
         .partner-title {
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2.2rem, 5vw, 4rem);
             font-weight: 700;
             line-height: 1.1;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
         .partner-title .cyan {
@@ -100,19 +97,120 @@
         }
 
         .partner-subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             color: var(--text-secondary);
-            line-height: 1.8;
-            max-width: 600px;
-            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            max-width: 500px;
+            margin-bottom: 2rem;
         }
 
         .hero-cta-row {
             display: flex;
             gap: 1rem;
-            justify-content: center;
             flex-wrap: wrap;
         }
+
+        /* =============== CODE EDITOR (in hero) =============== */
+        .hero-code-wrap {
+            position: relative;
+        }
+
+        .code-window {
+            background: #0d0a14;
+            border-radius: 10px;
+            border: 1px solid rgba(155, 77, 255, 0.2);
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(155, 77, 255, 0.12);
+        }
+
+        .code-titlebar {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: #100c18;
+            border-bottom: 1px solid rgba(155, 77, 255, 0.1);
+            gap: 0.5rem;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dots span {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .code-dots span:nth-child(1) { background: #ff5f57; }
+        .code-dots span:nth-child(2) { background: #febc2e; }
+        .code-dots span:nth-child(3) { background: #28c840; }
+
+        .code-tab {
+            margin-left: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(155, 77, 255, 0.1);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            transition: opacity 0.3s ease;
+        }
+
+        .code-body {
+            padding: 1rem 0;
+            min-height: 340px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.65;
+            overflow: hidden;
+        }
+
+        .code-line {
+            display: flex;
+            padding: 0 1rem;
+            min-height: 1.65em;
+        }
+
+        .line-num {
+            width: 30px;
+            text-align: right;
+            color: #3d2a5c;
+            user-select: none;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .line-content {
+            white-space: pre;
+            flex: 1;
+        }
+
+        .code-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent-cyan);
+            vertical-align: text-bottom;
+            animation: cursorBlink 1s step-end infinite;
+            box-shadow: 0 0 6px rgba(77, 255, 255, 0.5);
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Syntax colors */
+        .kw { color: #9b4dff; }
+        .fn { color: #e0e0e0; }
+        .str { color: var(--accent-cyan); }
+        .cm { color: #555; }
+        .op { color: #b8a9d4; }
+        .num { color: #febc2e; }
+        .at { color: #ff8b4d; }
+        .tp { color: #4dffb8; }
 
         /* =============== STATS STRIP =============== */
         .stats-strip {
@@ -328,120 +426,6 @@
             font-size: 0.9rem;
             line-height: 1.5;
         }
-
-        /* =============== CODE EDITOR =============== */
-        .code-section {
-            padding: 5rem 2rem;
-            background: var(--bg-secondary);
-            border-top: 1px solid rgba(155, 77, 255, 0.08);
-        }
-
-        .code-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .code-window {
-            background: #0d0a14;
-            border-radius: 10px;
-            border: 1px solid rgba(155, 77, 255, 0.15);
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(155, 77, 255, 0.1);
-        }
-
-        .code-titlebar {
-            display: flex;
-            align-items: center;
-            padding: 0.65rem 1rem;
-            background: #100c18;
-            border-bottom: 1px solid rgba(155, 77, 255, 0.1);
-            gap: 0.5rem;
-        }
-
-        .code-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .code-dots span {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .code-dots span:nth-child(1) { background: #ff5f57; }
-        .code-dots span:nth-child(2) { background: #febc2e; }
-        .code-dots span:nth-child(3) { background: #28c840; }
-
-        .code-tab {
-            margin-left: 1rem;
-            padding: 0.25rem 0.75rem;
-            background: rgba(155, 77, 255, 0.1);
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .code-watermark {
-            margin-left: auto;
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        .code-body {
-            padding: 1.25rem 0;
-            min-height: 380px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            line-height: 1.7;
-            overflow: hidden;
-        }
-
-        .code-line {
-            display: flex;
-            padding: 0 1.25rem;
-            min-height: 1.7em;
-        }
-
-        .line-num {
-            width: 35px;
-            text-align: right;
-            color: #3d2a5c;
-            user-select: none;
-            margin-right: 1.25rem;
-            flex-shrink: 0;
-        }
-
-        .line-content {
-            white-space: pre;
-            flex: 1;
-        }
-
-        .code-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.1em;
-            background: var(--accent-cyan);
-            vertical-align: text-bottom;
-            animation: cursorBlink 1s step-end infinite;
-            box-shadow: 0 0 6px rgba(77, 255, 255, 0.5);
-        }
-
-        @keyframes cursorBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Syntax colors */
-        .kw { color: #9b4dff; }
-        .fn { color: #e0e0e0; }
-        .str { color: var(--accent-cyan); }
-        .cm { color: #3d2a5c; }
-        .op { color: #b8a9d4; }
-        .num { color: #febc2e; }
 
         /* =============== FORM SECTION =============== */
         .form-section {
@@ -748,12 +732,47 @@
             .services-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .partner-hero-content {
+                gap: 2.5rem;
+            }
+            .code-body {
+                font-size: 0.72rem;
+                min-height: 300px;
+            }
         }
 
         @media (max-width: 768px) {
             .partner-hero {
                 min-height: auto;
-                padding: 8rem 1.5rem 4rem;
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .partner-hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-cta-row {
+                justify-content: center;
+            }
+
+            .partner-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-code-wrap {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .code-body {
+                font-size: 0.68rem;
+                min-height: 280px;
             }
 
             .stats-strip-inner {
@@ -780,11 +799,6 @@
             .form-row,
             .checkbox-options {
                 grid-template-columns: 1fr;
-            }
-
-            .code-body {
-                font-size: 0.75rem;
-                min-height: 320px;
             }
         }
     </style>
@@ -827,18 +841,30 @@
 
     <!-- ============ HERO ============ -->
     <section class="partner-hero">
-        <div class="hero-bg">
-            <img src="assets/hero_bg2.png" alt="">
-        </div>
+        <div class="hero-bg"></div>
         <div class="crt-overlay"></div>
 
         <div class="partner-hero-content">
-            <div class="hero-badge">Now Accepting Partners</div>
-            <h1 class="partner-title">Working on something <span class="cyan">scary?</span></h1>
-            <p class="partner-subtitle">We help horror creators in UEFN ship faster, look better, and reach more players. Let's build something terrifying together.</p>
-            <div class="hero-cta-row">
-                <a href="#apply" class="btn btn-primary">Apply to Partner</a>
-                <a href="#services" class="btn btn-tertiary">See What We Offer</a>
+            <div class="hero-text">
+                <div class="hero-badge">Now Accepting Partners</div>
+                <h1 class="partner-title">Working on something <span class="cyan">scary?</span></h1>
+                <p class="partner-subtitle">We help horror creators in UEFN ship faster, look better, and reach more players. Let's build something terrifying together.</p>
+                <div class="hero-cta-row">
+                    <a href="#apply" class="btn btn-primary">Apply to Partner</a>
+                    <a href="#services" class="btn btn-tertiary">See What We Offer</a>
+                </div>
+            </div>
+
+            <div class="hero-code-wrap">
+                <div class="code-window">
+                    <div class="code-titlebar">
+                        <div class="code-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="code-tab" id="codeTab">horror_device.verse</div>
+                    </div>
+                    <div class="code-body" id="codeBody"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -941,22 +967,6 @@
                     <h3>We Reach Out</h3>
                     <p>If it's a fit, we'll reach out on Discord or Twitter to start the conversation.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============ CODE EDITOR ============ -->
-    <section class="code-section">
-        <div class="code-container">
-            <div class="code-window">
-                <div class="code-titlebar">
-                    <div class="code-dots">
-                        <span></span><span></span><span></span>
-                    </div>
-                    <div class="code-tab">horror_core.verse</div>
-                    <div class="code-watermark">// OUCH Games</div>
-                </div>
-                <div class="code-body" id="codeBody"></div>
             </div>
         </div>
     </section>
@@ -1133,91 +1143,89 @@
         });
 
         // ============ CODE TYPING ANIMATION ============
+        // Each snippet: { tab: 'filename.verse', lines: [ [tokens], [tokens], ... ] }
+        // Each token: { t: 'text', c: 'css-class' }
+        // Empty array [] = blank line
         var snippets = [
-            [
-                {t:'// OUCH Games Studio', c:'cm'},
-                {t:'// building horror, one line at a time', c:'cm'},
-                {t:''},
-                {t:'var', c:'kw'}, {t:' tension_level : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'0.0', c:'num'},
-                {t:'var', c:'kw'}, {t:' active_players : ', c:'op'}, {t:'int', c:'str'}, {t:' = ', c:'op'}, {t:'0', c:'num'},
-                {t:''},
-                {t:'on', c:'kw'}, {t:' PlayerEnter', c:'fn'}, {t:'(player : ', c:'op'}, {t:'agent', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
-                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' tension_level += ', c:'op'}, {t:'0.4', c:'num'},
-                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' active_players += ', c:'op'}, {t:'1', c:'num'},
-                {t:'    spawn_event', c:'fn'}, {t:'(', c:'op'}, {t:'Whisper', c:'str'}, {t:', player.Position)', c:'op'},
-                {t:'    trigger_ambient', c:'fn'}, {t:'(', c:'op'}, {t:'Fear_03', c:'str'}, {t:')', c:'op'},
-                {t:''},
-                {t:'spawn_room', c:'fn'}, {t:'(seed : ', c:'op'}, {t:'int', c:'str'}, {t:') : ', c:'op'}, {t:'room', c:'str'}, {t:' =', c:'op'},
-                {t:'    layout := generate_layout', c:'fn'}, {t:'(seed)', c:'op'},
-                {t:'    apply_darkness', c:'fn'}, {t:'(layout, ', c:'op'}, {t:'Level.Extreme', c:'str'}, {t:')', c:'op'},
-                {t:'    ', c:''}, {t:'return', c:'kw'}, {t:' layout', c:'fn'}
-            ],
-            [
-                {t:'// Entity AI Behavior System', c:'cm'},
-                {t:'// autonomous horror NPCs', c:'cm'},
-                {t:''},
-                {t:'var', c:'kw'}, {t:' hunt_radius : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'45.0', c:'num'},
-                {t:'var', c:'kw'}, {t:' is_stalking : ', c:'op'}, {t:'logic', c:'str'}, {t:' = ', c:'op'}, {t:'false', c:'num'},
-                {t:''},
-                {t:'on', c:'kw'}, {t:' DetectPlayer', c:'fn'}, {t:'(target : ', c:'op'}, {t:'agent', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
-                {t:'    ', c:''}, {t:'set', c:'kw'}, {t:' is_stalking = ', c:'op'}, {t:'true', c:'num'},
-                {t:'    dim_lights', c:'fn'}, {t:'(', c:'op'}, {t:'Radius.Near', c:'str'}, {t:')', c:'op'},
-                {t:'    play_sfx', c:'fn'}, {t:'(', c:'op'}, {t:'Breath_Close', c:'str'}, {t:', ', c:'op'}, {t:'0.3', c:'num'}, {t:')', c:'op'},
-                {t:'    begin_pursuit', c:'fn'}, {t:'(target, hunt_radius)', c:'op'},
-                {t:''},
-                {t:'update_patrol', c:'fn'}, {t:'(dt : ', c:'op'}, {t:'float', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
-                {t:'    ', c:''}, {t:'if', c:'kw'}, {t:' (is_stalking):', c:'op'},
-                {t:'        move_toward_sound', c:'fn'}, {t:'(', c:'op'}, {t:'LastKnownPos', c:'str'}, {t:')', c:'op'},
-                {t:'    ', c:''}, {t:'else:', c:'kw'},
-                {t:'        wander_corridor', c:'fn'}, {t:'(dt)', c:'op'}
-            ],
-            [
-                {t:'// Procedural Environment Builder', c:'cm'},
-                {t:'// no two runs are the same', c:'cm'},
-                {t:''},
-                {t:'var', c:'kw'}, {t:' room_count : ', c:'op'}, {t:'int', c:'str'}, {t:' = ', c:'op'}, {t:'12', c:'num'},
-                {t:'var', c:'kw'}, {t:' fog_density : ', c:'op'}, {t:'float', c:'str'}, {t:' = ', c:'op'}, {t:'0.85', c:'num'},
-                {t:''},
-                {t:'build_facility', c:'fn'}, {t:'(seed : ', c:'op'}, {t:'int', c:'str'}, {t:') : ', c:'op'}, {t:'facility', c:'str'}, {t:' =', c:'op'},
-                {t:'    grid := create_grid', c:'fn'}, {t:'(', c:'op'}, {t:'8', c:'num'}, {t:', ', c:'op'}, {t:'8', c:'num'}, {t:')', c:'op'},
-                {t:'    ', c:''}, {t:'for', c:'kw'}, {t:' (i := ', c:'op'}, {t:'0', c:'num'}, {t:'..room_count):', c:'op'},
-                {t:'        place_room', c:'fn'}, {t:'(grid, ', c:'op'}, {t:'RoomType.Random', c:'str'}, {t:')', c:'op'},
-                {t:'    connect_corridors', c:'fn'}, {t:'(grid)', c:'op'},
-                {t:'    apply_fog', c:'fn'}, {t:'(grid, fog_density)', c:'op'},
-                {t:''},
-                {t:'on', c:'kw'}, {t:' RoomEnter', c:'fn'}, {t:'(room : ', c:'op'}, {t:'room_ref', c:'str'}, {t:') : ', c:'op'}, {t:'void', c:'str'}, {t:' =', c:'op'},
-                {t:'    flicker_lights', c:'fn'}, {t:'(room, ', c:'op'}, {t:'0.2', c:'num'}, {t:')', c:'op'},
-                {t:'    ', c:''}, {t:'spawn', c:'kw'}, {t:' ambient_sound', c:'fn'}, {t:'(', c:'op'}, {t:'Drip_Echo', c:'str'}, {t:')', c:'op'},
-                {t:'    ', c:''}, {t:'if', c:'kw'}, {t:' (random() < ', c:'op'}, {t:'0.15', c:'num'}, {t:'):', c:'op'},
-                {t:'        trigger_event', c:'fn'}, {t:'(', c:'op'}, {t:'Scare.Subtle', c:'str'}, {t:')', c:'op'}
-            ]
+            {
+                tab: 'horror_device.verse',
+                lines: [
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/Fortnite.com/Devices',c:'str'}, {t:' }',c:'op'}],
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/Verse.org/Simulation',c:'str'}, {t:' }',c:'op'}],
+                    [],
+                    [{t:'horror_device',c:'tp'}, {t:' := ',c:'op'}, {t:'class',c:'kw'}, {t:'(',c:'op'}, {t:'creative_device',c:'tp'}, {t:'):',c:'op'}],
+                    [{t:'    ',c:''}, {t:'@editable',c:'at'}],
+                    [{t:'    JumpScare',c:'fn'}, {t:' : ',c:'op'}, {t:'cinematic_sequence_device',c:'tp'}, {t:' = ',c:'op'}, {t:'cinematic_sequence_device',c:'tp'}, {t:'{}',c:'op'}],
+                    [],
+                    [{t:'    ',c:''}, {t:'var',c:'kw'}, {t:' ThreatLevel',c:'fn'}, {t:' : ',c:'op'}, {t:'float',c:'tp'}, {t:' = ',c:'op'}, {t:'0.0',c:'num'}],
+                    [],
+                    [{t:'    OnBegin',c:'fn'}, {t:'<',c:'op'}, {t:'override',c:'kw'}, {t:'>()<',c:'op'}, {t:'suspends',c:'kw'}, {t:'> : ',c:'op'}, {t:'void',c:'tp'}, {t:' =',c:'op'}],
+                    [{t:'        Print',c:'fn'}, {t:'(',c:'op'}, {t:'"Initializing horror systems..."',c:'str'}, {t:')',c:'op'}],
+                    [{t:'        ',c:''}, {t:'loop',c:'kw'}, {t:':',c:'op'}],
+                    [{t:'            Sleep',c:'fn'}, {t:'(',c:'op'}, {t:'1.0',c:'num'}, {t:')',c:'op'}],
+                    [{t:'            ',c:''}, {t:'set',c:'kw'}, {t:' ThreatLevel += ',c:'op'}, {t:'0.1',c:'num'}],
+                    [{t:'            ',c:''}, {t:'if',c:'kw'}, {t:' (ThreatLevel > ',c:'op'}, {t:'8.0',c:'num'}, {t:'):',c:'op'}],
+                    [{t:'                JumpScare',c:'fn'}, {t:'.',c:'op'}, {t:'Play',c:'fn'}, {t:'()',c:'op'}],
+                    [{t:'                ',c:''}, {t:'set',c:'kw'}, {t:' ThreatLevel = ',c:'op'}, {t:'0.0',c:'num'}]
+                ]
+            },
+            {
+                tab: 'stalker_ai.verse',
+                lines: [
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/Fortnite.com/Devices',c:'str'}, {t:' }',c:'op'}],
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/UnrealEngine.com/Temporary/SpatialMath',c:'str'}, {t:' }',c:'op'}],
+                    [],
+                    [{t:'stalker_ai',c:'tp'}, {t:' := ',c:'op'}, {t:'class',c:'kw'}, {t:'(',c:'op'}, {t:'creative_device',c:'tp'}, {t:'):',c:'op'}],
+                    [{t:'    ',c:''}, {t:'@editable',c:'at'}],
+                    [{t:'    HuntRadius',c:'fn'}, {t:' : ',c:'op'}, {t:'float',c:'tp'}, {t:' = ',c:'op'}, {t:'50.0',c:'num'}],
+                    [],
+                    [{t:'    ',c:''}, {t:'var',c:'kw'}, {t:' IsActive',c:'fn'}, {t:' : ',c:'op'}, {t:'logic',c:'tp'}, {t:' = ',c:'op'}, {t:'false',c:'num'}],
+                    [],
+                    [{t:'    OnPlayerDetected',c:'fn'}, {t:'(Target : ',c:'op'}, {t:'agent',c:'tp'}, {t:')<',c:'op'}, {t:'suspends',c:'kw'}, {t:'> : ',c:'op'}, {t:'void',c:'tp'}, {t:' =',c:'op'}],
+                    [{t:'        ',c:''}, {t:'set',c:'kw'}, {t:' IsActive = ',c:'op'}, {t:'true',c:'num'}],
+                    [{t:'        DimNearbyLights',c:'fn'}, {t:'()',c:'op'}],
+                    [{t:'        ',c:''}, {t:'loop',c:'kw'}, {t:':',c:'op'}],
+                    [{t:'            MoveToward',c:'fn'}, {t:'(Target)',c:'op'}],
+                    [{t:'            Sleep',c:'fn'}, {t:'(',c:'op'}, {t:'0.05',c:'num'}, {t:')',c:'op'}],
+                    [{t:'            ',c:''}, {t:'if',c:'kw'}, {t:' (Distance(Target) < ',c:'op'}, {t:'3.0',c:'num'}, {t:'):',c:'op'}],
+                    [{t:'                TriggerJumpScare',c:'fn'}, {t:'(Target)',c:'op'}],
+                    [{t:'                ',c:''}, {t:'break',c:'kw'}]
+                ]
+            },
+            {
+                tab: 'room_generator.verse',
+                lines: [
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/Verse.org/Random',c:'str'}, {t:' }',c:'op'}],
+                    [{t:'using',c:'kw'}, {t:' { ',c:'op'}, {t:'/Fortnite.com/Devices',c:'str'}, {t:' }',c:'op'}],
+                    [],
+                    [{t:'room_generator',c:'tp'}, {t:' := ',c:'op'}, {t:'class',c:'kw'}, {t:'(',c:'op'}, {t:'creative_device',c:'tp'}, {t:'):',c:'op'}],
+                    [{t:'    ',c:''}, {t:'@editable',c:'at'}],
+                    [{t:'    MaxRooms',c:'fn'}, {t:' : ',c:'op'}, {t:'int',c:'tp'}, {t:' = ',c:'op'}, {t:'12',c:'num'}],
+                    [{t:'    ',c:''}, {t:'@editable',c:'at'}],
+                    [{t:'    FogDensity',c:'fn'}, {t:' : ',c:'op'}, {t:'float',c:'tp'}, {t:' = ',c:'op'}, {t:'0.85',c:'num'}],
+                    [],
+                    [{t:'    GenerateFloor',c:'fn'}, {t:'(Seed : ',c:'op'}, {t:'int',c:'tp'}, {t:') : ',c:'op'}, {t:'void',c:'tp'}, {t:' =',c:'op'}],
+                    [{t:'        Grid := CreateGrid',c:'fn'}, {t:'(',c:'op'}, {t:'8',c:'num'}, {t:', ',c:'op'}, {t:'8',c:'num'}, {t:')',c:'op'}],
+                    [{t:'        ',c:''}, {t:'for',c:'kw'}, {t:' (I := ',c:'op'}, {t:'0',c:'num'}, {t:'..MaxRooms):',c:'op'}],
+                    [{t:'            PlaceRoom',c:'fn'}, {t:'(Grid, GetRandomType())',c:'op'}],
+                    [{t:'        ConnectCorridors',c:'fn'}, {t:'(Grid)',c:'op'}],
+                    [{t:'        ApplyFog',c:'fn'}, {t:'(Grid, FogDensity)',c:'op'}],
+                    [{t:'        Print',c:'fn'}, {t:'(',c:'op'}, {t:'"Floor generated"',c:'str'}, {t:')',c:'op'}]
+                ]
+            }
         ];
 
-        function buildLines(tokens) {
-            var lines = [];
-            var currentLine = [];
-            tokens.forEach(function(tk) {
-                if (tk.t === '') {
-                    if (currentLine.length > 0) lines.push(currentLine);
-                    lines.push([]);
-                    currentLine = [];
-                } else if (tk.t.charAt(0) === ' ' && tk.t.trim() === '' && currentLine.length === 0) {
-                    currentLine.push(tk);
-                } else {
-                    currentLine.push(tk);
-                }
-            });
-            if (currentLine.length > 0) lines.push(currentLine);
-            return lines;
-        }
-
         var codeBody = document.getElementById('codeBody');
+        var codeTab = document.getElementById('codeTab');
         var snippetIdx = 0;
-        var aborted = false;
 
         function typeSnippet(cb) {
-            var lines = buildLines(snippets[snippetIdx]);
+            var snippet = snippets[snippetIdx];
+            var lines = snippet.lines;
+            codeTab.textContent = snippet.tab;
             codeBody.innerHTML = '';
+
+            // Create all line elements upfront
             var lineEls = [];
             for (var i = 0; i < lines.length; i++) {
                 var el = document.createElement('div');
@@ -1245,30 +1253,33 @@
                 el.appendChild(cur);
             }
 
+            // Flatten into typed characters with line index
             var typedChars = [];
-            lines.forEach(function(tokens, li) {
-                tokens.forEach(function(tk) {
-                    for (var c = 0; c < tk.t.length; c++) {
-                        typedChars.push({line: li, ch: tk.t[c], cls: tk.c || ''});
+            for (var li = 0; li < lines.length; li++) {
+                var tokens = lines[li];
+                for (var ti = 0; ti < tokens.length; ti++) {
+                    var tk = tokens[ti];
+                    for (var ci = 0; ci < tk.t.length; ci++) {
+                        typedChars.push({ line: li, ch: tk.t[ci], cls: tk.c || '' });
                     }
-                });
-                typedChars.push({line: li, ch: '\n', cls: ''});
-            });
+                }
+                // End-of-line marker
+                typedChars.push({ line: li, ch: '\n', cls: '' });
+            }
 
             var idx = 0;
 
             function typeNext() {
-                if (aborted) return;
                 if (idx >= typedChars.length) {
                     setTimeout(function() {
-                        codeBody.style.transition = 'opacity 0.8s ease';
+                        codeBody.style.transition = 'opacity 0.6s ease';
                         codeBody.style.opacity = '0';
                         setTimeout(function() {
                             codeBody.style.opacity = '1';
                             codeBody.style.transition = 'none';
                             cb();
-                        }, 900);
-                    }, 2000);
+                        }, 700);
+                    }, 2500);
                     return;
                 }
 
@@ -1293,18 +1304,17 @@
                 addCursor(el);
                 idx++;
 
-                var delay = 35 + Math.random() * 30;
-                if (item.ch === ' ' || item.ch === '\n') delay = 15 + Math.random() * 15;
-                if (item.ch === '\n') delay = 80 + Math.random() * 120;
-                if (item.ch === '\n' && item.line < lines.length - 1 && lines[item.line].length > 0 && lines[item.line][0].c === 'cm') {
-                    delay = 200;
-                }
+                var delay = 30 + Math.random() * 25;
+                if (item.ch === ' ') delay = 12 + Math.random() * 10;
+                if (item.ch === '\n') delay = 60 + Math.random() * 100;
+                // Pause after using/import lines
+                if (item.ch === '\n' && item.line < 2) delay = 120;
 
                 setTimeout(typeNext, delay);
             }
 
             addCursor(lineEls[0]);
-            setTimeout(typeNext, 600);
+            setTimeout(typeNext, 400);
         }
 
         function cycleSnippets() {
@@ -1314,14 +1324,8 @@
             });
         }
 
-        var observer = new IntersectionObserver(function(entries) {
-            if (entries[0].isIntersecting) {
-                observer.disconnect();
-                cycleSnippets();
-            }
-        }, {threshold: 0.3});
-
-        observer.observe(document.querySelector('.code-section'));
+        // Start immediately since it's in the hero
+        setTimeout(cycleSnippets, 800);
     })();
     </script>
 </body>
