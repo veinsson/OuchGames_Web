@@ -58,6 +58,6 @@ Ouch Games specializes in psychological horror experiences with:
 
 ---
 
-© 2026 Ouch Games. All rights reserved.
+© 2026 OAV Studios AB. All rights reserved.
 
 
