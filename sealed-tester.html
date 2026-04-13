@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Tester - SEALED | Ouch Games</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouchuefn.com/sealed-tester">
+    <meta property="og:title" content="Become a SEALED Tester | Ouch Games">
+    <meta property="og:description" content="Get early access to SEALED before launch. Help us find bugs, break things, and shape the final experience.">
+    <meta property="og:image" content="https://ouchuefn.com/assets/SealedReleaseBanner.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Become a SEALED Tester | Ouch Games">
+    <meta name="twitter:description" content="Get early access to SEALED before launch. Help us find bugs, break things, and shape the final experience.">
+    <meta name="twitter:image" content="https://ouchuefn.com/assets/SealedReleaseBanner.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/ouch-logo.png">
+    <style>
+        /* =============== HERO =============== */
+        .tester-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tester-hero .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(155, 77, 255, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(100, 50, 180, 0.25) 0%, transparent 50%),
+                linear-gradient(180deg, #1a0a2e 0%, #0a0612 50%, #050308 100%);
+        }
+
+        .tester-hero .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.25;
+            filter: brightness(0.5) saturate(0.6);
+        }
+
+        .tester-hero .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(155, 77, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(191, 127, 255, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(10, 6, 18, 0.5) 0%, rgba(10, 6, 18, 0.8) 100%);
+            z-index: 1;
+        }
+
+        .tester-hero .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 6, 18, 0.9) 100%);
+            z-index: 2;
+        }
+
+        .tester-hero .crt-overlay {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.5;
+        }
+
+        .tester-hero-content {
+            position: relative;
+            z-index: 4;
+            max-width: 750px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tester-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .tester-title .cyan {
+            color: var(--accent-cyan);
+            -webkit-text-fill-color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(77, 255, 255, 0.5);
+        }
+
+        .tester-subtitle {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        /* =============== INFO SECTION =============== */
+        .info-section {
+            padding: 5rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .info-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .info-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .info-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-header p {
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: rgba(26, 15, 46, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            text-align: center;
+        }
+
+        .info-card-icon {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.55;
+        }
+
+        /* Requirements list */
+        .requirements {
+            margin-top: 3rem;
+            background: rgba(26, 15, 46, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+        }
+
+        .requirements h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .req-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .req-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .req-list li::before {
+            content: '✓';
+            color: var(--accent-cyan);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .req-list li.req-critical::before {
+            content: '★';
+            color: var(--accent-purple-light);
+        }
+
+        /* =============== FORM SECTION =============== */
+        .form-section {
+            padding: 5rem 2rem;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 20%, rgba(155, 77, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-panel {
+            background: rgba(26, 15, 46, 0.9);
+            border: 1px solid rgba(155, 77, 255, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+        }
+
+        .form-panel-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-panel-tag {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: rgba(155, 77, 255, 0.15);
+            border: 1px solid var(--accent-purple);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px rgba(155, 77, 255, 0.2);
+        }
+
+        .form-panel-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-panel-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .tester-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.7rem 0.9rem;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236b5a8a'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .discord-notice {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #b8b8ff;
+        }
+
+        .discord-notice svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: #5865F2;
+        }
+
+        .discord-notice a {
+            color: #5865F2;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .form-submit {
+            margin-top: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            font-family: var(--font-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(155, 77, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .form-submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 2px,
+                rgba(255, 255, 255, 0.03) 4px
+            );
+            pointer-events: none;
+        }
+
+        .form-submit:hover {
+            background: linear-gradient(135deg, var(--accent-purple-light) 0%, var(--accent-purple) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(155, 77, 255, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2.5rem 1rem;
+        }
+
+        .form-success.show {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-success-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(155, 77, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-success-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--accent-purple-light);
+        }
+
+        .form-success h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .form-success p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* =============== RESPONSIVE =============== */
+        @media (max-width: 768px) {
+            .tester-hero {
+                min-height: auto;
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .req-list {
+                grid-template-columns: 1fr;
+            }
+
+            .form-panel {
+                padding: 1.75rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="page-loader" id="pageLoader">
+        <img src="assets/ouch-logo.png" alt="Ouch" class="loader-logo">
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+        setTimeout(function() {
+            var loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.add('hidden');
+        }, 2000);
+    </script>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="assets/ouch-logo.png" alt="Ouch" class="nav-logo-img">
+                <span class="nav-logo-text">ouch</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/#games">Games</a>
+                <a href="/sealed">Sealed</a>
+                <a href="/creators">Team</a>
+                <a href="/#socials">Socials</a>
+            </nav>
+
+            <a href="/partners" class="btn btn-tertiary btn-nav">Partner With Us</a>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="tester-hero">
+        <div class="hero-bg">
+            <img src="assets/SealedReleaseBanner.png" alt="">
+        </div>
+        <div class="crt-overlay"></div>
+
+        <div class="tester-hero-content">
+            <div class="hero-badge">Limited Spots</div>
+            <h1 class="tester-title">Become a <span class="cyan">SEALED</span> Tester</h1>
+            <p class="tester-subtitle">Get early access before launch. Play the game, find bugs, break things, and help us ship the best possible experience.</p>
+            <a href="#apply" class="btn btn-primary">Apply Now</a>
+        </div>
+    </section>
+
+    <!-- ============ INFO ============ -->
+    <section class="info-section">
+        <div class="info-container">
+            <div class="info-header">
+                <h2>What Testers Do</h2>
+                <p>As a tester, you'll get access to SEALED builds before anyone else. Your job is to find what's broken so we can fix it.</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-icon">🐛</div>
+                    <h3>Find Bugs</h3>
+                    <p>Play through the game and report anything that breaks, glitches, or doesn't feel right.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">💬</div>
+                    <h3>Give Feedback</h3>
+                    <p>Share your thoughts on pacing, difficulty, scares, and overall experience in our Discord.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">🔒</div>
+                    <h3>Keep It Secret</h3>
+                    <p>No streaming, no screenshots, no leaks. What happens in testing stays in testing.</p>
+                </div>
+            </div>
+
+            <div class="requirements">
+                <h3>Requirements</h3>
+                <ul class="req-list">
+                    <li class="req-critical">Must be a member of our Discord server</li>
+                    <li>Have Fortnite installed and can play UEFN maps</li>
+                    <li>Willing to test multiple builds</li>
+                    <li>Can report bugs clearly in Discord</li>
+                    <li>Available to play during scheduled test sessions</li>
+                    <li>No content/streaming during the testing phase</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ APPLICATION FORM ============ -->
+    <section class="form-section" id="apply">
+        <div class="form-container">
+            <div class="form-panel">
+                <div class="form-panel-header">
+                    <div class="form-panel-tag">Tester Application</div>
+                    <h2>Apply to Test SEALED</h2>
+                    <p>Fill out the form below and we'll reach out via Discord if you're selected.</p>
+                </div>
+
+                <form class="tester-form" id="testerForm">
+                    <div class="discord-notice">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/></svg>
+                        <span>You must be in our <a href="https://discord.com/invite/hk5a7snQHt" target="_blank">Discord server</a> to apply. We'll contact you there.</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="discordUser">Discord Username</label>
+                            <input type="text" id="discordUser" required placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="epicName">Epic Games Name</label>
+                            <input type="text" id="epicName" required placeholder="Your Epic display name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="platform">What platform do you play on?</label>
+                        <select id="platform" required>
+                            <option value="" disabled selected>Select platform</option>
+                            <option value="PC">PC</option>
+                            <option value="PlayStation">PlayStation</option>
+                            <option value="Xbox">Xbox</option>
+                            <option value="Nintendo Switch">Nintendo Switch</option>
+                            <option value="Mobile">Mobile</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Have you tested games before?</label>
+                        <select id="experience" required>
+                            <option value="" disabled selected>Select one</option>
+                            <option value="Yes, multiple times">Yes, multiple times</option>
+                            <option value="Once or twice">Once or twice</option>
+                            <option value="No, but I want to">No, but I want to</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whyTest">Why do you want to test SEALED?</label>
+                        <textarea id="whyTest" required placeholder="What interests you about SEALED? Why should we pick you?"></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit" id="testerSubmit">Submit Application</button>
+                </form>
+
+                <div class="form-success" id="testerSuccess">
+                    <div class="form-success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3>Application Sent</h3>
+                    <p>We'll reach out on Discord if you're selected. Keep an eye on your DMs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="socials">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2026 Ouch Games. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/OuchUEFN" target="_blank" class="social-link" title="X / Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@OuchUEFN" target="_blank" class="social-link" title="YouTube">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://discord.com/invite/hk5a7snQHt" target="_blank" class="social-link" title="Discord">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    (function() {
+        var WEBHOOK = 'https://discord.com/api/webhooks/1466623780192260259/chvGbhxTjp3Sq_Q8McfCaGmc0ldxggWPO4NH0balL-7ZmzzYpFvf4MYdcapex_ETvLX9';
+
+        async function sendWebhook(payload) {
+            try {
+                await fetch(WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        document.getElementById('testerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('testerSubmit');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            var discord = document.getElementById('discordUser').value.trim();
+            var epic = document.getElementById('epicName').value.trim();
+            var platform = document.getElementById('platform').value;
+            var experience = document.getElementById('experience').value;
+            var why = document.getElementById('whyTest').value.trim();
+
+            await sendWebhook({
+                embeds: [{
+                    title: '\uD83E\uDDEA New SEALED Tester Application',
+                    color: 0x4dffff,
+                    fields: [
+                        { name: 'Discord Username', value: discord, inline: true },
+                        { name: 'Epic Games Name', value: epic, inline: true },
+                        { name: 'Platform', value: platform, inline: true },
+                        { name: 'Testing Experience', value: experience, inline: true },
+                        { name: 'Why They Want to Test', value: why, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            });
+
+            this.style.display = 'none';
+            document.getElementById('testerSuccess').classList.add('show');
+        });
+    })();
+    </script>
+</body>
+</html>
