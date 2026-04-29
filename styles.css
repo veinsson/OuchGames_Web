@@ -3167,3 +3167,16 @@ a {
     color: var(--accent-purple);
     text-decoration: underline;
 }
+
+/* OAV Studios brand emphasis */
+.oav-brand {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #fff;
+    background: linear-gradient(135deg, #ff3366 0%, #9b4dff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 0 0.15em;
+}
+
