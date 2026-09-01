@@ -4,7 +4,7 @@
     {
       "name": "ouch-static",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8766"],
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "C:/Users/tolfv/Desktop/ouchgames-web"],
       "port": 8766
     }
   ]

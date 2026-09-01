@@ -1,26 +1,119 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="author" content="OUCH Studios"><title>404 · OUCH Studios</title><link rel="icon" href="../assets/newsite/OuchLogoRed.jpg" type="image/jpeg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Josefin+Sans:wght@100;200;300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><style>
-.lost{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:130px 24px 90px;text-align:center}
-.lost::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px);mix-blend-mode:overlay;opacity:.5}
-.lost__inner{position:relative;z-index:2;max-width:680px;width:100%}
-.lost__tag{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(21px,3.1vw,32px);line-height:1.5;color:rgba(255,255,255,.82);max-width:600px;margin:0 auto;text-shadow:0 0 40px rgba(192,57,43,.25)}
-.lost__signal{width:min(380px,84vw);margin:42px auto 0}
-.lost__signal-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:300;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:11px}
-.lost__signal-pct{color:#ff5a4a;letter-spacing:.1em}
-.lost__signal-track{height:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
-.lost__signal-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,rgba(192,57,43,.5),#ff5a4a);box-shadow:0 0 14px rgba(255,90,74,.6);transition:width .3s ease}
-.lost__signal-fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 3px,transparent 3px 7px)}
-.lost__back{margin-top:44px}
-@media(max-width:600px){.lost{padding:110px 20px 70px}}
-</style></head><body><video id="reel-video" src="../assets/newsite/reel.mp4" autoplay muted loop playsinline preload="auto" crossorigin="anonymous" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"></video><video id="rain-video" src="../assets/newsite/tNormal-Rain.mp4" autoplay muted loop playsinline preload="auto" crossorigin="anonymous" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"></video><canvas id="rain-canvas"></canvas><div class="cursor-dot"></div><div class="cursor-ring"></div><nav class="site-nav"><a href="/" class="logo" aria-label="OUCH Studios"><img src="../assets/newsite/OuchLogotransparent.png" alt="OUCH"></a><ul class="nav-links"><li><a class="nav-pill" href="about/" data-nav="about"><span class="nav-pill__label">ABOUT US</span></a></li><li><a class="nav-pill" href="sealed/" data-nav="sealed"><span class="nav-pill__label">SEALED</span></a></li><li><a class="nav-pill" href="games/" data-nav="games"><span class="nav-pill__label">GAMES</span></a></li><li class="nav-glitch-li"><a class="nav-glitch" href="404.html" data-text="▓" aria-label="">▓</a></li></ul><a class="nav-contact" href="contact/" aria-label="Contact OUCH Studios">CONTACT</a> <button class="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button></nav><main class="lost"><div class="lost__inner"><p class="lost__tag">You've wandered past where the map ends.<br>Something is being built down here &mdash; and it isn't ready to be seen.</p><div class="lost__signal"><div class="lost__signal-row"><span>In Development</span> <span class="lost__signal-pct" id="lost-pct">00%</span></div><div class="lost__signal-track"><span class="lost__signal-fill" id="lost-fill"></span></div></div><a class="btn btn--ghost lost__back" href="/" id="lost-back">&larr;&nbsp;&nbsp;Go Back</a></div></main><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/shaders/CopyShader.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script><script src="main.js"></script><script>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="author" content="OUCH Studios"><title>In Development · OUCH Studios</title><link rel="icon" href="/assets/newsite/OuchLogoRed.jpg" type="image/jpeg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Josefin+Sans:wght@100;200;300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/polish.css?v=4"><style>
+/* ============================================================
+   In-development page. Doubles as the site 404.
+   ============================================================ */
+.dev{position:relative;z-index:10;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:calc(var(--nav-h) + 48px) var(--gutter) 72px}
+.dev__inner{position:relative;width:100%;max-width:760px}
+
+/* corner brackets */
+.dev__inner::before,.dev__inner::after{content:"";position:absolute;width:22px;height:22px;border:1px solid var(--ember-faint);pointer-events:none}
+.dev__inner::before{top:-26px;left:-26px;border-right:0;border-bottom:0}
+.dev__inner::after{bottom:-26px;right:-26px;border-left:0;border-top:0}
+
+/* --- header --- */
+.dev__head{padding-bottom:16px;border-bottom:1px solid var(--hair)}
+.dev__eyebrow{display:inline-flex;align-items:center;gap:11px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:300;letter-spacing:.36em;text-transform:uppercase;color:var(--ash-dim);margin:0}
+.dev__dot{width:6px;height:6px;border-radius:50%;background:var(--ember);box-shadow:0 0 10px var(--ember-glow);animation:devPulse 2.4s ease-in-out infinite}
+@keyframes devPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+
+.dev__title{margin:32px 0 0;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(52px,10vw,110px);line-height:.94;letter-spacing:-.01em;color:var(--bone);text-shadow:0 0 60px rgba(216,69,46,.2)}
+.dev__tag{margin:26px 0 0;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(18px,2.5vw,25px);line-height:1.55;color:rgba(244,239,232,.8);max-width:52ch}
+
+/* --- build meter --- */
+.dev__meter{margin-top:48px}
+.dev__meter-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:300;letter-spacing:.34em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:12px}
+.dev__pct{font-size:15px;letter-spacing:.06em;color:var(--bone);text-shadow:0 0 20px var(--ember-glow)}
+.dev__track{position:relative;height:6px;background:rgba(244,239,232,.07);border:1px solid rgba(244,239,232,.07);overflow:hidden}
+.dev__track::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),rgba(244,239,232,.14) calc(10% - 1px),rgba(244,239,232,.14) 10%);pointer-events:none;z-index:2}
+.dev__fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--ember-deep) 0%,var(--ember) 68%,#ff7d63 100%);box-shadow:0 0 18px var(--ember-glow);transition:width .45s cubic-bezier(.16,.84,.34,1)}
+.dev__fill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.34) 0 3px,transparent 3px 7px)}
+.dev__meter-foot{display:flex;justify-content:space-between;gap:14px;margin-top:11px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(244,239,232,.3)}
+
+/* --- phase track --- */
+.dev__phases{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--hair)}
+.dev__phase{position:relative;background:rgba(6,1,4,.62);padding:16px 14px 18px;display:flex;flex-direction:column;gap:9px}
+.ph-mark{width:9px;height:9px;border:1px solid rgba(244,239,232,.22);border-radius:50%}
+.dev__phase.is-done .ph-mark{background:var(--ember-soft);border-color:var(--ember-soft)}
+.dev__phase.is-active .ph-mark{border-color:var(--ember);box-shadow:0 0 0 3px rgba(216,69,46,.16);animation:devPulse 2s ease-in-out infinite}
+.ph-num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;letter-spacing:.3em;color:rgba(244,239,232,.26)}
+.ph-name{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,239,232,.4);line-height:1.5}
+.dev__phase.is-done .ph-name{color:rgba(244,239,232,.68)}
+.dev__phase.is-active .ph-name{color:var(--bone)}
+.dev__phase.is-active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--ember),transparent)}
+
+/* --- build log --- */
+.dev__log{margin-top:44px;border-top:1px solid var(--hair);padding-top:22px}
+.dev__log-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:var(--ember-soft);margin:0 0 16px}
+.dev__log ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.dev__log li{display:grid;grid-template-columns:12px 1fr;gap:14px;align-items:baseline;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:300;letter-spacing:.06em;color:rgba(244,239,232,.5);line-height:1.7}
+.dev__log li::before{content:"";width:7px;height:1px;background:var(--ember-soft);transform:translateY(-3px)}
+
+.dev__foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:44px}
+.dev__note{margin:0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:300;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,239,232,.32)}
+.dev__note a{color:var(--ember-soft);border-bottom:1px solid transparent;transition:border-color .3s,color .3s}
+.dev__note a:hover{color:#ff8368;border-bottom-color:rgba(216,69,46,.6)}
+
+@media (max-width:720px),(hover:none){
+  .dev{padding:calc(var(--nav-h) + 30px) 18px 60px;align-items:flex-start}
+  .dev__inner::before,.dev__inner::after{display:none}
+  .dev__title{margin-top:24px;font-size:clamp(46px,16vw,80px)}
+  .dev__phases{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dev__meter-foot{flex-direction:column;gap:4px}
+  .dev__foot{flex-direction:column;align-items:stretch;gap:16px}
+  .dev__back{width:100%;justify-content:center}
+}
+</style></head><body><video id="reel-video" src="/assets/newsite/reel.mp4" autoplay muted loop playsinline preload="auto" crossorigin="anonymous" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"></video><video id="rain-video" src="/assets/newsite/tNormal-Rain.mp4" autoplay muted loop playsinline preload="auto" crossorigin="anonymous" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none"></video><canvas id="rain-canvas"></canvas><div class="cursor-dot"></div><div class="cursor-ring"></div><nav class="site-nav"><a href="/" class="logo" aria-label="OUCH Studios"><img src="/assets/newsite/OuchLogotransparent.png" alt="OUCH"></a><ul class="nav-links"><li><a class="nav-pill" href="/about/" data-nav="about"><span class="nav-pill__label">ABOUT US</span></a></li><li><a class="nav-pill" href="/games/" data-nav="games"><span class="nav-pill__label">GAMES</span></a></li></ul><div class="nav-right"><a class="nav-pill nav-pill--discord" href="https://discord.gg/hk5a7snQHt" target="_blank" rel="noopener" data-nav="discord"><svg class="nav-pill__icon" viewBox="0 0 127.14 96.36" fill="currentColor" aria-hidden="true"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg><span class="nav-pill__label">DISCORD</span></a><a class="nav-contact" href="/contact/" aria-label="Contact OUCH Studios">CONTACT</a></div> <button class="nav-hamburger" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button></nav><main class="dev"><div class="dev__inner">
+
+<div class="dev__head"><p class="dev__eyebrow"><span class="dev__dot" aria-hidden="true"></span> In development</p></div>
+
+<h1 class="dev__title">Not yet.</h1>
+
+<p class="dev__tag">You&rsquo;ve wandered past where the map ends. Something is being built down here &mdash; and it isn&rsquo;t ready to be seen.</p>
+
+<div class="dev__meter"><div class="dev__meter-row"><span>Build progress</span> <span class="dev__pct" id="dev-pct">00%</span></div><div class="dev__track"><span class="dev__fill" id="dev-fill"></span></div><div class="dev__meter-foot"><span>Phase 05 / 08 &middot; Content pass</span> <span>Next update &mdash; when it&rsquo;s ready</span></div></div>
+
+<ol class="dev__phases">
+<li class="dev__phase is-done"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">01</span><span class="ph-name">Concept</span></li>
+<li class="dev__phase is-done"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">02</span><span class="ph-name">Pre&#8209;vis</span></li>
+<li class="dev__phase is-done"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">03</span><span class="ph-name">Blockout</span></li>
+<li class="dev__phase is-done"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">04</span><span class="ph-name">Core systems</span></li>
+<li class="dev__phase is-active"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">05</span><span class="ph-name">Content pass</span></li>
+<li class="dev__phase"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">06</span><span class="ph-name">Art &amp; lighting</span></li>
+<li class="dev__phase"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">07</span><span class="ph-name">Audio</span></li>
+<li class="dev__phase"><span class="ph-mark" aria-hidden="true"></span><span class="ph-num">08</span><span class="ph-name">Polish</span></li>
+</ol>
+
+<div class="dev__log"><p class="dev__log-label">Latest from the build</p><ul>
+<li>Traversal rebuilt &mdash; third pass, and the last one</li>
+<li>Lighting rig locked across the first two areas</li>
+<li>It triggers on proximity now, not on sight</li>
+<li>Playtest 011 &mdash; nobody finished it</li>
+</ul></div>
+
+<div class="dev__foot">
+<a class="btn btn--ghost dev__back" href="/" id="dev-back">&larr;&nbsp;&nbsp;Go Back</a>
+<p class="dev__note">Updates land first in the <a href="https://discord.gg/hk5a7snQHt" target="_blank" rel="noopener">Discord</a></p>
+</div>
+
+</div></main><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/shaders/CopyShader.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script><script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script><script src="/main.js"></script><script src="/polish.js?v=4"></script><script>
 (function(){
-  // development meter: climbs, then drifts slightly — alive, but never a hard, disclosable figure
-  var fill=document.getElementById('lost-fill'),pct=document.getElementById('lost-pct');
+  // Build meter: climbs to the current figure, then drifts a point or two
+  // either side so it reads as a live number rather than a fixed promise.
+  var fill=document.getElementById('dev-fill'),pct=document.getElementById('dev-pct');
+  if(!fill||!pct)return;
+  var TARGET=64, reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function show(v){var n=Math.max(0,Math.min(99,Math.round(v)));fill.style.width=n+'%';pct.textContent=(n<10?'0':'')+n+'%';}
-  var base=0,target=31;
-  var climb=setInterval(function(){if(base<target){base+=Math.random()*4+1.5;show(base);}else{clearInterval(climb);}},120);
-  setInterval(function(){show(target+(Math.random()*5-2.5));},1100);
-  // manual back button — go to wherever you came from, else home
-  var back=document.getElementById('lost-back');
+  if(reduced){show(TARGET);}
+  else{
+    var base=0;
+    var climb=setInterval(function(){
+      if(base<TARGET){base+=Math.max(1.2,(TARGET-base)*0.14);show(base);}
+      else{show(TARGET);clearInterval(climb);
+        setInterval(function(){show(TARGET+(Math.random()*3-1.4));},1600);}
+    },70);
+  }
+  // Back button returns to wherever you came from, else home.
+  var back=document.getElementById('dev-back');
   if(back)back.addEventListener('click',function(e){
     if(document.referrer&&document.referrer.indexOf(location.origin)===0){e.preventDefault();history.back();}
   });
