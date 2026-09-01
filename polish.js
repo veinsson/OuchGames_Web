@@ -69,6 +69,8 @@
       '<div class="nav-foot__links">' +
         '<a href="https://x.com/OuchCreative" target="_blank" rel="noopener">X</a>' +
         '<span aria-hidden="true">/</span>' +
+        '<a href="https://www.youtube.com/@OuchUEFN" target="_blank" rel="noopener">YouTube</a>' +
+        '<span aria-hidden="true">/</span>' +
         '<a href="https://www.fortnite.com/@ouch" target="_blank" rel="noopener">Fortnite</a>' +
       '</div>';
     nav.appendChild(foot);
