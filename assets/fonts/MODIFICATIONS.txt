@@ -1,0 +1,4 @@
+Ouch Condensed is a modified subset of DejaVu Sans Condensed Bold.
+Glyph widths and horizontal outlines were condensed to 60 percent.
+The modified font family is renamed Ouch Condensed.
+See LICENSE.txt for the original copyright, permission and conditions.

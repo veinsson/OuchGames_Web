@@ -1,0 +1,191 @@
+/* ============================================================
+   GAMES PAGE
+   Layered on experience.css and ui.css (which own the showcase stage).
+   Brings the collection in line with the rest of the site:
+     · a facts strip between the showcase and the collection
+     · full-bleed cards with the label over the art, and island codes
+     · ABYSS featured large at the head of the grid
+     · a closing call to the Discord
+   ============================================================ */
+
+/* ---- Facts strip ------------------------------------------------------ */
+.games-facts {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(26px, 3vw, 40px) var(--gutter) 0;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: var(--r-lg, 22px);
+  background: linear-gradient(160deg, rgba(27, 31, 41, .86), rgba(12, 14, 20, .94));
+  overflow: hidden;
+}
+.games-facts div { padding: 22px 26px 24px; border-left: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); }
+.games-facts div:first-child { border-left: 0; }
+.games-facts dt { font: 500 10px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8f9aa8; }
+.games-facts dd { margin: 12px 0 0; font: 800 clamp(26px, 2.6vw, 40px)/1 var(--display); text-transform: uppercase; color: #f1f4f8; }
+
+/* ---- The collection ----------------------------------------------------- */
+.catalogue .section-heading { align-items: end; }
+.page-games .catalogue { padding-bottom: clamp(30px, 3vw, 50px); }
+.catalogue h2 { line-height: .9; }
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+/* ABYSS leads as a full-width banner, so the other fifteen fill whole rows */
+.catalogue-grid > .is-featured { grid-column: 1 / -1; }
+.catalogue-grid > .is-featured .game-card > img { aspect-ratio: 21 / 8; object-position: center 40%; }
+.catalogue-grid .game-card {
+  position: relative;
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: var(--r-md, 18px);
+  background: #10141b;
+  transition: border-color .25s ease;
+}
+.catalogue-grid .game-card > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: saturate(.9) brightness(.86);
+  transition: scale .7s var(--ease), filter .4s ease;
+}
+.catalogue-grid .game-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(5, 7, 11, .9), rgba(5, 7, 11, .2) 45%, transparent 70%);
+  pointer-events: none;
+}
+.catalogue-grid .card-meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px;
+  background: none;
+}
+.catalogue-grid .card-meta strong { font: 800 clamp(24px, 2.2vw, 34px)/.95 var(--display); text-transform: uppercase; color: #fff; }
+.catalogue-grid .is-featured .card-meta { padding: 26px 30px; }
+.catalogue-grid .is-featured .card-meta strong { font-size: clamp(48px, 5.4vw, 92px); }
+.card-meta__sub { display: flex; flex-direction: column; align-items: end; gap: 7px; text-align: right; }
+.card-meta__sub > span { font: 500 9px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #c3ccd6; }
+.card-meta__sub code {
+  padding: 5px 8px;
+  border: 1px solid rgba(233, 238, 245, .22);
+  border-radius: 6px;
+  background: rgba(6, 9, 14, .55);
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .08em;
+  color: #eef2f6;
+  white-space: nowrap;
+}
+.card-meta__sub code.is-live { border-color: rgba(214, 48, 76, .7); color: #f2a3b1; text-transform: uppercase; letter-spacing: .14em; }
+.catalogue-grid .game-card:hover, .catalogue-grid .game-card:focus-visible { border-color: rgba(214, 48, 76, .85); }
+.catalogue-grid .game-card:hover > img, .catalogue-grid .game-card:focus-visible > img { scale: 1.04; filter: saturate(1.05) brightness(1); }
+#filter-status { margin-top: 26px; }
+
+/* ---- Closing ------------------------------------------------------------ */
+.games-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 40px;
+  margin: clamp(30px, 4vw, 60px) var(--gutter) clamp(90px, 9vw, 140px);
+  padding: clamp(40px, 6vw, 90px);
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: 26px;
+  background:
+    radial-gradient(ellipse 60% 90% at 88% 30%, rgba(125, 30, 57, .38), transparent 60%),
+    linear-gradient(160deg, rgba(27, 22, 30, .92), rgba(10, 11, 16, .96));
+}
+.games-cta { position: relative; isolation: isolate; overflow: hidden; }
+.games-cta > :not(.games-cta__wall) { position: relative; z-index: 1; }
+/* a tilted wall of our worlds filling the right side, fading out under the copy */
+.games-cta__wall {
+  position: absolute;
+  inset: -20% -6% -20% 34%;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 38%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 38%);
+  pointer-events: none;
+}
+.games-cta__wall > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  height: 100%;
+  rotate: -8deg;
+  scale: 1.12;
+  animation: wall-pan 40s linear infinite alternate;
+}
+.games-cta__wall img { width: 100%; height: 100%; min-height: 0; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; filter: saturate(.85) brightness(.55); }
+.games-cta__wall::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 70% 75%, rgba(10, 11, 16, .75), transparent 70%); }
+@keyframes wall-pan { to { translate: -4% 3%; } }
+@media (prefers-reduced-motion: reduce) { .games-cta__wall > div { animation: none; } }
+@media (max-width: 900px) { .games-cta__wall { inset: auto -10% -30% -10%; height: 70%; -webkit-mask-image: linear-gradient(0deg, #000 30%, transparent); mask-image: linear-gradient(0deg, #000 30%, transparent); } }
+.games-cta h2 { margin: 18px 0 20px; font-size: clamp(64px, 8vw, 132px); line-height: .9; }
+.games-cta p:not(.eyebrow) { max-width: 40ch; margin: 0; color: #c8ced6; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.5; }
+.games-cta__actions { display: flex; flex-direction: column; align-items: stretch; gap: 20px; min-width: 280px; }
+.games-cta__link {
+  font: 500 11px/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #d2d8de;
+  text-decoration: underline;
+  text-decoration-color: rgba(210, 216, 222, .35);
+  text-underline-offset: 6px;
+}
+.games-cta__link:hover { color: #fff; text-decoration-color: var(--red); }
+
+@media (max-width: 900px) {
+  .games-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .games-facts div:nth-child(3) { border-left: 0; }
+  .games-facts div:nth-child(n + 3) { border-top: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); }
+  .catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-grid > .is-featured .game-card > img { aspect-ratio: 16 / 9; }
+  .games-cta { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .games-cta__actions { min-width: 0; }
+}
+@media (max-width: 560px) {
+  .games-facts div { padding: 18px 18px 20px; }
+  .catalogue-grid { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-grid .is-featured .card-meta strong { font-size: 44px; }
+  .catalogue-grid .card-meta, .catalogue-grid .is-featured .card-meta { flex-direction: column; align-items: start; gap: 10px; padding: 16px 18px; }
+  .card-meta__sub { flex-direction: row; align-items: center; gap: 10px; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalogue-grid .game-card > img { transition: none; }
+}
+
+/* the showcase's link to the selected game's own page */
+.stage-more {
+  align-self: center;
+  padding: 12px 2px;
+  border-bottom: 1px solid rgba(233, 228, 230, .5);
+  font: 500 11px/1.5 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #f1ecee;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.stage-more:hover { border-color: var(--red); }
+.stage-actions { align-items: center; }
+
+/* Tall screens crop the wide key art hard: keep each game's main character
+   in view ("focus" in js/games.js) instead of the middle of the picture. */
+@media (max-width: 900px) {
+  .stage-image { object-position: var(--focus, center); }
+}

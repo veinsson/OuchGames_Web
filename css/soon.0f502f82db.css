@@ -1,0 +1,102 @@
+/* ============================================================
+   ABYSS FIELD NOTES: UNDER DEVELOPMENT
+   Where the wiki links point until the wiki is public (see WIKI_PUBLIC
+   in build.py). One screen and no scrolling: the Mule out in the kelp,
+   its searchlight turned towards a short note from Vello.
+   ============================================================ */
+html:has(body.page-soon), body.page-soon { height: 100%; overflow: hidden; }
+.page-soon { background: #060b12; }
+.soon {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  height: 100svh;
+  padding: clamp(100px, 13svh, 140px) var(--gutter) clamp(52px, 8svh, 80px);
+  overflow: hidden;
+}
+/* The Mule as shot: nose to the left, light sweeping across to the note.
+   Graded to black on the left so the copy has a clean field. */
+.soon__bg {
+  position: absolute;
+  inset: -2%;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(6, 11, 18, .96) 0, rgba(6, 11, 18, .82) 30%, rgba(6, 11, 18, .25) 62%, rgba(6, 11, 18, .45) 100%),
+    linear-gradient(0deg, rgba(6, 11, 18, .85) 0, transparent 35%),
+    image-set(url("/assets/abyss/keyart-mule-2000.avif") type("image/avif"), url("/assets/abyss/keyart-mule-2000.webp") type("image/webp")) 70% 50% / cover no-repeat;
+  animation: soon-drift 40s ease-in-out infinite alternate;
+}
+@keyframes soon-drift { from { scale: 1.02; } to { scale: 1.08; translate: -1% 0; } }
+.soon__body { position: relative; max-width: 640px; }
+.soon__kicker { display: flex; align-items: center; gap: 10px; color: #9fb4bf; }
+.soon__kicker i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+  animation: navLive 1.4s steps(2) infinite;
+}
+.soon h1 { margin: clamp(12px, 2.2svh, 22px) 0 clamp(18px, 3.6svh, 36px); font-size: clamp(48px, min(9vw, 11.5svh), 150px); line-height: .88; }
+/* the note itself: a scrap of glass with a signature */
+.soon__note {
+  margin: 0 0 clamp(18px, 3.6svh, 34px);
+  padding: clamp(16px, 2.8svh, 28px) clamp(20px, 2.4vw, 30px);
+  border: 1px solid var(--edge, rgba(233, 238, 245, .2));
+  border-left: 2px solid var(--red);
+  border-radius: var(--r-md, 18px);
+  background: linear-gradient(160deg, rgba(16, 26, 34, .72), rgba(6, 10, 15, .82));
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+          backdrop-filter: blur(14px) saturate(140%);
+}
+.soon__note blockquote { margin: 0; }
+.soon__note p { margin: 0 0 10px; color: #d3dce2; font-size: clamp(15px, min(1.4vw, 2.5svh), 18px); line-height: 1.55; }
+.soon__note p:last-child { margin-bottom: 0; color: #fff; }
+.soon__note figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(14px, 2.4svh, 20px);
+  padding-top: clamp(12px, 2svh, 16px);
+  border-top: 1px dashed rgba(233, 238, 245, .18);
+}
+.soon__note img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--edge, rgba(233, 238, 245, .2)); background: #272b34; }
+.soon__note figcaption span { display: flex; flex-direction: column; gap: 5px; font: 500 10px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #8fa6b2; }
+.soon__note figcaption b { font: 800 20px/1 var(--display); letter-spacing: .01em; color: #fff; }
+.soon__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.soon__foot {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(16px, 3svh, 26px);
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #6f808c;
+}
+.soon__foot a { color: #9fb0bc; text-decoration: underline; text-underline-offset: 3px; }
+.soon__foot a:hover { color: #fff; }
+
+@media (max-width: 760px) {
+  .soon { justify-content: flex-end; padding-bottom: 64px; }
+  /* portrait: the Mule sits above the copy instead of beside it */
+  .soon__bg {
+    background:
+      linear-gradient(0deg, rgba(6, 11, 18, .98) 0, rgba(6, 11, 18, .9) 52%, rgba(6, 11, 18, .2) 78%, rgba(6, 11, 18, .5) 100%),
+      image-set(url("/assets/abyss/keyart-mule-1100.avif") type("image/avif"), url("/assets/abyss/keyart-mule-1100.webp") type("image/webp")) 62% 0 / auto 62% no-repeat;
+  }
+  .soon__actions .button { flex: 1 1 100%; }
+}
+/* too short to hold it all: let it scroll rather than cut anything off */
+@media (max-height: 600px), (max-width: 760px) and (max-height: 680px) {
+  html:has(body.page-soon), body.page-soon { height: auto; overflow: auto; }
+  .soon { height: auto; min-height: 100svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soon__bg, .soon__kicker i { animation: none; }
+}

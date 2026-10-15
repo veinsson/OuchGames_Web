@@ -1,0 +1,444 @@
+/* Shared finishes. Layout stays in site.css, concept.css and abyss.css. */
+:root {
+  --r-lg: 22px;
+  --r-md: 18px;
+  --r-sm: 14px;
+  --edge: rgba(233, 238, 245, .2);
+  --edge-soft: rgba(233, 238, 245, .12);
+  --lift: 0 6px 22px rgba(0, 0, 0, .38), 0 20px 56px rgba(0, 0, 0, .34);
+}
+.glass-filter, .glass-overlay, .glass-specular {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+}
+.glass-filter {
+  z-index: 0; -webkit-backdrop-filter: blur(16px) saturate(165%);
+  backdrop-filter: blur(16px) saturate(165%);
+}
+.site-header .glass-filter {
+  filter: url(#lensFilter);
+  -webkit-backdrop-filter: blur(6px) saturate(160%) brightness(1.08);
+  backdrop-filter: blur(6px) saturate(160%) brightness(1.08);
+}
+.glass-overlay {
+  z-index: 1;
+  background: linear-gradient(168deg, rgba(30, 34, 45, .5), rgba(11, 13, 19, .62)),
+    linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 46%);
+}
+.glass-specular {
+  z-index: 2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .58), inset 1px 0 0 rgba(255, 255, 255, .18),
+    inset -1px 0 0 rgba(255, 255, 255, .18), inset 0 -1px 0 rgba(255, 255, 255, .12),
+    inset 0 0 26px rgba(255, 255, 255, .09);
+}
+/* The header and mobile menu remain fixed in concept.css and site.css. */
+.site-header, .mobile-menu {
+  background: transparent; overflow: hidden; isolation: isolate;
+  box-shadow: var(--lift); border: 0; border-radius: var(--r-lg);
+}
+.site-header > *:not(.glass-filter):not(.glass-overlay):not(.glass-specular),
+.mobile-menu > *:not(.glass-filter):not(.glass-overlay):not(.glass-specular) {
+  position: relative; z-index: 3;
+}
+.site-header::after, .mobile-menu::after {
+  content: ""; position: absolute; inset: 0; z-index: 4;
+  border: 1px solid var(--edge); border-radius: inherit; pointer-events: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .site-header .glass-filter { filter: none; }
+}
+/* scrolled: a slimmer, denser bar, so headings and labels passing under it
+   stop competing with the nav */
+body.is-scrolled .site-header { top: 10px; height: 58px; }
+/* the slimmer bar still gives the buttons room to breathe */
+body.is-scrolled .header-contact { padding: 9px 18px; }
+body.is-scrolled .site-header .glass-overlay {
+  background: linear-gradient(168deg, rgba(17, 20, 28, .88), rgba(7, 9, 14, .94)),
+    linear-gradient(180deg, rgba(255, 255, 255, .07), transparent 46%);
+}
+body.is-scrolled .brand img { width: 26px; height: 36px; }
+body.is-scrolled .brand-divider { height: 22px; }
+@media (max-width: 700px) {
+  body.is-scrolled .site-header { height: 54px; }
+}
+/* the footer's Epic line also carries the link to /legal/ */
+.footer .legal a { margin-left: 10px; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.footer .legal a:hover { color: #fff; }
+
+.button, .header-contact, .release__cta, .copy-code, .filters button,
+#stage-prev, #stage-next, .menu-toggle {
+  border-radius: var(--r-sm); border: 1px solid var(--edge);
+  background: linear-gradient(160deg, rgba(44, 49, 62, .44), rgba(13, 15, 21, .6));
+  color: #f1f4f8;
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 6px 20px rgba(0, 0, 0, .3);
+  transition: background .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s var(--ease);
+}
+.button:hover, .copy-code:hover, .filters button:hover, #stage-prev:hover, #stage-next:hover {
+  border-color: rgba(218, 57, 85, .9);
+  background: linear-gradient(160deg, rgba(79, 30, 44, .7), rgba(20, 12, 17, .7));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 0 28px rgba(191, 41, 65, .24);
+  transform: translateY(-2px);
+}
+.header-contact, .button.primary, .release__cta, .filters button[aria-pressed="true"] {
+  border-color: rgba(214, 48, 76, .8);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .36), rgba(82, 13, 28, .46));
+  color: #fff;
+}
+.header-contact:hover, .button.primary:hover, .release__cta:hover {
+  border-color: #eb4963;
+  background: linear-gradient(160deg, rgba(214, 48, 76, .65), rgba(99, 16, 35, .58));
+  transform: translateY(-2px);
+}
+.button:active, .header-contact:active, .release__cta:active, .copy-code:active,
+.filters button:active, #stage-prev:active, #stage-next:active, .menu-toggle:active { transform: scale(.98); }
+.nav-abyss { padding-right: 13px !important; }
+.nav-abyss::before {
+  content: ""; position: absolute; top: calc(50% - 8px); right: 0;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--red);
+  box-shadow: 0 0 9px rgba(214, 48, 76, .9); animation: navLive 2.4s ease-in-out infinite;
+}
+@keyframes navLive { 50% { opacity: .25; } }
+
+/* Home: the release sits beside the title and becomes a full-width story on phones. */
+.page-home .home-hero.concept-hero {
+  height: auto; min-height: 100svh; max-height: none;
+  padding: clamp(118px, 15svh, 158px) calc(var(--nav-inset) + 28px) 26px;
+  grid-template-rows: auto minmax(0, 1fr) auto auto; gap: clamp(16px, 2.2vw, 28px);
+}
+.page-home .hero-body {
+  grid-template-columns: minmax(0, 1fr) minmax(430px, 39%);
+  align-items: end; gap: clamp(26px, 3.6vw, 64px);
+}
+.page-home .studio-title {
+  overflow: visible; font-size: min(23svh, 11.6vw);
+  line-height: .81; letter-spacing: -.025em; gap: .01em;
+}
+.release {
+  position: relative; display: grid; grid-template-columns: 47% minmax(0, 1fr);
+  width: 100%; min-width: 0; min-height: 335px; max-height: none;
+  border: 1px solid var(--edge); border-radius: var(--r-lg); overflow: hidden;
+  isolation: isolate; background: #111721; box-shadow: var(--lift); justify-self: end;
+}
+.release::before, .release::after { content: none; }
+.release .glass-filter, .release .glass-overlay, .release .glass-specular { display: none; }
+.release__art {
+  position: relative; inset: auto; aspect-ratio: auto; min-height: 100%;
+  opacity: 1; padding: 0; border: 0; border-radius: 0;
+  -webkit-mask-image: none; mask-image: none; overflow: hidden;
+}
+.release__art::after { display: none; }
+.release__art img, .release__art picture { display: block; width: 100%; height: 100%; }
+.release__art img { object-fit: cover; object-position: 58% 32%; }
+.release__body {
+  position: relative; z-index: 2; display: flex; flex-direction: column;
+  padding: 22px 20px 0; min-width: 0;
+  background: linear-gradient(155deg, rgba(30, 35, 45, .88), rgba(9, 13, 21, .95));
+}
+.release__top {
+  display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 0 0 22px;
+  padding-bottom: 13px; border-bottom: 1px solid rgba(255, 255, 255, .15);
+  color: #bec5ce; letter-spacing: .14em;
+}
+.release__status { color: #fa5d79; }
+.release__name { font-size: clamp(49px, 4.3vw, 76px); letter-spacing: -.02em; }
+.release__tag { margin-top: 14px; color: #e5eaf0; }
+.release__meta { margin-top: auto; padding-top: 12px; color: #aeb9c6; letter-spacing: .09em; }
+.release__cta {
+  margin: 0 -20px; padding: 17px 20px; border-radius: 0 0 var(--r-lg) 0;
+  border-width: 1px 0 0; box-shadow: none; letter-spacing: .14em;
+}
+.release__cta:hover { letter-spacing: .14em; transform: none; }
+.page-home .concept-links { align-items: center; }
+.page-home .hero-rule { margin-top: 0; }
+
+/* Studio: rounded portraits and a clear editorial reading order. */
+.page-about .about-intro {
+  padding-top: clamp(150px, 18vw, 225px); padding-bottom: clamp(72px, 8vw, 125px);
+}
+.page-about .about-intro h1 {
+  font-size: clamp(78px, 10.2vw, 172px); line-height: .89;
+  margin: clamp(26px, 4vw, 55px) 0 clamp(40px, 6vw, 92px); text-wrap: balance;
+}
+.page-about .about-copy {
+  grid-template-columns: minmax(115px, .6fr) repeat(2, minmax(0, 1fr));
+  align-items: start; gap: clamp(14px, 2vw, 30px);
+}
+.page-about .about-copy > .eyebrow { padding: 20px 0; color: #b7c5d2; }
+.page-about .about-copy p {
+  padding: 26px 28px; min-height: 180px; border: 1px solid var(--edge-soft);
+  border-radius: var(--r-md);
+  background: linear-gradient(145deg, rgba(30, 35, 46, .68), rgba(12, 15, 23, .78));
+  color: #dce4eb !important; font-size: clamp(16px, 1.4vw, 20px) !important; line-height: 1.58;
+}
+.page-about .team-section { background: linear-gradient(180deg, transparent, rgba(7, 10, 15, .8)); }
+.page-about .team-card {
+  padding: 12px 12px 20px; border: 1px solid var(--edge-soft); border-radius: var(--r-lg);
+  background: linear-gradient(155deg, rgba(35, 38, 49, .76), rgba(12, 15, 22, .88));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .18);
+}
+.page-about .portrait { border-radius: var(--r-sm); }
+.page-about .portrait img { filter: grayscale(.45); }
+.page-about .person, .page-about .team-card > p { padding: 0 8px; }
+.page-about .person { align-items: start; }
+.page-about .person h3 {
+  font-family: var(--display); font-size: clamp(24px, 2.4vw, 38px); text-transform: uppercase;
+}
+.page-about .person span { color: #bfccd8; text-transform: uppercase; letter-spacing: .08em; }
+.page-about .team-card > p { color: #b7c5d2; font-size: 13px; }
+.page-about .join {
+  margin: 30px var(--gutter) clamp(55px, 6vw, 100px);
+  border: 1px solid var(--edge-soft); border-radius: var(--r-lg);
+  background: radial-gradient(90% 200% at 85% 0%, rgba(151, 30, 57, .24), transparent),
+    linear-gradient(150deg, rgba(26, 30, 40, .82), rgba(8, 11, 17, .94));
+}
+
+/* Games: text and actions flow even for titles like DISTURBED. */
+.game-showcase { min-height: 740px; height: max(740px, 100svh); }
+.stage-content {
+  margin-left: min(24%, 280px); max-width: min(950px, 76%);
+  min-width: 0; padding-bottom: clamp(20px, 3vh, 38px);
+}
+.stage-content h1 {
+  max-width: 100%; font-size: clamp(78px, 11vw, 190px); line-height: .82;
+  overflow-wrap: normal; word-break: normal; text-wrap: balance; margin: 20px 0 18px;
+}
+.stage-content h1.long-title { font-size: clamp(60px, 7vw, 116px); }
+.stage-content p:not(.eyebrow) { max-width: 50ch; color: #d5dbe2; }
+.stage-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.stage-actions .button, .copy-code {
+  min-height: 49px; display: inline-flex; align-items: center; justify-content: center;
+  gap: 12px; padding: 12px 18px; font: 500 10px/1.4 var(--mono);
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+}
+.stage-actions .button { justify-content: space-between; }
+.stage-controls button { border-radius: var(--r-sm); }
+.catalogue-grid { gap: 28px 18px; }
+.catalogue-grid > div { min-width: 0; }
+.catalogue-grid .game-card { border-radius: var(--r-md); overflow: hidden; background: #151821; }
+.catalogue-grid .game-card > img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+.catalogue-grid .card-meta { padding: 17px; }
+
+/* ABYSS: art, breathing room and calmer story sections. */
+.abyss-intel, .abyss-pillar, .abyss-band, .wiki-panel { border-radius: var(--r-md); }
+.abyss-section { padding-top: clamp(70px, 7vw, 108px); padding-bottom: clamp(70px, 7vw, 108px); }
+.abyss-section + .abyss-section { border-top: 1px solid rgba(233, 238, 245, .08); }
+.abyss-leaks { display: grid; grid-template-columns: 1.5fr 1fr; gap: 14px; }
+.leak {
+  position: relative; overflow: hidden; margin: 0; border: 1px solid var(--edge-soft);
+  border-radius: var(--r-md); background: #070a0f; box-shadow: var(--lift);
+}
+.leak--wide { grid-column: auto; }
+.leak img, .leak picture { display: block; width: 100%; height: 100%; }
+.leak img { aspect-ratio: 16/10; object-fit: cover; transition: transform .7s var(--ease); }
+.leak:hover img { transform: scale(1.035); }
+.leak figcaption {
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
+  display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 36px 16px 14px;
+  background: linear-gradient(transparent, rgba(5, 8, 13, .95));
+  font: 500 10px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+}
+.leak figcaption i { color: #f2627e; font-style: normal; }
+.leak__corner {
+  position: absolute; z-index: 2; top: 12px; left: 12px; padding: 7px 10px;
+  border: 1px solid var(--edge); border-radius: 999px; background: rgba(7, 10, 15, .7);
+  font: 500 9px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+}
+.abyss-hero__media { background: #05080d; }
+.abyss-hero__media img { top: 74px; height: calc(100% - 74px); object-position: center top; }
+.abyss-hero__media picture { width: 100%; height: 100%; }
+.slot picture { display: block; width: 100%; height: 100%; }
+.slot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.abyss-pillar { padding: 28px; }
+.abyss-pillar p { max-width: 38ch; }
+
+/* Native cross-document transitions, with normal navigation as fallback. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: oldPage .22s ease-in both; }
+::view-transition-new(root) { animation: newPage .35s var(--ease) both; }
+@keyframes oldPage { to { opacity: 0; transform: translateY(-8px); } }
+@keyframes newPage { from { opacity: 0; transform: translateY(12px); } }
+:is(h1, h2, h3) { text-wrap: balance; }
+:is(p, li) { text-wrap: pretty; }
+::selection { background: #bf2941; color: #fff; }
+html { scrollbar-color: #50414b #0b0d13; }
+:is(h1, h2, h3, section, article)[id] { scroll-margin-top: 112px; }
+.wiki-cats span { border-radius: var(--r-sm); }
+
+@media (max-width: 1150px) {
+  .page-home .home-hero.concept-hero { grid-template-rows: auto auto auto auto; }
+  .page-home .hero-body { grid-template-columns: 1fr; align-items: start; gap: 30px; }
+  .page-home .studio-title { font-size: min(21svh, 16vw); }
+  .release { width: min(780px, 100%); min-height: 280px; justify-self: start; }
+  .page-about .about-copy { grid-template-columns: 1fr 1fr; }
+  .page-about .about-copy > .eyebrow { grid-column: 1 / -1; padding: 0; }
+  .stage-content { max-width: 73%; }
+}
+@media (max-width: 700px) {
+  .mobile-menu:not([hidden]) { display: flex; flex-direction: column; gap: 2px; }
+  .mobile-menu { inset: calc(var(--nav-inset) + 74px) var(--nav-inset) auto; padding: 14px; }
+  .mobile-menu a {
+    display: flex; justify-content: space-between; gap: 14px; padding: 13px 15px;
+    border-radius: var(--r-sm); font-family: var(--display);
+    font-weight: 800; font-size: 30px; line-height: 1; text-transform: uppercase;
+  }
+  .mobile-menu a:hover, .mobile-menu a:focus-visible { background: rgba(191, 41, 65, .24); }
+  .menu-toggle {
+    display: flex; align-items: center; gap: 9px; padding: 10px 14px;
+    font: 500 10px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+  }
+  .menu-toggle span { font-size: 15px; line-height: 1; }
+  .page-home .home-hero.concept-hero { min-height: 100svh; padding: 108px 18px 18px; gap: 18px; }
+  .page-home .hero-body { gap: 20px; }
+  .page-home .studio-title { font-size: clamp(72px, 20.5vw, 122px); line-height: .82; }
+  .release { grid-template-columns: 1fr; min-height: 0; }
+  .release__art { aspect-ratio: 16/7.3; min-height: 0; }
+  .release__art img { object-position: 56% 24%; }
+  .release__body { padding: 15px 17px 0; }
+  .release__top { margin-bottom: 12px; padding-bottom: 10px; }
+  .release__name { font-size: 50px; }
+  .release__tag { margin: 8px 0 0; line-height: 1.5; }
+  .release__meta { margin: 0; padding: 9px 0 12px; }
+  .release__cta { margin: 0 -17px; padding: 14px 17px; border-radius: 0 0 var(--r-lg) var(--r-lg); }
+  .page-home .hero-rule { gap: 9px; }
+  .page-home .hero-rule__note { display: none; }
+  .page-about .about-intro { padding-top: 130px; }
+  .page-about .about-intro h1 { font-size: clamp(64px, 16vw, 108px); margin: 28px 0 38px; }
+  .page-about .about-copy { grid-template-columns: 1fr; gap: 12px; }
+  .page-about .about-copy > .eyebrow { grid-column: auto; }
+  .page-about .about-copy p { min-height: 0; padding: 20px; }
+  .page-about .team-card { padding: 9px 9px 17px; }
+  .page-about .join { margin: 10px 18px 60px; }
+  .game-showcase { min-height: max(710px, 100svh); height: auto; }
+  .stage-content { max-width: 100%; width: 100%; margin-left: 0; padding-bottom: 15px; }
+  .stage-content h1 { font-size: clamp(58px, 18vw, 108px); margin: 14px 0; }
+  .stage-content h1.long-title { font-size: clamp(43px, 12vw, 78px); }
+  .stage-content p:not(.eyebrow) { min-height: 0; }
+  .stage-actions { flex-direction: column; align-items: stretch; gap: 9px; margin-top: 17px; }
+  .stage-actions .button, .copy-code { width: 100%; }
+  .stage-controls { margin-top: 8px; }
+  .catalogue-grid { gap: 20px 12px; }
+  .catalogue-grid .card-meta { padding: 12px; }
+  .abyss-leaks { grid-template-columns: 1fr; }
+  .abyss-hero__media img { top: 64px; height: calc(100% - 64px); }
+  :is(h1, h2, h3, section, article)[id] { scroll-margin-top: 94px; }
+}
+@media (max-width: 480px) {
+  .release__art { aspect-ratio: 16/7.8; }
+  .page-home .hero-kicker { max-width: none; }
+  .page-home .motion-toggle { white-space: nowrap; }
+  .catalogue-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  .nav-abyss::before { animation: none; }
+  .leak img { transition: none; }
+  .leak:hover img { transform: none; }
+}
+
+/* ---- Things lurking behind the interface ----------------------------
+   Shared by every page that has one (site.js drives them). Each .lurk is a
+   window with one edge pinned to a piece of interface; the creature lives
+   inside it and slides out through that edge.
+   It hides again when it is spotted: when a pointer comes close, it ducks
+   back out of sight, then creeps out once you have looked away. On first
+   view each one emerges a beat after it scrolls into sight. */
+.lurk {
+  position: absolute;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  --near: 0;
+}
+.lurk__body {
+  position: absolute;
+  inset: 0;
+  background: var(--lurk-img) var(--lurk-pos, center bottom) / var(--lurk-size, contain) no-repeat;
+  /* The renders are studio-lit (flat and frontal), so they are graded into
+     the water: cooler and flatter, a touch darker, brighter as a light nears. */
+  filter: brightness(calc(.74 + var(--near) * .4)) contrast(1.08) saturate(.62) drop-shadow(0 14px 22px rgba(0, 0, 0, .65));
+  translate: 0 var(--hidden, 100%);
+  transition: translate 2.6s cubic-bezier(.4, 0, .2, 1), filter .25s linear;
+}
+/* ...then shaded: a cut-out twin of the creature carrying the light. Cool
+   light falls from the side away from cover, and the side that is still in
+   cover sinks into shadow. --shade is the direction of the cover edge. */
+.lurk__body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--shade, 180deg), rgba(140, 210, 220, .26) 0, rgba(140, 210, 220, 0) 30%, rgba(4, 8, 13, .25) 55%, rgba(4, 8, 13, .9) 100%);
+  -webkit-mask: var(--lurk-img) var(--lurk-pos, center bottom) / var(--lurk-size, contain) no-repeat;
+          mask: var(--lurk-img) var(--lurk-pos, center bottom) / var(--lurk-size, contain) no-repeat;
+}
+.lurk.is-out .lurk__body { translate: 0 var(--shown, 0%); }
+/* spotted: back into cover, fast */
+.lurk.is-spotted .lurk__body { translate: 0 var(--hidden, 100%); transition: translate .32s cubic-bezier(.6, 0, .9, .4), filter .25s linear; }
+
+/* Snag: eyes over an edge. Each page says which edge. */
+.lurk--snag {
+  width: clamp(240px, 24vw, 360px);
+  height: clamp(120px, 11vw, 170px);
+  --lurk-img: image-set(url("/assets/abyss/creatures/creature-03-520.avif") type("image/avif"), url("/assets/abyss/creatures/creature-03-520.webp") type("image/webp"));
+  --lurk-pos: center 0;
+  --lurk-size: 100% auto;
+  --shown: 30%;
+}
+.lurk--snag .lurk__body { transform-origin: 50% 100%; animation: lurk-breathe 4.2s ease-in-out infinite; }
+/* idle motion uses rotate/scale only: translate belongs to the hide/show slide */
+@keyframes lurk-reach { 0%, 100% { rotate: var(--lean, 0deg); } 50% { rotate: calc(var(--lean, 0deg) - 3deg); } }
+@keyframes lurk-dangle { 0%, 100% { rotate: -3deg; } 50% { rotate: 3deg; } }
+@keyframes lurk-breathe { 50% { scale: 1.03; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lurk__body, .lurk.is-spotted .lurk__body { transition: none; animation: none; }
+}
+
+/* ---- Loader ----------------------------------------------------------
+   Pages with a heavy opening scene (home, ABYSS) hold behind this until
+   their art and fonts are in, so the scene arrives whole instead of in
+   pieces. An inline script in <head> adds html.is-loading before first
+   paint; site.js removes it once the window has loaded (or after 8s). The
+   cover is opaque from the first frame, but its contents only fade in
+   after a beat, so a fast or cached load reads as a fade from black.
+   Everything behind it is paused, so opening animations start on reveal. */
+.loader { display: none; }
+html.is-loading .loader,
+.loader.is-leaving {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--loader-bg);
+  --loader-bg: #08070a;
+  --loader-glow: rgba(120, 22, 44, .28);
+  --loader-accent: var(--red, #d6304c);
+}
+html.is-loading .loader--abyss,
+.loader--abyss.is-leaving { --loader-bg: #04080d; --loader-glow: rgba(40, 110, 120, .24); --loader-accent: #7fd0d8; }
+html.is-loading .loader { animation: loader-failsafe .6s ease 9s forwards; }
+html.is-loading body :not(.loader, .loader *) { animation-play-state: paused !important; }
+.loader__inner { display: grid; place-items: center; opacity: 0; animation: loader-in .6s ease .45s forwards; }
+/* the mark only, at rest: shown only if loading takes a moment */
+.loader__mark { width: 64px; height: auto; opacity: .9; }
+.loader.is-leaving { pointer-events: none; animation: loader-out .8s cubic-bezier(.6, 0, .3, 1) forwards; }
+.loader.is-leaving .loader__inner { opacity: 1; animation: loader-inner-out .5s ease forwards; }
+@keyframes loader-in { to { opacity: 1; } }
+@keyframes loader-out { to { opacity: 0; visibility: hidden; } }
+@keyframes loader-inner-out { to { opacity: 0; transform: translateY(-10px) scale(.98); } }
+@keyframes loader-failsafe { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  .loader__inner { animation: none; opacity: 1; }
+  .loader.is-leaving { animation-duration: .3s; }
+}
+
+/* The rain shader stretches the last column of its texture across the
+   final few percent of the canvas, which reads as horizontal streaks down
+   the right edge. The canvas runs 10% wider than the screen, so that strip
+   is drawn offscreen and clipped by .atmosphere (overflow: hidden). */
+#rain-canvas { width: 110%; max-width: none; }
+
+/* the footer's big OUCH: room between the letters */
+.footer .footer-word { letter-spacing: .02em; }
+

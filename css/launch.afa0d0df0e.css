@@ -1,0 +1,831 @@
+/* ============================================================
+   ABYSS LAUNCH PAGE
+   Layout and set dressing around the hero scene (css/scene.css):
+     · poster hero copy
+     · recovered footage gallery + viewer
+     · things lurking behind the interface
+     · a dive computer that counts depth as you scroll
+     · the final call to action
+   ============================================================ */
+
+/* ---- Hero copy: centered, standing on the seabed -------------------- */
+.page-abyss:not(.page-wiki) .abyss-hero {
+  justify-content: space-between;
+  padding-bottom: clamp(36px, 6svh, 64px);
+}
+.page-abyss:not(.page-wiki) .abyss-hero__grade {
+  /* fades out with the art, so the hero settles into the page */
+  -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent);
+          mask-image: linear-gradient(180deg, #000 86%, transparent);
+  background:
+    linear-gradient(0deg, rgba(4, 8, 13, .9) 0, rgba(4, 8, 13, .45) 24%, transparent 46%),
+    linear-gradient(180deg, rgba(4, 8, 13, .7) 0, transparent 22%);
+}
+.page-abyss:not(.page-wiki) .abyss-hero__content {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.page-abyss:not(.page-wiki) .abyss-kicker { justify-content: center; }
+.page-abyss:not(.page-wiki) .abyss-tagline {
+  max-width: 24ch;
+  margin: 0 auto 26px;
+  text-wrap: balance;
+}
+.page-abyss:not(.page-wiki) .abyss-ctas {
+  position: relative;
+  isolation: isolate;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+/* launch date / countdown under the tagline (filled by js/site.js) */
+.launch-date {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: -8px auto 24px; padding: 8px 14px;
+  border: 1px solid rgba(233, 72, 106, .45); border-radius: 999px;
+  background: rgba(10, 6, 10, .55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font: 500 11px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #ffd5de;
+}
+.launch-date i { width: 7px; height: 7px; border-radius: 50%; background: #e5486a; box-shadow: 0 0 12px #e5486a; animation: abyssPulse 2.6s ease-in-out infinite; }
+.launch-date.is-out { border-color: rgba(120, 214, 160, .5); color: #d6f5e2; }
+.launch-date.is-out i { background: #6fd39a; box-shadow: 0 0 12px #6fd39a; }
+/* the island code beside "Find ABYSS", shown once js/games.js has one */
+.island-code {
+  display: inline-grid; grid-template-columns: auto auto; align-items: center; gap: 2px 14px;
+  min-height: 52px; padding: 8px 16px; text-align: left; cursor: pointer;
+  border: 1px dashed rgba(233, 238, 245, .4); border-radius: 14px; background: rgba(5, 9, 14, .6); color: #fff;
+}
+.island-code[hidden] { display: none; }
+.island-code small { grid-column: 1; font: 500 9px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: #9fb4bf; }
+.island-code b { grid-column: 1; font: 600 17px/1.1 var(--mono); letter-spacing: .04em; }
+.island-code__copy { grid-column: 2; grid-row: 1 / 3; font: 500 10px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #8fd0e6; }
+.island-code.is-copied .island-code__copy::after { content: " ✓"; color: #7fd0a0; }
+.island-code:hover { border-color: #8fd0e6; }
+@media (prefers-reduced-motion: reduce) { .launch-date i { animation: none; } }
+.launch-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #9fb4bf;
+}
+.launch-cue span { font: 16px/1 var(--body); animation: cue-sink 2.2s ease-in-out infinite; }
+@keyframes cue-sink { 50% { translate: 0 5px; } }
+
+/* ---- Facts strip ------------------------------------------------------- */
+.page-abyss:not(.page-wiki) .abyss-intel {
+  position: relative;
+  z-index: 2;
+  margin: clamp(26px, 3vw, 40px) var(--gutter) 0;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: var(--r-lg, 22px);
+  overflow: hidden;
+}
+
+/* ---- Recovered footage --------------------------------------------- */
+.launch-footage {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(110px, 11vw, 170px) var(--gutter) clamp(30px, 3vw, 50px);
+  overflow: hidden;
+}
+
+/* ---- The trailer -------------------------------------------------------
+   A silent loop in a letterboxed frame, playing while it is on screen. */
+.trailer { position: relative; z-index: 1; margin: 0 0 clamp(80px, 8vw, 130px); }
+.trailer__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--edge, rgba(233, 238, 245, .2));
+  border-radius: var(--r-lg, 22px);
+  background: #000;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 60px rgba(56, 150, 190, .08);
+}
+.trailer__player { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* fine scanlines and a vignette, so it sits with the footage below */
+.trailer__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, .08) 0 1px, transparent 1px 3px),
+    radial-gradient(130% 110% at 50% 50%, transparent 62%, rgba(0, 0, 0, .45));
+}
+.trailer__toggle,
+.trailer__full {
+  position: absolute;
+  z-index: 2;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 50%;
+  background: rgba(6, 10, 15, .62);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  opacity: .75;
+  transition: opacity .2s ease, border-color .2s ease, background .2s ease;
+}
+.trailer__toggle { left: 16px; }
+.trailer__full { right: 16px; }
+.trailer__toggle svg, .trailer__full svg { width: 18px; height: 18px; }
+.trailer__toggle svg { fill: currentColor; }
+.trailer__full svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.trailer__toggle .i-play { display: none; }
+.trailer.is-paused .trailer__toggle .i-play { display: block; }
+.trailer.is-paused .trailer__toggle .i-pause { display: none; }
+/* paused: the play button grows into the middle, so it reads as a video */
+.trailer.is-paused .trailer__toggle {
+  left: 50%;
+  bottom: 50%;
+  width: clamp(70px, 7vw, 100px);
+  height: clamp(70px, 7vw, 100px);
+  translate: -50% 50%;
+  border-color: rgba(255, 255, 255, .45);
+  background: rgba(191, 41, 65, .78);
+  opacity: 1;
+}
+.trailer.is-paused .trailer__toggle svg { width: 36%; height: 36%; margin-left: 6%; }
+.trailer__frame:hover .trailer__toggle, .trailer__frame:hover .trailer__full,
+.trailer__toggle:focus-visible, .trailer__full:focus-visible { opacity: 1; border-color: rgba(214, 48, 76, .85); }
+.trailer figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 4px 0;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8fa6b2;
+}
+.trailer figcaption b { margin-right: 10px; font-weight: 500; color: #eef4f7; }
+
+.launch-footage__head,
+.footage-grid { position: relative; z-index: 1; }
+.launch-footage__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 42px;
+}
+.launch-footage__head h2 {
+  font-size: clamp(64px, 8vw, 132px);
+  line-height: .9;
+  margin-top: 18px;
+}
+.launch-footage__head > p {
+  max-width: 34ch;
+  color: #a6b8c3;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.5;
+}
+.footage-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(180px, 18vw, 300px);
+  gap: 14px;
+}
+/* the rest of the feeds: a reel of small selectable frames */
+.footage-reel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+.footage-reel .footage { aspect-ratio: 16 / 9; border-radius: var(--r-sm, 14px); }
+.footage-reel .footage img { filter: brightness(1.32) contrast(1.06) saturate(1); }
+.footage-reel .footage__label { left: 10px; bottom: 9px; font-size: 9px; }
+.footage-reel .footage__label b { display: none; }
+.footage {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: var(--r-md, 18px);
+  background: #060a10;
+  cursor: zoom-in;
+  color: inherit;
+  text-align: left;
+}
+.footage-grid .footage:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+.footage-grid .footage:nth-child(2), .footage-grid .footage:nth-child(3) { grid-column: span 5; }
+.footage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1.16) contrast(1.05) saturate(1);
+  transition: scale .8s var(--ease), filter .5s ease;
+}
+/* scanlines and a lens vignette: these read as feeds, not wallpapers */
+.footage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, .1) 0 1px, transparent 1px 3px),
+    radial-gradient(130% 110% at 50% 45%, transparent 62%, rgba(0, 0, 0, .4));
+}
+.footage__label {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #d8e3ea;
+  text-shadow: 0 1px 8px #000;
+}
+.footage__label b { font-weight: 500; color: #fff; }
+.footage__rec {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 9px/1 var(--mono);
+  letter-spacing: .22em;
+  color: #e7eef3;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.footage__rec::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+  animation: navLive 1.2s steps(2) infinite;
+}
+.footage:hover img, .footage:focus-visible img { scale: 1.04; filter: brightness(1.3) contrast(1.05) saturate(1.08); }
+.footage:hover .footage__rec, .footage:focus-visible .footage__rec { opacity: 1; }
+
+/* ---- The viewer ---------------------------------------------------- */
+.footage-viewer {
+  width: min(94vw, 1500px);
+  max-height: 94svh;
+  padding: 0;
+  border: 1px solid var(--edge, rgba(233, 238, 245, .2));
+  border-radius: var(--r-lg, 22px);
+  background: #05090f;
+  color: #e9eef3;
+  overflow: hidden;
+}
+.footage-viewer::backdrop { background: rgba(2, 5, 9, .86); backdrop-filter: blur(6px); }
+.footage-viewer img { display: block; width: 100%; height: auto; max-height: 82svh; object-fit: contain; background: #000; }
+.footage-viewer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  font: 500 11px/1 var(--mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.footage-viewer__bar div { display: flex; gap: 8px; }
+.footage-viewer button {
+  min-width: 42px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--edge, rgba(233, 238, 245, .2));
+  border-radius: 999px;
+  background: rgba(20, 28, 38, .8);
+  color: #fff;
+  font: 500 14px/1 var(--mono);
+  cursor: pointer;
+}
+.footage-viewer button:hover { border-color: rgba(214, 48, 76, .8); }
+
+/* ---- Things lurking behind the interface ----------------------------
+   The lurker itself (window, slide, grading, Snag) is shared and lives in
+   ui.css. These are this page's own creatures and placements: the spider
+   under the facts strip, Snag on the final band, the climber on the dive
+   computer. */
+/* clinging to the underside of the stats bar, legs first, hanging into the gap */
+.lurk--spider {
+  left: 50%;
+  translate: -50% 0;
+  top: 0;
+  width: clamp(180px, 17vw, 260px);
+  height: clamp(170px, 15vw, 230px);
+  z-index: 0;
+  --lurk-img: image-set(url("/assets/abyss/creatures/creature-02-520.avif") type("image/avif"), url("/assets/abyss/creatures/creature-02-520.webp") type("image/webp"));
+  --lurk-pos: center top;
+  --lurk-size: 100% auto;
+  --hidden: -100%;
+  --shown: 0%;
+  --shade: 0deg;
+}
+.lurk--spider .lurk__body { transform-origin: 50% 0; animation: lurk-dangle 7s ease-in-out infinite; }
+/* Snag, eyes over the top edge of the final band */
+.launch-final .lurk--snag { left: clamp(30px, 7vw, 120px); bottom: 100%; }
+/* climbing up the back of the dive computer once you are deep */
+.lurk--climber {
+  left: 54%;
+  bottom: 50%;
+  width: 120px;
+  height: 104px;
+  z-index: -2;
+  --lurk-img: image-set(url("/assets/abyss/creatures/creature-02-520.avif") type("image/avif"), url("/assets/abyss/creatures/creature-02-520.webp") type("image/webp"));
+  --lurk-pos: center top;
+  --lurk-size: 100% auto;
+  --shown: 52%;
+}
+.lurk--climber .lurk__body { transform-origin: 50% 100%; animation: lurk-reach 3.4s ease-in-out infinite; }
+
+/* ---- The dive computer ----------------------------------------------
+   The facts strip in miniature: two readings, a hairline between them, and
+   an oxygen line along the bottom edge that runs down as you scroll. */
+.dive-hud {
+  position: fixed;
+  left: max(16px, calc(var(--gutter) - 8px));
+  bottom: 18px;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: auto auto;
+  pointer-events: none;
+  transition: opacity .4s ease, translate .4s ease;
+}
+/* the glass is a layer of its own, so a creature can climb up behind it
+   (z -2) while staying in front of the page */
+.dive-hud::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: var(--r-sm, 14px);
+  background: linear-gradient(160deg, rgba(27, 31, 41, .86), rgba(12, 14, 20, .94));
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+  transition: border-color .4s ease;
+}
+.dive-hud__cell { display: grid; gap: 7px; padding: 11px 16px 13px; min-width: 92px; }
+.dive-hud__cell + .dive-hud__cell { border-left: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); min-width: 72px; }
+.dive-hud__cell > span { font: 500 9px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8f9aa8; }
+.dive-hud__cell b { display: flex; align-items: baseline; gap: 3px; font: 800 22px/.9 var(--display); color: #f1f4f8; font-variant-numeric: tabular-nums; }
+.dive-hud__cell small { font: 500 9px/1 var(--mono); letter-spacing: .1em; color: #8f9aa8; }
+.dive-hud__bar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -1px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .08);
+}
+.dive-hud__bar em {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+  scale: var(--o2, 1) 1;
+  background: #f1f4f8;
+  transition: background .4s ease;
+}
+/* running low: the reading and the line turn red */
+.dive-hud.is-low::before { border-color: rgba(214, 48, 76, .5); }
+.dive-hud.is-low .dive-hud__cell + .dive-hud__cell b { color: #f2a3b1; }
+.dive-hud.is-low .dive-hud__bar em { background: var(--red); animation: navLive 1.2s ease-in-out infinite; }
+.dive-hud.is-away { opacity: 0; translate: 0 12px; }
+
+/* ---- The run: premise and loop in one place ---------------------------- */
+.launch-loop { position: relative; padding: clamp(80px, 8vw, 130px) var(--gutter) clamp(70px, 7vw, 110px); }
+.launch-loop__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(30px, 5vw, 90px);
+}
+.launch-loop__head h2 { font-size: clamp(64px, 8vw, 132px); line-height: .9; margin: 18px 0 0; }
+.launch-loop__lede {
+  max-width: 30ch;
+  margin: 0;
+  font: 400 clamp(20px, 2vw, 30px)/1.35 var(--body);
+  color: #dfe7ec;
+}
+.launch-loop__lede strong { color: #fff; font-weight: 600; }
+.launch-loop__steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 28px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.launch-loop__steps li { position: relative; padding-top: 6px; }
+.launch-loop__steps span { font: 500 10px/1 var(--mono); letter-spacing: .2em; color: #8fa6b2; }
+.launch-loop__steps h3 {
+  margin: 14px 0 10px;
+  font: 800 clamp(30px, 3vw, 48px)/.95 var(--display);
+  text-transform: uppercase;
+  color: #f1f5f8;
+}
+.launch-loop__steps p { margin: 0; max-width: 32ch; color: #a7b8c2; font-size: 15px; line-height: 1.55; }
+
+/* ---- The final call to action ---------------------------------------- */
+.launch-final {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  margin: var(--final-mt) var(--gutter) var(--final-mb);
+  padding: clamp(44px, 6vw, 96px);
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12));
+  border-radius: 26px;
+  /* aboard the Mule, with the bill on the screen */
+  background:
+    linear-gradient(90deg, rgba(4, 9, 15, .97) 0, rgba(4, 9, 15, .9) 38%, rgba(4, 9, 15, .5) 72%, rgba(4, 9, 15, .3)),
+    linear-gradient(0deg, rgba(4, 9, 15, .7), transparent 50%),
+    url("/assets/abyss/screens/screen-03.jpg") 70% 50% / cover no-repeat #071220;
+}
+/* sonar from the Mule */
+.launch-final__sonar { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+.launch-final__sonar i {
+  position: absolute;
+  left: calc(86% - 260px);
+  top: calc(50% - 260px);
+  width: 520px;
+  height: 520px;
+  border: 1px solid rgba(127, 208, 216, .5);
+  border-radius: 50%;
+  opacity: 0;
+  animation: sonar 5.4s cubic-bezier(.2, .6, .3, 1) infinite;
+}
+.launch-final__sonar i:nth-child(2) { animation-delay: 1.8s; }
+.launch-final__sonar i:nth-child(3) { animation-delay: 3.6s; }
+@keyframes sonar { 0% { scale: .05; opacity: .9; } 100% { scale: 1; opacity: 0; } }
+.launch-final__inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 40px; }
+.launch-final h2 { font-size: clamp(66px, 8vw, 132px); line-height: .9; margin: 18px 0 20px; }
+.launch-final p:not(.eyebrow) { max-width: 40ch; color: #c2d0d8; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.5; }
+.launch-final__actions { display: flex; flex-direction: column; align-items: stretch; gap: 22px; min-width: 300px; }
+.launch-final__actions .button.primary { min-height: 64px; padding-inline: 28px; font-size: 13px; box-shadow: 0 0 40px rgba(191, 41, 65, .3), inset 0 1px 0 rgba(255, 255, 255, .25); }
+/* App Store and Google Play: the standard black badge, two side by side */
+.store-badges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.store-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 14px;
+  border: 1px solid #a6a6a6;
+  border-radius: 9px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color .2s ease, translate .2s var(--ease);
+}
+.store-badge svg { flex: none; width: 26px; height: 26px; }
+.store-badge--play svg { width: 24px; height: 24px; }
+.store-badge span { display: flex; flex-direction: column; font: 600 19px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; letter-spacing: -.01em; }
+.store-badge small { margin-bottom: 2px; font-size: 10px; font-weight: 500; letter-spacing: .01em; }
+.store-badge--play small { font-size: 9px; letter-spacing: .06em; }
+.store-badge:hover, .store-badge:focus-visible { border-color: #fff; translate: 0 -2px; }
+.launch-final__links { display: flex; justify-content: space-between; gap: 18px; }
+.launch-final__links a {
+  font: 500 11px/1 var(--mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #c9d6dd;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 214, 221, .35);
+  text-underline-offset: 6px;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.launch-final__links a:hover, .launch-final__links a:focus-visible { color: #fff; text-decoration-color: var(--red); }
+
+/* ---- Small screens ---------------------------------------------------- */
+@media (max-width: 900px) {
+  .dive-hud { display: none; }
+  .footage-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 34vw; }
+  .footage-grid .footage:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+  .footage-grid .footage:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  .footage-reel { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 46%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+  .footage-reel .footage { scroll-snap-align: start; }
+  .launch-footage__head { flex-direction: column; align-items: start; gap: 18px; }
+  .launch-final__inner { grid-template-columns: minmax(0, 1fr); }
+  .launch-final__actions { min-width: 0; }
+  .launch-final__sonar i { left: calc(90% - 260px); top: calc(22% - 260px); }
+  .launch-loop__head { display: flex; flex-direction: column; align-items: start; gap: 22px; }
+  .launch-loop__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+}
+@media (max-width: 540px) {
+  .footage-grid { grid-template-columns: minmax(0, 1fr); grid-auto-rows: 56vw; }
+  .footage-grid .footage:nth-child(1) { grid-column: span 1; }
+  .footage-reel { grid-auto-columns: 72%; }
+  .launch-loop__steps { grid-template-columns: minmax(0, 1fr); }
+  .launch-final__links { flex-direction: column; align-items: start; }
+  .store-badges { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footage img { transition: none; }
+  .launch-cue span { animation: none; }
+  .launch-final__sonar i { animation: none; }
+}
+
+/* ---- The dive profile ------------------------------------------------
+   A dive computer's log of one run, drawn over the four steps: straight
+   down, a ragged line along the bottom while you salvage, the climb out,
+   and the bill (red) waiting at the dock. It draws itself on arrival. */
+.dive-profile { margin: clamp(48px, 5vw, 80px) 0 clamp(18px, 2vw, 28px); }
+.dive-profile svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dive-profile__surface { stroke: rgba(233, 238, 245, .16); stroke-width: 1; stroke-dasharray: 4 6; vector-effect: non-scaling-stroke; }
+.dive-profile__axis { font: 500 10px var(--mono); letter-spacing: .18em; text-transform: uppercase; fill: #6f8290; }
+.dive-profile__trace {
+  fill: none;
+  stroke: #7fd0d8;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px rgba(127, 208, 216, .55));
+  transition: stroke-dashoffset 2.6s cubic-bezier(.45, 0, .2, 1);
+}
+.dive-profile__marks circle {
+  fill: #071019;
+  stroke: #7fd0d8;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: .4;
+  transition: opacity .4s ease, scale .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+.dive-profile__marks circle.is-bill { fill: var(--red); stroke: var(--red); filter: drop-shadow(0 0 8px rgba(214, 48, 76, .9)); }
+.dive-profile.is-drawn .dive-profile__trace { stroke-dashoffset: 0; }
+.dive-profile.is-drawn .dive-profile__marks circle { opacity: 1; scale: 1; }
+.dive-profile.is-drawn .dive-profile__marks circle:nth-child(1) { transition-delay: .45s; }
+.dive-profile.is-drawn .dive-profile__marks circle:nth-child(2) { transition-delay: 1.05s; }
+.dive-profile.is-drawn .dive-profile__marks circle:nth-child(3) { transition-delay: 1.75s; }
+.dive-profile.is-drawn .dive-profile__marks circle:nth-child(4) { transition-delay: 2.45s; }
+.dive-profile.is-drawn .is-bill { animation: navLive 1.6s ease-in-out 3s infinite; }
+
+/* ---- Depth stamps ----------------------------------------------------
+   Each section is marked with the depth the dive computer shows when you
+   reach it. */
+.depth-stamp {
+  position: absolute;
+  z-index: 2;
+  top: clamp(36px, 4vw, 56px);
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #7f93a0;
+  font-variant-numeric: tabular-nums;
+}
+.depth-stamp::before { content: ""; width: 34px; height: 1px; background: currentColor; opacity: .6; }
+.depth-stamp::after { content: "▼"; font-size: 8px; color: var(--red); }
+.launch-final > .depth-stamp { top: 26px; right: 30px; }
+
+/* ---- Behind the page: the ABYSS key art, as on the wiki ---------------
+   Pinned while the page scrolls (a fixed layer, not background-attachment,
+   which iOS ignores). Washed darker on the copy side so text stays readable,
+   with a teal lamp glow high on the left and a red one low on the right.
+   The hero covers it at the top; it shows from the facts strip down. */
+body.page-abyss:not(.page-wiki)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(48vw 40vw at 8% 10%, rgba(56, 150, 190, .2), transparent 70%),
+    radial-gradient(42vw 38vw at 96% 75%, rgba(200, 40, 75, .16), transparent 70%),
+    linear-gradient(90deg, rgba(6, 10, 16, .9) 0%, rgba(6, 10, 16, .74) 45%, rgba(6, 10, 16, .48) 100%),
+    linear-gradient(0deg, rgba(6, 10, 16, .82), rgba(6, 10, 16, .25) 60%),
+    image-set(url("/assets/abyss/abyss-tb-1920.webp") type("image/webp")) 64% 30% / cover no-repeat,
+    #060a10;
+}
+@media (max-width: 900px) {
+  body.page-abyss:not(.page-wiki)::before {
+    background:
+      linear-gradient(0deg, rgba(6, 10, 16, .94) 30%, rgba(6, 10, 16, .6)),
+      url("/assets/abyss/abyss-tb-1200.webp") 30% 0 / cover no-repeat,
+      #060a10;
+  }
+}
+.page-abyss:not(.page-wiki) main,
+.page-abyss:not(.page-wiki) .footer { position: relative; z-index: 1; }
+.page-abyss:not(.page-wiki) main { background: none; }
+
+/* ---- Opening sequence -------------------------------------------------
+   On load the poster comes up out of the dark: the water first, then the
+   title surfaces, then the copy. Played once; skipped for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .abyss-hero__scene { animation: open-water 1.6s ease-out both; }
+  .abyss-hero__backdrop { animation: open-settle 3.2s cubic-bezier(.2, .7, .2, 1) both; }
+  .launch-title { animation: open-title 1.9s cubic-bezier(.2, .7, .2, 1) .35s both; }
+  .abyss-hero__top,
+  .abyss-hero__content > * { animation: open-copy 1s cubic-bezier(.2, .7, .2, 1) both; }
+  .abyss-hero__top { animation-delay: .9s; }
+  .abyss-hero__content > :nth-child(2) { animation-delay: 1s; }
+  .abyss-hero__content > :nth-child(3) { animation-delay: 1.12s; }
+  .abyss-hero__content > :nth-child(4) { animation-delay: 1.26s; }
+  .abyss-hero__content > :nth-child(5) { animation-delay: 1.5s; }
+  .dive-hud { animation: open-copy 1s cubic-bezier(.2, .7, .2, 1) 1.7s both; }
+}
+@keyframes open-water { from { opacity: 0; } }
+@keyframes open-settle { from { transform: scale(1.08); } }
+@keyframes open-title {
+  from { opacity: 0; transform: translateY(7%); filter: blur(16px) drop-shadow(0 18px 50px rgba(0, 0, 0, .55)); }
+  to   { filter: blur(0) drop-shadow(0 18px 50px rgba(0, 0, 0, .55)); }
+}
+@keyframes open-copy { from { opacity: 0; transform: translateY(14px); } }
+
+/* ---- Scroll reveals ----------------------------------------------------
+   Same motion as the rest of the site (revealUp in experience.css). */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    body:not(.motion-paused) :is(
+      .trailer, .launch-footage__head > *, .footage-grid .footage, .footage-reel .footage,
+      .launch-loop__head > *, .launch-loop__steps li, .launch-final__inner > *
+    ) {
+      animation: revealUp linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+    body:not(.motion-paused) :is(.footage-grid .footage:nth-child(2), .footage-reel .footage:nth-child(2n), .launch-loop__steps li:nth-child(2)) { animation-range: entry 3% cover 26%; }
+    body:not(.motion-paused) :is(.footage-grid .footage:nth-child(3), .footage-reel .footage:nth-child(3n), .launch-loop__steps li:nth-child(3)) { animation-range: entry 6% cover 30%; }
+    body:not(.motion-paused) .launch-loop__steps li:nth-child(4) { animation-range: entry 9% cover 34%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dive-profile__trace { stroke-dashoffset: 0; transition: none; }
+  .dive-profile__marks circle { opacity: 1; scale: 1; transition: none; }
+}
+@media (max-width: 900px) {
+  .dive-profile__axis { font-size: 16px; }
+  .depth-stamp { top: 24px; }
+}
+
+/* ---- The reef ----------------------------------------------------------
+   Strands of kelp at the edges as you go down. Each is graded into the
+   water (darker, bluer, softer the further back it sits), sways, and
+   drifts against the scroll by its own depth (--far). The art is only
+   fetched as it nears the screen (.is-near, set in site.js). */
+.launch-final-wrap {
+  --final-mt: clamp(110px, 10vw, 160px);
+  --final-mb: clamp(90px, 9vw, 140px);
+  position: relative;
+  display: flow-root;   /* keeps the band's margins inside, so the reef can measure from them */
+  overflow-x: clip;
+}
+.launch-loop { overflow-x: clip; }
+.launch-loop > :not(.reef, .depth-stamp) { position: relative; z-index: 1; }
+.reef { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.reef > i {
+  position: absolute;
+  display: block;
+  background: none center bottom / contain no-repeat;
+  --far: .5;
+  filter: brightness(calc(.78 - var(--far) * .42)) saturate(calc(.85 - var(--far) * .35)) blur(calc(var(--far) * 2.4px));
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent);
+          mask-image: linear-gradient(180deg, #000 72%, transparent);
+}
+.reef.is-near .reef__kelp { background-image: image-set(url("/assets/home-kelp-single-1024.avif") type("image/avif"), url("/assets/home-kelp-single-1024.webp") type("image/webp")); }
+/* swaying from the root */
+.reef__kelp { transform-origin: 50% 100%; animation: kelp-wave var(--sway, 8s) ease-in-out var(--phase, 0s) infinite; }
+
+/* one strand near the footage, one by the run, one beside the last band */
+.reef__kelp--a { left: -5vw; bottom: 0; width: 20vw; height: 62%; --far: .7; --sway: 8.6s; --phase: -3s; }
+.reef__kelp--b { left: -6vw; bottom: -10%; width: 18vw; height: 80%; --far: .6; --sway: 7.2s; --phase: -1.2s; scale: -1 1; }
+.reef__kelp--c { left: -3vw; bottom: var(--final-mb); width: 22vw; height: 120%; --far: .45; --sway: 6.8s; --phase: -4.4s; }
+
+/* drifting against the scroll: nearer pieces travel further */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reef__kelp { animation: kelp-wave var(--sway, 8s) ease-in-out var(--phase, 0s) infinite, reef-drift linear both; animation-timeline: auto, view(); }
+  }
+}
+@keyframes reef-drift {
+  from { translate: 0 calc((1 - var(--far)) * 70px); }
+  to   { translate: 0 calc((1 - var(--far)) * -70px); }
+}
+body.motion-paused .reef > i { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .reef > i { animation: none; }
+}
+@media (max-width: 760px) {
+  .reef__kelp--a, .reef__kelp--b { width: 34vw; }
+}
+
+/* Phones: the eyebrow rule ran straight through the ABYSS title. The same
+   facts are in the strip under the hero, so it can go. */
+@media (max-width: 700px) {
+  .page-abyss:not(.page-wiki) .abyss-hero__top { visibility: hidden; }
+  .launch-date { margin-top: -10px; letter-spacing: .1em; }
+  .island-code { justify-content: center; }
+}
+
+/* ---- Know what's down there --------------------------------------------
+   Four creature files from the wiki, the numbers, and what's coming. */
+.launch-threats { position: relative; padding: clamp(60px, 7vw, 110px) var(--gutter) clamp(70px, 7vw, 110px); }
+.launch-threats__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: clamp(30px, 5vw, 90px); margin-bottom: clamp(30px, 4vw, 54px); }
+.launch-threats__head h2 { font-size: clamp(56px, 7vw, 118px); line-height: .9; margin: 18px 0 0; }
+.launch-threats__lede { max-width: 30ch; margin: 0; font: 400 clamp(19px, 1.8vw, 26px)/1.4 var(--body); color: #dfe7ec; }
+.threat-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 18px); }
+.threat__card {
+  display: flex; flex-direction: column; height: 100%; padding: 12px 14px 20px;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); border-radius: var(--r-lg, 22px);
+  background: linear-gradient(170deg, #0e1822, #080d14); color: inherit;
+  transition: border-color .25s ease, transform .35s var(--ease);
+}
+.threat__art { display: grid; place-items: center; aspect-ratio: 1; margin-bottom: 16px; border-radius: 15px; overflow: hidden;
+  background: radial-gradient(circle at 50% 64%, rgba(229, 72, 106, .16), transparent 62%), repeating-linear-gradient(0deg, rgba(255, 255, 255, .02) 0 1px, transparent 1px 4px), #060a10; }
+.threat__art img { width: 86%; height: 86%; object-fit: contain; filter: brightness(.74) saturate(.82) contrast(1.08) drop-shadow(0 14px 26px rgba(0, 0, 0, .75)); transition: filter .35s ease, transform .5s var(--ease); }
+.threat__punish { font: 500 10px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #ef6f8b; }
+.threat__name { margin: 8px 0 10px; font: 800 clamp(30px, 2.8vw, 44px)/.92 var(--display); text-transform: uppercase; color: #f4f7fa; }
+.threat__tip { font: 400 14.5px/1.5 var(--body); color: #b8c6d1; }
+.launch-numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: clamp(30px, 4vw, 50px) 0 0;
+  border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); border-radius: var(--r-lg, 22px); overflow: hidden; background: rgba(233, 238, 245, .12); }
+.launch-numbers div { padding: clamp(18px, 2vw, 28px); background: #0b121b; }
+.launch-numbers dt { font: 500 10px/1.3 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: #8fa6b2; }
+.launch-numbers dd { margin: 10px 0 0; font: 800 clamp(44px, 5vw, 76px)/.85 var(--display); color: #fff; }
+.launch-soon { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: clamp(30px, 4vw, 50px); }
+.launch-soon .eyebrow { margin: 0; color: #f39a4a; }
+.launch-soon ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; flex: 1; }
+.launch-soon li { padding: 9px 14px; border: 1px dashed rgba(243, 154, 74, .5); border-radius: 999px; font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #ffd9b6; }
+.launch-soon li::before { content: "? "; color: #f39a4a; }
+@media (max-width: 900px) {
+  .threat-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .launch-numbers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .launch-threats__head { display: flex; flex-direction: column; align-items: start; gap: 18px; }
+  .threat__card { padding: 8px 10px 16px; border-radius: 16px; }
+  .threat__tip { font-size: 13px; }
+  .launch-soon ul { flex-basis: 100%; }
+  .launch-soon .button { width: 100%; justify-content: space-between; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    body:not(.motion-paused) :is(.launch-threats__head > *, .threat, .launch-numbers, .launch-soon) {
+      animation: revealUp linear both; animation-timeline: view(); animation-range: entry 0% cover 22%;
+    }
+    body:not(.motion-paused) .threat:nth-child(2) { animation-range: entry 3% cover 26%; }
+    body:not(.motion-paused) .threat:nth-child(3) { animation-range: entry 6% cover 30%; }
+    body:not(.motion-paused) .threat:nth-child(4) { animation-range: entry 9% cover 34%; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+}
+
+/* The creature cards stay blurred: the wiki is one guarded click away. */
+.threat-wrap { position: relative; }
+.threat-cards { filter: blur(14px) saturate(.8); opacity: .75; pointer-events: none; user-select: none; }
+.threat-veil {
+  position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 14px;
+  padding: 24px; text-align: center;
+  background: radial-gradient(60% 70% at 50% 50%, rgba(5, 8, 13, .7), transparent 75%);
+}
+.threat-veil__label { margin: 0; font: 500 11px/1 var(--mono); letter-spacing: .26em; text-transform: uppercase; color: #ef6f8b; }
+.threat-veil__text { max-width: 34ch; margin: 0 0 6px; font: 400 clamp(17px, 1.6vw, 22px)/1.45 var(--body); color: #e6edf2; }
+
+/* the warning before going to the creature files */
+.spoiler-warning {
+  width: min(520px, calc(100vw - 32px)); padding: 30px; border: 1px solid rgba(229, 72, 106, .5); border-radius: 22px;
+  background: radial-gradient(120% 80% at 50% 0%, rgba(229, 72, 106, .14), transparent 60%), #0a1119; color: #eef3f7;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .7);
+}
+.spoiler-warning::backdrop { background: rgba(2, 5, 9, .75); backdrop-filter: blur(6px); }
+.spoiler-warning__label { margin: 0 0 12px; font: 500 11px/1 var(--mono); letter-spacing: .26em; text-transform: uppercase; color: #ef6f8b; }
+.spoiler-warning h2 { margin: 0 0 12px; font: 800 clamp(32px, 4vw, 44px)/.95 var(--display); text-transform: uppercase; }
+.spoiler-warning p { margin: 0 0 22px; font: 400 16px/1.55 var(--body); color: #c5d2dc; }
+.spoiler-warning__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 700px) { .spoiler-warning__actions > * { width: 100%; justify-content: space-between; } }

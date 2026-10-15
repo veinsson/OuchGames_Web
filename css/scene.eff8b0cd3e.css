@@ -1,0 +1,754 @@
+/* ============================================================
+   SCENE (home hero, and the ABYSS launch hero)
+   The home hero is a small stage, not a picture. Three cut-out layers
+   (kelp, diver, beam) sit between the crimson/teal wash and the WebGL
+   rain, and each one moves on its own clock:
+
+     kelp ....... sways from its roots, two depths, two tempos
+     diver ...... drifts, as if holding position against a current
+     beam ....... sweeps the water, flickers, and leans toward the
+                  visitor's pointer (js/site.js)
+     lit layer .. a second copy of the kelp and some marine snow that
+                  is only visible INSIDE the beam, so the light appears
+                  to pick things out of the dark as it passes
+
+   The lit layer rides inside the beam, which rotates. To keep it pinned
+   to the world it runs the beam's transforms backwards: an inverse sweep,
+   then an inverse drift. Each inverse uses the same duration, easing and
+   origin as the motion it cancels, so the two stay locked frame for frame.
+   ============================================================ */
+
+/* ---- Geometry ---------------------------------------------------------
+   Every layer shares one 1672x941 frame, so everything is a percentage of
+   that frame. Measured from the source art:
+     lamp lens on the helmet .......... 69.86% 15.02% of the diver frame
+     brightest point of the beam ...... 57.24% 21.47% of the beam frame
+     exhaust valve on top of helmet ... 59.43%  1.75% of the diver frame
+   The diver (the kneeling one with the shotgun, 15 Oct 2026) is drawn at
+   the same size and centre line as the previous one; the beam is moved so
+   its core sits on his lamp: lamp = diver offset + lamp in frame, and
+   beam = lamp - core. Swap the diver and these five lines are all that move. */
+.scene {
+  --frame-ar: 1.77683;                 /* 1672 / 941 */
+  --lamp-x: 75.78%;  --lamp-y: 19.27%;
+  --diver-x: 5.92%;  --diver-y: 4.25%;
+  --beam-x: 18.54%;  --beam-y: -2.2%;
+  --core: 57.24% 21.47%;               /* rotation pivot, inside the beam frame */
+  --valve-x: 65.35%; --valve-y: 6%;
+  --float-o: 57.6% 100%;                 /* where he meets the ground: he sways from here */
+
+  /* the region the stage has to cover, like object-fit: cover */
+  --rw: 107vw;
+  --rh: calc(100svh - 96px);
+  --fx: .5;
+  --fy: .5;
+
+  --img-diver: image-set(url("/assets/home-diver-2262.avif") type("image/avif"), url("/assets/home-diver-2262.webp") type("image/webp"));
+  --img-beam: image-set(url("/assets/home-beam-1672.avif") type("image/avif"), url("/assets/home-beam-1672.webp") type("image/webp"));
+  --img-city: image-set(url("/assets/home-city-1672.avif") type("image/avif"), url("/assets/home-city-1672.webp") type("image/webp"));
+  --img-ground: image-set(url("/assets/home-ground-1672.avif") type("image/avif"), url("/assets/home-ground-1672.webp") type("image/webp"));
+  --img-patch: image-set(url("/assets/home-ground-patch-1672.avif") type("image/avif"), url("/assets/home-ground-patch-1672.webp") type("image/webp"));
+  --img-particles: image-set(url("/assets/home-particles-1672.avif") type("image/avif"), url("/assets/home-particles-1672.webp") type("image/webp"));
+  --img-bunch: image-set(url("/assets/home-kelp-bunch-1536.avif") type("image/avif"), url("/assets/home-kelp-bunch-1536.webp") type("image/webp"));
+  --img-single: image-set(url("/assets/home-kelp-single-1024.avif") type("image/avif"), url("/assets/home-kelp-single-1024.webp") type("image/webp"));
+
+  position: absolute;
+  top: 96px;
+  left: 0;
+  width: var(--rw);
+  height: var(--rh);
+  pointer-events: none;
+}
+/* small, low-density screens do not need the full-size frames */
+@media (max-width: 1100px) and (max-resolution: 1.5dppx) {
+  .scene {
+    --img-diver: image-set(url("/assets/home-diver-1100.avif") type("image/avif"), url("/assets/home-diver-1100.webp") type("image/webp"));
+    --img-beam: image-set(url("/assets/home-beam-1100.avif") type("image/avif"), url("/assets/home-beam-1100.webp") type("image/webp"));
+    --img-city: image-set(url("/assets/home-city-1100.avif") type("image/avif"), url("/assets/home-city-1100.webp") type("image/webp"));
+    --img-ground: image-set(url("/assets/home-ground-1100.avif") type("image/avif"), url("/assets/home-ground-1100.webp") type("image/webp"));
+    --img-patch: image-set(url("/assets/home-ground-patch-1100.avif") type("image/avif"), url("/assets/home-ground-patch-1100.webp") type("image/webp"));
+    --img-particles: image-set(url("/assets/home-particles-1100.avif") type("image/avif"), url("/assets/home-particles-1100.webp") type("image/webp"));
+    --img-bunch: image-set(url("/assets/home-kelp-bunch-768.avif") type("image/avif"), url("/assets/home-kelp-bunch-768.webp") type("image/webp"));
+    --img-single: image-set(url("/assets/home-kelp-single-512.avif") type("image/avif"), url("/assets/home-kelp-single-512.webp") type("image/webp"));
+  }
+}
+/* A custom property holding an unsupported image-set() leaves the layer
+   blank rather than falling back, so older engines get plain WebP. */
+@supports not (background-image: image-set(url("/assets/x.avif") type("image/avif"))) {
+  .scene {
+    --img-diver: url("/assets/home-diver-2262.webp");
+    --img-beam: url("/assets/home-beam-1672.webp");
+    --img-city: url("/assets/home-city-1672.webp");
+    --img-ground: url("/assets/home-ground-1672.webp");
+    --img-patch: url("/assets/home-ground-patch-1672.webp");
+    --img-particles: url("/assets/home-particles-1672.webp");
+    --img-bunch: url("/assets/home-kelp-bunch-1536.webp");
+    --img-single: url("/assets/home-kelp-single-1024.webp");
+  }
+}
+
+/* ---- The stage: a 1672:941 box that covers the region ---------------- */
+.scene__stage {
+  --sw: max(var(--rw), calc(var(--rh) * var(--frame-ar)));
+  --sh: calc(var(--sw) / var(--frame-ar));
+  position: absolute;
+  width: var(--sw);
+  height: var(--sh);
+  left: calc((var(--rw) - var(--sw)) * var(--fx));
+  top: calc((var(--rh) - var(--sh)) * var(--fy));
+}
+
+/* ---- Painting order inside .atmosphere -------------------------------
+   The scene is split into two plates with identical geometry: a back plate
+   (kelp) that sits under the WebGL rain, and a front plate (diver, ground,
+   light) that sits over it, so the rain falls on the water but never shows
+   through the diver. Neither plate forms a stacking context on desktop, so
+   every layer is ordered directly against the rain canvas, which also lets
+   the beam screen-blend over everything behind it.
+     0 water · 1 city · 3 haze · 4 kelp · 5 seabed · 6 depth
+     10 rain · 11 grade · 12 diver · 13 mound · 14 light · 16 particles */
+
+/* the split: crimson on the left comes from .atmosphere itself */
+.page-home .scene-water {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 34% 46% at 77% 22%, rgba(110, 190, 196, .46), transparent 70%),
+    radial-gradient(ellipse 60% 70% at 70% 46%, rgba(34, 96, 104, .62), transparent 72%),
+    linear-gradient(90deg, rgba(10, 30, 36, 0) 24%, rgba(10, 32, 38, .7) 44%, rgba(9, 30, 36, .93) 64%, rgba(7, 24, 30, .97));
+}
+
+/* ---- The world behind him (back plate, under the rain) -----------------
+   Each layer is a cut-out in a box measured in stage percentages, and each
+   slides by its own depth factor when the pointer moves. */
+.scene__city,
+.scene__seabed,
+.scene__kelp {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+/* the sunken towers, far off to the right: hazy, barely moving */
+.scene__city {
+  z-index: 1;
+  left: -5%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--img-city);
+  opacity: .95;
+  filter: blur(.4px) brightness(1.08) saturate(.85);
+  translate: calc(var(--ax, 0px) * .12) calc(var(--ay, 0px) * .12);
+}
+.scene__haze {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(90deg, transparent 30%, rgba(12, 40, 46, .22) 62%, rgba(12, 40, 46, .26));
+}
+/* Kelp sways from its roots. Each plant has its own tempo and phase, so the
+   bed never moves in unison. */
+.scene__kelp {
+  z-index: 4;
+  transform-origin: 50% 98%;
+  will-change: transform;
+}
+/* the bunch, rooted on the seabed behind him; its left fronds reach into the red */
+.scene__kelp--bunch {
+  left: 18.5%;
+  top: 26.4%;
+  width: 52.3%;
+  height: 62%;
+  background-image: var(--img-bunch);
+  filter: brightness(.72) saturate(.85);
+  translate: calc(var(--ax, 0px) * .5) calc(var(--ay, 0px) * .5);
+  animation: kelp-wave 9.4s ease-in-out -2s infinite;
+}
+/* a tall single plant on his right, standing in the beam's path */
+.scene__kelp--single {
+  left: 72.4%;
+  top: 19.2%;
+  width: 27.75%;
+  height: 74%;
+  background-image: var(--img-single);
+  scale: -1 1;
+  opacity: .82;
+  filter: blur(.5px) brightness(.8) saturate(.8);
+  translate: calc(var(--ax, 0px) * .38) calc(var(--ay, 0px) * .38);
+  animation: kelp-wave 7.2s ease-in-out -5.3s infinite;
+}
+/* the seabed: in front of the kelp roots, so the plants grow out of it */
+.scene__seabed {
+  z-index: 5;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--img-ground);
+  filter: brightness(.7) saturate(.85);
+  translate: calc(var(--ax, 0px) * .55) calc(var(--ay, 0px) * .55);
+}
+
+/* ---- The diver -------------------------------------------------------- */
+.scene__rig {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  transform-origin: var(--float-o);
+  translate: var(--ax, 0px) var(--ay, 0px);
+  animation: diver-drift 7.6s ease-in-out infinite;
+  will-change: transform;
+}
+.scene__diver {
+  position: absolute;
+  left: var(--diver-x);
+  top: var(--diver-y);
+  width: 100%;
+  height: 100%;
+}
+.scene__diver {
+  background: var(--img-diver) 0 0 / 100% 100% no-repeat;
+}
+/* The render arrives already lit for this scene: crimson along the edges
+   facing the red, cool along the lamp side. An earlier version faked that
+   with a teal tint and two CSS rim lights; on this art they double up, so
+   the diver is shown as delivered. */
+
+/* he breathes: bursts of bubbles from the exhaust valve */
+.scene__bubbles {
+  position: absolute;
+  left: var(--valve-x);
+  top: var(--valve-y);
+  width: 0;
+  height: 0;
+}
+.scene__bubbles i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, .9) 0 14%, rgba(200, 240, 248, .22) 36%, rgba(200, 240, 248, .06) 60%, transparent 68%);
+  box-shadow: inset 0 0 0 1px rgba(210, 242, 250, .38), 0 0 6px rgba(170, 225, 240, .18);
+  opacity: 0;
+  animation: bubble-rise var(--d) cubic-bezier(.33, .1, .58, 1) var(--t) infinite;
+}
+.scene__bubbles i:nth-child(1) { --s: 8px;  --d: 4.4s; --t: 0s;    --w1: 5px;  --w2: -6px; }
+.scene__bubbles i:nth-child(2) { --s: 5px;  --d: 4.4s; --t: .22s;  --w1: -4px; --w2: 7px; }
+.scene__bubbles i:nth-child(3) { --s: 11px; --d: 4.4s; --t: .5s;   --w1: 7px;  --w2: 2px; }
+.scene__bubbles i:nth-child(4) { --s: 6px;  --d: 4.4s; --t: .78s;  --w1: -6px; --w2: -10px; }
+.scene__bubbles i:nth-child(5) { --s: 4px;  --d: 4.4s; --t: 1.05s; --w1: 3px;  --w2: 9px; }
+.scene__bubbles i:nth-child(6) { --s: 9px;  --d: 4.4s; --t: 2.3s;  --w1: -5px; --w2: 4px; }
+.scene__bubbles i:nth-child(7) { --s: 5px;  --d: 4.4s; --t: 2.6s;  --w1: 6px;  --w2: -5px; }
+
+/* everything below the diver's waist falls away into the deep */
+.page-home .scene-depth {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(5, 11, 15, .7) 0, rgba(5, 11, 15, .3) 12%, rgba(5, 11, 15, 0) 28%);
+}
+
+/* the mound in front of him: buries the base of the loot and plants his boot */
+.scene__mound {
+  position: absolute;
+  z-index: 13;
+  left: 4%;
+  top: 3.2%;
+  width: 100%;
+  height: 100%;
+  background: var(--img-patch) 0 0 / 100% 100% no-repeat;
+  filter: brightness(.74) saturate(.9);
+  translate: var(--ax, 0px) var(--ay, 0px);
+}
+/* drifting particulate, nearest to the camera: rises slowly and forever */
+.scene__particles {
+  position: absolute;
+  inset: 0;
+  z-index: 16;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  opacity: .85;
+  translate: calc(var(--ax, 0px) * 1.35) calc(var(--ay, 0px) * 1.35);
+  animation: particles-sway 11s ease-in-out infinite alternate;
+}
+.scene__particles i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 200%;
+  background: var(--img-particles) 0 0 / 100% 50% repeat-y;
+  animation: particles-rise 58s linear infinite;
+}
+
+/* ---- The light --------------------------------------------------------
+   Drifts with the diver (same keyframes, same clock), so the beam stays
+   fixed to his lamp. Screen-blended, so it adds light instead of paint. */
+.scene__light {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  mix-blend-mode: screen;
+  transform-origin: var(--float-o);
+  translate: var(--ax, 0px) var(--ay, 0px);
+  animation: diver-drift 7.6s ease-in-out infinite, lamp-flicker 13s linear infinite;
+  will-change: transform, opacity;
+}
+/* the beam frame, rotating about the lamp */
+.scene__sweep {
+  position: absolute;
+  left: var(--beam-x);
+  top: var(--beam-y);
+  width: 100%;
+  height: 100%;
+  transform-origin: var(--core);
+  transform: rotate(var(--aim, 0deg));
+  animation: beam-sweep 9.2s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.scene__beam {
+  position: absolute;
+  inset: 0;
+  background: var(--img-beam) 0 0 / 100% 100% no-repeat;
+}
+/* the beam's own shape is the window the lit layer is seen through */
+.scene__lit {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--img-beam) 0 0 / 100% 100% no-repeat;
+          mask: var(--img-beam) 0 0 / 100% 100% no-repeat;
+}
+/* ...undo the sweep... */
+.scene__unsweep {
+  position: absolute;
+  inset: 0;
+  transform-origin: var(--core);
+  transform: rotate(calc(var(--aim, 0deg) * -1));
+  animation: beam-unsweep 9.2s ease-in-out infinite alternate;
+}
+/* ...then undo the drift, back in stage coordinates */
+.scene__unfloat {
+  position: absolute;
+  left: calc(var(--beam-x) * -1);
+  top: calc(var(--beam-y) * -1);
+  width: 100%;
+  height: 100%;
+  transform-origin: var(--float-o);
+  animation: diver-undrift 7.6s ease-in-out infinite;
+}
+/* The lit layers are exact twins of world layers: same box, same mirror,
+   same sway. Only the paint differs (a pale silhouette), and the parallax is
+   corrected for the light group they sit inside, which moves at full depth. */
+.scene__city--lit {
+  background: rgb(150, 210, 214);
+  -webkit-mask: var(--img-city) 0 0 / 100% 100% no-repeat;
+          mask: var(--img-city) 0 0 / 100% 100% no-repeat;
+  opacity: .52;
+  filter: blur(1.4px);
+  translate: calc(var(--ax, 0px) * (.12 - 1)) calc(var(--ay, 0px) * (.12 - 1));
+}
+.scene__kelp--lit {
+  background: rgb(160, 224, 228);
+  -webkit-mask: var(--img-single) 0 0 / 100% 100% no-repeat;
+          mask: var(--img-single) 0 0 / 100% 100% no-repeat;
+  opacity: .4;
+  filter: blur(1.8px);
+  translate: calc(var(--ax, 0px) * (.38 - 1)) calc(var(--ay, 0px) * (.38 - 1));
+}
+/* marine snow: invisible in the dark, caught only where the beam passes */
+.scene__motes {
+  position: absolute;
+  inset: -12% -8%;
+  overflow: hidden;
+  translate: calc(var(--ax, 0px) * (.8 - 1)) calc(var(--ay, 0px) * (.8 - 1));
+}
+.scene__motes::before,
+.scene__motes::after {
+  content: "";
+  position: absolute;
+  inset: -380px;
+}
+.scene__motes::before {
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(235, 252, 255, .95) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 63% 71%, rgba(210, 245, 252, .75) 0 .8px, transparent 1.5px),
+    radial-gradient(circle at 81% 33%, rgba(235, 252, 255, .9) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 39% 54%, rgba(200, 240, 250, .6) 0 .7px, transparent 1.4px);
+  background-size: 130px 130px;
+  animation: motes-near 26s linear infinite;
+}
+.scene__motes::after {
+  background-image:
+    radial-gradient(circle at 30% 60%, rgba(220, 248, 255, .7) 0 1.8px, transparent 3px),
+    radial-gradient(circle at 75% 20%, rgba(200, 240, 250, .5) 0 1.4px, transparent 2.6px);
+  background-size: 190px 190px;
+  filter: blur(.7px);
+  animation: motes-far 19s linear infinite;
+}
+/* the lamp itself: a hot core that breathes */
+.scene__core {
+  position: absolute;
+  left: var(--lamp-x);
+  top: var(--lamp-y);
+  width: 11%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 253, 255, .95) 0 4%, rgba(185, 240, 248, .55) 12%, rgba(120, 205, 220, .18) 34%, transparent 66%);
+  animation: lamp-breathe 3.4s ease-in-out infinite;
+}
+
+/* ---- Wide screens -----------------------------------------------------
+   Past about 17:10 the frame is cropped top and bottom, and the top crop
+   used to land the helmet under the header. Here the stage is exactly as
+   wide as the screen, starts a little lower and favours its top, so the
+   helmet clears the header and the pot still clears the bottom edge. */
+@media (min-width: 761px) and (min-aspect-ratio: 17/10) {
+  .page-home .scene { --rw: 100vw; --rh: calc(100svh - 112px); --fy: .22; top: 112px; }
+  /* the towers' usual -5% offset would put their cut edge on screen, and
+     even at 0 the art's right edge sat on the screen's edge as a hard seam.
+     A slight overscan (both copies, so the lit layer still lines up) puts
+     it off-screen. */
+  .page-home .scene__city { left: 0; scale: 1.06; transform-origin: 0 55%; }
+}
+
+/* ---- Opening (after the loader lifts) ---------------------------------
+   The water comes up first, then the name surfaces, then the rest. */
+@media (prefers-reduced-motion: no-preference) {
+  .page-home .atmosphere { animation: home-water 1.5s ease-out backwards; }
+  .page-home .front-door__center > *,
+  .page-home .front-door__feature,
+  .page-home .front-door__bottom { animation: home-rise 1s cubic-bezier(.2, .7, .2, 1) backwards; }
+  .page-home .front-door__center > .eyebrow { animation-delay: .45s; }
+  .page-home .front-door__brand { animation: home-surface 1.6s cubic-bezier(.2, .7, .2, 1) .25s backwards; }
+  .page-home .front-door__line { animation-delay: .8s; }
+  .page-home .front-door__actions { animation-delay: .95s; }
+  .page-home .front-door__social { animation-delay: 1.05s; }
+  .page-home .front-door__feature { animation-delay: 1.15s; }
+  .page-home .front-door__bottom { animation-delay: 1.35s; }
+}
+@keyframes home-water { from { opacity: 0; } }
+@keyframes home-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes home-surface { from { opacity: 0; transform: translateY(5%); filter: blur(14px); } }
+
+/* ---- Rain on top of all of it ---------------------------------------- */
+.page-home #rain-canvas {
+  position: relative;
+  z-index: 10;
+  mix-blend-mode: screen;
+  /* Rain on the glass is the studio's half of the picture: strong over the
+     crimson where OUCH STUDIOS sits, gone by the time you reach the clear
+     blue water on ABYSS's side. (Stops are of the canvas, which is 110% of
+     the screen; see ui.css.) */
+  opacity: 1;
+  filter: contrast(1.2) saturate(1.25);
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 33%, rgba(0, 0, 0, .35) 45%, transparent 56%);
+          mask-image: linear-gradient(90deg, #000 0, #000 33%, rgba(0, 0, 0, .35) 45%, transparent 56%);
+}
+.page-home .rain-grade { z-index: 11; }
+
+/* ---- Motion ----------------------------------------------------------- */
+/* bending from the root, with the tips leading and a slight lean back:
+   reads as a current pushing through, not a pendulum */
+@keyframes kelp-wave {
+  0%, 100% { transform: skewX(-3.2deg) rotate(.7deg); }
+  45%      { transform: skewX(2.4deg) rotate(-.5deg); }
+  70%      { transform: skewX(1.2deg) rotate(-.2deg); }
+}
+/* Planted, so he sways from the ground rather than floating: a small lean
+   and a breath. Percentages are of the stage, so the size scales. */
+@keyframes diver-drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25%      { transform: translate(-.08%, -.35%) rotate(-.55deg); }
+  50%      { transform: translate(.05%, -.6%) rotate(.2deg); }
+  75%      { transform: translate(.1%, -.25%) rotate(.6deg); }
+}
+/* the exact inverse, function for function, in reverse order */
+@keyframes diver-undrift {
+  0%, 100% { transform: rotate(0deg) translate(0, 0); }
+  25%      { transform: rotate(.55deg) translate(.08%, .35%); }
+  50%      { transform: rotate(-.2deg) translate(-.05%, .6%); }
+  75%      { transform: rotate(-.6deg) translate(-.1%, .25%); }
+}
+@keyframes beam-sweep   { from { rotate: -9deg; } to { rotate: 7deg; } }
+@keyframes beam-unsweep { from { rotate: 9deg; }  to { rotate: -7deg; } }
+/* an old lamp: steady, then a stutter it recovers from */
+@keyframes lamp-flicker {
+  0%, 82%, 86%, 93%, 95%, 100% { opacity: 1; }
+  83%   { opacity: .62; }
+  83.6% { opacity: .95; }
+  84.4% { opacity: .48; }
+  93.6% { opacity: .78; }
+}
+@keyframes lamp-breathe { 50% { scale: 1.14; opacity: .82; } }
+@keyframes bubble-rise {
+  0%   { opacity: 0;   transform: translate(0, 0) scale(.45); }
+  10%  { opacity: .95; }
+  45%  { transform: translate(var(--w1), -10svh) scale(.85); }
+  75%  { opacity: .7; }
+  100% { opacity: 0;   transform: translate(var(--w2), -23svh) scale(1.15); }
+}
+@keyframes particles-rise { to { transform: translateY(-50%); } }
+@keyframes particles-sway { from { transform: translateX(-.7%); } to { transform: translateX(.7%); } }
+@keyframes motes-near { to { transform: translate(-130px, -260px); } }
+@keyframes motes-far  { to { transform: translate(190px, -380px); } }
+
+/* Pause motion freezes every layer where it stands, in step. */
+body.motion-paused .scene *,
+body.motion-paused .scene *::before,
+body.motion-paused .scene *::after { animation-play-state: paused !important; }
+
+/* Reduced motion gets the composition without the movement. Every motion
+   and its inverse drop out together, so nothing comes out of alignment. */
+@media (prefers-reduced-motion: reduce) {
+  .scene *,
+  .scene *::before,
+  .scene *::after { animation: none !important; }
+  .scene__bubbles { display: none; }
+}
+
+/* ---- Phones -----------------------------------------------------------
+   A 16:9 stage cannot fill a portrait screen without cropping to a close-up,
+   so on phones it becomes a banner that fades into the wash behind the type. */
+@media (max-width: 760px) {
+  .page-home .scene {
+    --rw: 100vw;
+    --rh: 47svh;                       /* the kneeling diver reaches lower: keep him above the copy */
+    --fx: .74;                         /* trade a little lantern for the beam */
+    top: 64px;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 40px, #000 74%, transparent 99%);
+            mask-image: linear-gradient(180deg, transparent 0, #000 40px, #000 74%, transparent 99%);
+  }
+  .page-home .scene-water {
+    background:
+      radial-gradient(ellipse 90% 40% at 62% 22%, rgba(26, 74, 80, .75), transparent 78%),
+      linear-gradient(180deg, rgba(9, 30, 36, .9) 0, rgba(9, 30, 36, .55) 44%, transparent 68%);
+  }
+  .page-home .scene-depth { display: none; }
+  /* the fade mask makes each plate its own stacking context here, so the
+     plates themselves have to sit either side of the rain */
+  .page-home .scene--back { z-index: 1; }
+  .page-home .scene--front { z-index: 12; }
+  .page-home #rain-canvas {
+    opacity: .9;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, transparent 46%, #000 72%);
+            mask-image: linear-gradient(180deg, transparent 0, transparent 46%, #000 72%);
+  }
+}
+
+/* ============================================================
+   ABYSS LAUNCH HERO: the same stage, staged as a poster
+   On the home page the diver stands beside the type. Here he stands in
+   front of it: a giant ABYSS sits INSIDE the scene, between the back plate
+   (kelp, city, seabed) and the front plate (diver, mound, light). So the
+   title is sunk into the water, his helmet crosses it, and the beam,
+   which screen-blends over everything below it, lights the letters as it
+   sweeps. There is no rain shader on this page, so the wrapper isolates
+   the scene. It keeps the abyss-hero__media class so abyss.css leaves it
+   absolutely positioned.
+   ============================================================ */
+.page-abyss:not(.page-wiki) .abyss-hero__media.abyss-hero__scene {
+  inset: 0;
+  width: auto;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  background: #04080d;
+  /* the poster dissolves into the ocean behind the rest of the page */
+  -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent);
+          mask-image: linear-gradient(180deg, #000 86%, transparent);
+}
+/* Behind everything: the Mule nosing through the kelp, mirrored so its
+   searchlight points in at the diver and the sun shafts fall on the left.
+   The box runs well below the hero so the sub lands under the title rather
+   than behind it. It sits furthest back, so it barely moves with the pointer. */
+.abyss-hero__backdrop {
+  position: absolute;
+  inset: -3% -3% -25%;
+  z-index: 0;
+  background: image-set(url("/assets/abyss/keyart-mule-2000.avif") type("image/avif"), url("/assets/abyss/keyart-mule-2000.webp") type("image/webp")) 50% 62% / cover no-repeat;
+  scale: -1 1;
+  filter: brightness(.82) saturate(.95);
+  translate: calc(var(--ax, 0px) * -.05) calc(var(--ay, 0px) * .05);
+}
+/* graded into the scene: deeper at the top behind the type, darker below */
+.abyss-hero__backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(4, 8, 13, .45) 0, rgba(4, 8, 13, .1) 30%, rgba(4, 8, 13, .2) 60%, rgba(4, 8, 13, .75) 100%),
+    radial-gradient(ellipse 60% 55% at 50% 45%, rgba(40, 110, 120, .14), transparent 70%);
+}
+@media (max-width: 1100px) and (max-resolution: 1.5dppx) {
+  .abyss-hero__backdrop {
+    background-image: image-set(url("/assets/abyss/keyart-mule-1100.avif") type("image/avif"), url("/assets/abyss/keyart-mule-1100.webp") type("image/webp"));
+  }
+}
+.abyss-hero__scene .scene {
+  --rh: calc(max(760px, 100svh) - 26svh);
+  --rw: 100vw;
+  --fx: .5;
+  top: 26svh;
+  /* the diver stands right of centre, leaving the left to the kelp */
+  left: 14vw;
+}
+/* the title, sunk between the plates */
+.launch-title {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  /* the caps rise above a .8 line box, and both the text fill and the mask
+     stop at the padding edge, so the padding gives them room */
+  top: calc(max(112px, 13svh) - .16em);
+  margin: 0;
+  padding-top: .16em;
+  font: 900 min(31vw, 44svh)/.8 var(--heading, 'Big Shoulders Display', sans-serif);
+  letter-spacing: -.035em;
+  white-space: nowrap;
+  color: transparent;
+  /* solid over the art: lit from above, deepening towards the base */
+  background: linear-gradient(180deg, #e8f0f3 0%, #b4c8d0 46%, #6f8c99 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  filter: drop-shadow(0 18px 50px rgba(0, 0, 0, .55));
+  translate: calc(-50% + var(--ax, 0px) * .3) calc(var(--ay, 0px) * .3);
+  user-select: none;
+}
+/* the diver is the poster here, so the lamp is tighter and the beam's root
+   lighter: the helmet glass stays readable */
+.abyss-hero__scene .scene__core {
+  width: 6.5%;
+  background: radial-gradient(circle, rgba(240, 253, 255, .9) 0 5%, rgba(185, 240, 248, .4) 14%, rgba(120, 205, 220, .1) 36%, transparent 66%);
+}
+.abyss-hero__scene .scene__beam {
+  -webkit-mask: radial-gradient(circle at var(--lamp-x) var(--lamp-y), rgba(0, 0, 0, .35) 0, #000 9%);
+          mask: radial-gradient(circle at var(--lamp-x) var(--lamp-y), rgba(0, 0, 0, .35) 0, #000 9%);
+}
+/* Here the stage is exactly as wide as the screen, so the towers' usual
+   -5% offset would leave their cut edge in view on the right. */
+.abyss-hero__scene .scene__city { left: 0; }
+/* Kelp on the left of the poster, swaying from the root. Four plants at
+   three depths: one far off in the murk, a bunch and a tall stem in the
+   middle distance, and one right against the glass, dark and soft. */
+.hero-kelp { position: absolute; inset: 0; pointer-events: none; }
+.hero-kelp__plant {
+  position: absolute;
+  bottom: 0;
+  background: var(--kelp) center bottom / contain no-repeat;
+  transform-origin: 50% 100%;
+  animation: kelp-wave var(--sway, 8s) ease-in-out var(--phase, 0s) infinite;
+  will-change: transform;
+}
+.hero-kelp__plant--far {
+  --kelp: image-set(url("/assets/home-kelp-single-512.avif") type("image/avif"), url("/assets/home-kelp-single-512.webp") type("image/webp"));
+  --sway: 10.5s; --phase: -4s;
+  z-index: 1;
+  left: 13vw;
+  width: 15vw;
+  height: 62%;
+  scale: -1 1;
+  filter: brightness(.42) saturate(.55) blur(1.5px);
+  translate: calc(var(--ax, 0px) * .1) 6%;
+}
+.hero-kelp__plant--bunch {
+  --kelp: image-set(url("/assets/home-kelp-bunch-768.avif") type("image/avif"), url("/assets/home-kelp-bunch-768.webp") type("image/webp"));
+  --sway: 9s; --phase: -1.5s;
+  z-index: 2;
+  left: -2vw;
+  width: 30vw;
+  height: 46%;
+  filter: brightness(.68) saturate(.8);
+  translate: calc(var(--ax, 0px) * .3) 4%;
+}
+.hero-kelp__plant--tall {
+  --kelp: image-set(url("/assets/home-kelp-single-1024.avif") type("image/avif"), url("/assets/home-kelp-single-1024.webp") type("image/webp"));
+  --sway: 7.4s; --phase: -2.7s;
+  z-index: 3;
+  left: 3vw;
+  width: 22vw;
+  height: 88%;
+  filter: brightness(.72) saturate(.85);
+  translate: calc(var(--ax, 0px) * .4) 3%;
+}
+.hero-kelp__plant--near {
+  --kelp: image-set(url("/assets/home-kelp-single-1024.avif") type("image/avif"), url("/assets/home-kelp-single-1024.webp") type("image/webp"));
+  --sway: 6.2s; --phase: -.8s;
+  z-index: 15;
+  left: -9vw;
+  width: 26vw;
+  height: 104%;
+  scale: -1 1;
+  filter: brightness(.28) saturate(.45) blur(3px);
+  translate: calc(var(--ax, 0px) * 1.4) 6%;
+}
+body.motion-paused .hero-kelp__plant { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-kelp__plant { animation: none; }
+}
+/* the seabed settles into the page colour where the copy sits */
+.abyss-hero__scene::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  z-index: 20;
+  background: linear-gradient(0deg, #060b12 0, rgba(6, 11, 18, .82) 34%, transparent);
+}
+@media (max-width: 760px) {
+  .abyss-hero__scene .scene {
+    --rw: 100vw;
+    --rh: 50svh;
+    --fx: .66;
+    top: 22svh;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 74%, transparent 99%);
+            mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 74%, transparent 99%);
+  }
+  /* masks make the plates stacking contexts here: back, title, front */
+  .abyss-hero__scene .scene--back { z-index: 1; }
+  .launch-title { z-index: 2; top: calc(14svh - .16em); font-size: 33vw; }
+  .abyss-hero__scene .scene { left: 0; }
+  .hero-kelp__plant--far, .hero-kelp__plant--near { display: none; }
+  .hero-kelp__plant--bunch { z-index: 1; width: 60vw; height: 30%; }
+  .hero-kelp__plant--tall { z-index: 1; width: 40vw; height: 52%; left: -10vw; }
+  .abyss-hero__scene .scene--front { z-index: 3; }
+}
+
+/* the copy that sits over the diver's art: a soft shadow keeps it legible
+   whatever is behind it */
+.page-home .front-door__feature,
+.page-home .front-door__bottom { text-shadow: 0 1px 2px rgba(0, 0, 0, .9), 0 2px 18px rgba(0, 0, 0, .75); }
+.page-home .front-door__feature { position: relative; isolation: isolate; }
+.page-home .front-door__bottom { isolation: isolate; }
+.page-home .front-door__feature::before {
+  content: "";
+  position: absolute;
+  inset: -60px -60px -50px -110px;
+  z-index: -1;
+  /* closest-side: the shade reaches zero before the box's edges, so it
+     never ends in a hard line (it did, on the right, at wide sizes) */
+  background: radial-gradient(closest-side ellipse at 58% 54%, rgba(4, 12, 16, .62), rgba(4, 12, 16, .3) 60%, transparent);
+  pointer-events: none;
+}
+.page-home .front-door__bottom::before {
+  content: "";
+  position: absolute;
+  inset: -40px calc(var(--gutter) * -1) -30px;
+  z-index: -1;
+  background: linear-gradient(0deg, rgba(5, 7, 10, .75), transparent);
+  pointer-events: none;
+}
+
+
+/* the kneeling diver's shotgun reaches toward the featured-world block:
+   sit it a little lower so the barrel passes above it */
+@media (min-width: 1101px) {
+  .page-home .front-door__feature { translate: 0 22px; }
+}

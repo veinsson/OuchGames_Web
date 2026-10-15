@@ -1,0 +1,681 @@
+/* Approved concept direction. This layer is loaded after site.css on every page. */
+@font-face {
+  font-family: 'Ouch Condensed';
+  src: url('/assets/fonts/condensed.woff') format('woff');
+  font-weight: 900;
+  font-display: swap;
+}
+:root {
+  --display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --red: #bf2941;
+  --line: rgba(224, 225, 230, .25);
+  --nav-inset: clamp(20px, 3.4vw, 64px);
+}
+.site-header {
+  top: 22px;
+  left: var(--nav-inset);
+  width: calc(100% - var(--nav-inset) * 2);
+  height: 66px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  overflow: hidden;
+  isolation: isolate;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .3), 0 22px 64px rgba(0, 0, 0, .42);
+  gap: 24px;
+}
+
+/* ---- liquid glass stack. Layers are injected by site.js ----
+   filter   = the refracting backdrop (SVG lens + blur)
+   overlay  = the tint that keeps nav text legible over bright rain
+   specular = the lit rim that sells it as glass                */
+.glass-filter,
+.glass-overlay,
+.glass-specular {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.glass-filter {
+  z-index: 0;
+  backdrop-filter: blur(5px) saturate(155%) brightness(1.08);
+  -webkit-backdrop-filter: blur(5px) saturate(155%) brightness(1.08);
+  filter: url(#lensFilter);
+}
+.glass-overlay {
+  z-index: 1;
+  background: linear-gradient(168deg, rgba(14, 16, 22, .3), rgba(10, 12, 18, .46));
+}
+.glass-specular {
+  z-index: 2;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, .5),
+    inset -1px -1px 1px rgba(255, 255, 255, .12),
+    inset 0 0 14px rgba(255, 255, 255, .16);
+}
+.site-header > *:not(.glass-filter):not(.glass-overlay):not(.glass-specular) {
+  position: relative;
+  z-index: 3;
+}
+.brand { gap: 24px; flex-shrink: 0; }
+.brand img { width: 28px; height: 39px; }
+.brand-divider { width: 1px; height: 28px; background: #b7b3ba66; }
+.brand-caption {
+  font: 10px/1.5 var(--mono);
+  letter-spacing: .2em;
+  white-space: nowrap;
+}
+.brand-caption > span { color: #a8a9ae; }
+.desktop-nav { gap: 42px; }
+.desktop-nav a, .community, .header-contact {
+  font: 10px/1.5 var(--mono);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.desktop-nav a { color: #96969f; padding: 9px 0; }
+.desktop-nav a:hover, .desktop-nav a[aria-current] { color: #f2eeee; }
+.desktop-nav a:after { height: 1px; bottom: 3px; }
+.header-actions { display: flex; align-items: center; gap: 32px; }
+.community { gap: 13px; color: #aaa8af; }
+.community svg { width: 18px; height: 15px; }
+.community:hover { color: white; }
+.header-contact {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 11px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(191, 41, 65, .7);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .22), rgba(99, 12, 27, .1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 20px #98142c14, 0 0 18px #98142c1a;
+  transition: background .25s, box-shadow .25s, border-color .25s;
+}
+.header-contact:hover {
+  border-color: rgba(191, 41, 65, 1);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .42), rgba(120, 16, 34, .26));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 0 26px #9b173840;
+}
+/* Full screen homepage. Rain, typography and navigation share one composition. */
+.page-home .atmosphere { height: 100svh; min-height: 640px; }
+.page-home #rain-canvas { opacity: 1; }
+.page-home .rain-grade {
+  background: linear-gradient(180deg, #07090d10 45%, #07080b22 72%, #07080b88), linear-gradient(90deg, #25071416, transparent 70%);
+}
+.home-hero.concept-hero {
+  padding: 154px calc(var(--nav-inset) + 28px) 28px;
+  height: 100svh;
+  min-height: 640px;
+  max-height: none;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 22px;
+}
+.hero-kicker { color: #b0b3bd; font-size: 11px; letter-spacing: .22em; }
+.concept-hero .studio-title {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: min(25svh, 18.5vw);
+  line-height: .96;
+  letter-spacing: .015em;
+  margin: 0;
+  padding: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .02em;
+  min-height: 0;
+}
+/* No texture fill. The rain behind the type is the texture. */
+.concept-hero .hero-word {
+  display: block;
+  width: fit-content;
+  white-space: nowrap;
+  color: #f6f2ec;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  mask-image: none;
+  -webkit-mask-image: none;
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, .25),
+    0 0 46px rgba(255, 245, 235, .16),
+    0 0 130px rgba(191, 41, 65, .2);
+}
+.concept-hero .hero-word + .hero-word { text-indent: .09em; }
+.hero-period {
+  color: var(--red);
+  -webkit-text-fill-color: var(--red);
+  font-family: inherit;
+  font-size: 1em;
+  margin-left: .04em;
+  text-shadow: 0 0 34px rgba(191, 41, 65, .65);
+}
+.concept-links { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.hero-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  border-bottom: 1px solid #d7dbe499;
+  padding: 0 0 9px;
+  font: 11px/1.5 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  position: relative;
+}
+.hero-explore:before { content: ''; position: absolute; width: 1px; height: 30px; background: #d7dbe444; left: -17px; bottom: -8px; }
+.hero-explore:hover { color: #fff; border-color: var(--red); }
+.concept-links p { color: #a0a3ae; font: 10px/1.8 var(--mono); letter-spacing: .06em; text-align: right; }
+.hero-rule { display: flex; align-items: center; gap: 27px; margin-top: 17px; font: 9px/1.5 var(--mono); letter-spacing: .18em; color: #8c8f99; }
+.rule-line { height: 1px; background: linear-gradient(90deg, #c8cbd47a, #c8cbd423); flex: 1; }
+.hero-rule .motion-toggle { position: static; font: inherit; color: inherit; letter-spacing: inherit; flex-shrink: 0; }
+/* Carry the same restraint into the remaining pages. */
+.button { border: 1px solid #ab2a40; border-radius: 0; font: 11px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .14em; min-height: 49px; padding: 14px 22px; }
+.primary { background: linear-gradient(110deg, #49132155, #160e1266); color: #efecef; box-shadow: 0 0 25px #8d183015; }
+.primary:hover { background: #76182d55; box-shadow: 0 0 30px #8d183032; }
+h1, h2, .card-meta strong { letter-spacing: .005em; }
+.stage-content h1 { font-size: clamp(110px, 18vw, 290px); }
+.stage-content h1.long-title { font-size: clamp(75px, 10vw, 170px); }
+.stage-content { padding-bottom: 35px; }
+.stage-controls button, .filters button { background: #13131b55; }
+.filters button.active { color: #fff; background: #5f12294d; border-color: var(--red); }
+.catalogue h2, .team-section h2 { font-size: clamp(68px, 9vw, 145px); }
+.card-meta strong { font-size: 34px; }
+.about-intro h1 { font-size: clamp(100px, 15vw, 240px); }
+.outline { -webkit-text-stroke: 1px #bac5d1; }
+.footer-word { font-size: clamp(100px, 23vw, 340px); }
+.footer { background: #090a0e; }
+.contact h1 { font-size: clamp(110px, 14vw, 220px); }
+@media (max-width: 1120px) {
+  .header-actions .community { display: none; }
+  .desktop-nav { gap: 30px; }
+  .brand { gap: 17px; }
+}
+@media (max-width: 700px) {
+  .site-header { top: 18px; height: 61px; padding: 0 17px; border-radius: 11px; gap: 12px; }
+  .brand { gap: 14px; }
+  .brand img { width: 23px; height: 33px; }
+  .brand-divider { height: 24px; }
+  .brand-caption { font-size: 9px; letter-spacing: .12em; }
+  .brand-caption > span { display: none; }
+  .header-actions { display: none; }
+  .mobile-menu { inset: 91px var(--nav-inset) auto; padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: #0e111bf5; }
+  .mobile-menu a { font-size: 44px; }
+  .home-hero.concept-hero { padding: 126px calc(var(--nav-inset) + 10px) 25px; gap: 20px; min-height: 610px; }
+  .hero-kicker { font-size: 9px; letter-spacing: .13em; max-width: 230px; }
+  .concept-hero .studio-title { font-size: 16.5vw; justify-content: center; gap: .02em; line-height: 1.02; }
+  .concept-links { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .concept-links p { text-align: left; font-size: 9px; }
+  .hero-rule { gap: 12px; font-size: 8px; letter-spacing: .06em; margin-top: 6px; }
+  .hero-explore { font-size: 10px; }
+  .stage-content h1 { font-size: 19vw; }
+  .stage-content h1.long-title { font-size: 12vw; }
+  .about-intro h1 { font-size: 11vw; }
+  .contact h1 { font-size: 17vw; }
+  .card-meta strong { font-size: 28px; }
+}
+@media (max-height: 740px) and (min-width: 701px) {
+  .home-hero.concept-hero { padding-top: 130px; gap: 14px; }
+  .concept-hero .studio-title { font-size: min(26svh, 18vw); }
+  .concept-links p { font-size: 9px; }
+}
+
+/* ============================================================
+   REFINEMENT PASS
+   Heavier display type, bigger mark in the same bar, a
+   scroll-reactive glass header, glass buttons, tighter intros
+   and a proper page transition.
+   ============================================================ */
+
+/* ---- 1. display type: solid, not spindly ---- */
+.concept-hero .studio-title,
+.stage-content h1,
+.about-intro h1,
+.contact h1,
+.simple-game h1,
+.mobile-menu a { font-weight: 600; }
+.concept-hero .hero-word { letter-spacing: .005em; }
+
+/* the hollow outline read as broken on a serif — tint it instead */
+.outline {
+  -webkit-text-stroke: 0;
+  color: #9fb0c4;
+}
+
+/* ---- 2. bigger skull, same bar height ---- */
+.brand img { width: 35px; height: 49px; }
+.brand-divider { height: 31px; }
+
+/* ---- 3. scroll-reactive liquid glass header ---- */
+.site-header {
+  position: fixed;
+  transition:
+    top .55s cubic-bezier(.22, 1, .36, 1),
+    left .55s cubic-bezier(.22, 1, .36, 1),
+    width .55s cubic-bezier(.22, 1, .36, 1),
+    height .55s cubic-bezier(.22, 1, .36, 1),
+    border-radius .55s cubic-bezier(.22, 1, .36, 1),
+    box-shadow .45s ease;
+}
+/* a touch of self-lit glass so it still reads over flat sections */
+.glass-overlay {
+  background:
+    linear-gradient(168deg, rgba(20, 23, 31, .34), rgba(10, 12, 18, .5)),
+    linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, 0) 45%);
+  transition: background .45s ease;
+}
+body.is-scrolled .site-header {
+  top: 12px;
+  left: calc(var(--nav-inset) + 30px);
+  width: calc(100% - (var(--nav-inset) + 30px) * 2);
+  height: 54px;
+  border-radius: 27px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .46), 0 26px 70px rgba(0, 0, 0, .5);
+}
+body.is-scrolled .glass-overlay {
+  background:
+    linear-gradient(168deg, rgba(16, 18, 26, .58), rgba(8, 10, 15, .72)),
+    linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, 0) 45%);
+}
+body.is-scrolled .brand img { width: 30px; height: 42px; }
+body.is-scrolled .brand-divider { height: 25px; }
+.brand img, .brand-divider { transition: width .55s cubic-bezier(.22,1,.36,1), height .55s cubic-bezier(.22,1,.36,1); }
+
+/* ---- 4. buttons: same rounded glass language as the header ---- */
+.button,
+.copy-code,
+.filters button,
+#stage-prev,
+#stage-next {
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(9px) saturate(150%);
+  backdrop-filter: blur(9px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 6px 20px rgba(0, 0, 0, .28);
+  transition: background .3s, border-color .3s, box-shadow .3s, transform .3s cubic-bezier(.22,1,.36,1), color .3s;
+}
+.button {
+  border: 1px solid rgba(191, 41, 65, .6);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .2), rgba(99, 12, 27, .1));
+}
+.button:hover {
+  border-color: rgba(191, 41, 65, .95);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .4), rgba(120, 16, 34, .24));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 0 30px rgba(155, 23, 56, .38);
+}
+.button.primary {
+  border-color: rgba(214, 52, 79, .9);
+  background: linear-gradient(160deg, rgba(206, 24, 57, .92), rgba(140, 16, 38, .9));
+}
+.button.primary:hover {
+  background: linear-gradient(160deg, rgba(226, 38, 72, 1), rgba(160, 20, 44, .95));
+}
+.copy-code,
+.filters button,
+#stage-prev,
+#stage-next {
+  border: 1px solid rgba(224, 225, 230, .22);
+  background: linear-gradient(160deg, rgba(26, 29, 38, .5), rgba(12, 14, 20, .42));
+}
+.copy-code:hover,
+.filters button:hover,
+#stage-prev:hover,
+#stage-next:hover {
+  border-color: rgba(224, 225, 230, .45);
+  background: linear-gradient(160deg, rgba(40, 44, 56, .6), rgba(18, 20, 28, .5));
+  transform: translateY(-1px);
+}
+.filters button[aria-pressed="true"] {
+  border-color: rgba(191, 41, 65, .8);
+  background: linear-gradient(160deg, rgba(191, 41, 65, .34), rgba(99, 12, 27, .18));
+  color: #fff;
+}
+.hero-explore { border-radius: 2px; }
+
+/* ---- 5. intros were eating whole screens ---- */
+.about-intro h1 { font-size: clamp(48px, 6.6vw, 104px); line-height: 1.02; }
+.contact h1 { font-size: clamp(50px, 7vw, 112px); line-height: 1.02; }
+.simple-game h1 { font-size: clamp(52px, 7.5vw, 118px); line-height: 1.02; }
+
+@media (max-width: 700px) {
+  .about-intro h1 { font-size: 13vw; }
+  .contact h1 { font-size: 14vw; }
+  .brand img { width: 30px; height: 42px; }
+  body.is-scrolled .site-header { top: 10px; height: 50px; left: var(--nav-inset); width: calc(100% - var(--nav-inset) * 2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .brand img, .brand-divider { transition: none !important; }
+}
+
+/* ============================================================
+   CONCEPT HERO — bold condensed statement + featured release
+   ============================================================ */
+:root { --display: 'Anton', 'Arial Narrow', sans-serif; }
+
+/* ---- the statement ---- */
+.concept-hero .studio-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: min(25svh, 13.2vw);
+  line-height: .88;
+  letter-spacing: .004em;
+  text-transform: uppercase;
+  gap: .01em;
+}
+.concept-hero .hero-word {
+  color: #f4f6f8;
+  /* clean vertical sheen. No grain mask. */
+  background: linear-gradient(180deg, #ffffff 0%, #eaedf1 42%, #b6bfca 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 10px 34px rgba(0, 0, 0, .55));
+  text-shadow: none;
+}
+.concept-hero .hero-word + .hero-word { text-indent: 0; }
+.hero-period {
+  -webkit-text-fill-color: var(--red);
+  color: var(--red);
+  filter: drop-shadow(0 0 22px rgba(191, 41, 65, .8));
+}
+
+/* ---- featured release panel (same glass language as the header) ---- */
+.concept-links { align-items: flex-end; }
+.featured {
+  position: relative;
+  width: min(370px, 40vw);
+  padding: 17px 19px 19px;
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, .45), 0 26px 70px rgba(0, 0, 0, .4);
+  text-align: left;
+  flex-shrink: 0;
+}
+.featured > *:not(.glass-filter):not(.glass-overlay):not(.glass-specular) {
+  position: relative;
+  z-index: 3;
+}
+.featured__label {
+  margin: 0 0 11px;
+  font: 9px/1.5 var(--mono);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: #b7bbc6;
+}
+.featured__name {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(38px, 4.2vw, 62px);
+  line-height: .88;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 34px rgba(191, 41, 65, .35);
+}
+.featured__tag {
+  margin: 11px 0 16px;
+  font: 9.5px/1.6 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #a8acb8;
+}
+.featured__cta {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  gap: 16px;
+  padding: 12px 16px;
+  font-size: 10px;
+}
+
+/* ---- bottom meta rule ---- */
+.hero-rule__note {
+  font: 9px/1.5 var(--mono);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #8c8f99;
+  flex-shrink: 0;
+}
+
+/* ---- condensed face is narrower, so the other display heads grow back ---- */
+.about-intro h1 { font-size: clamp(56px, 8.4vw, 138px); line-height: .95; }
+.contact h1 { font-size: clamp(58px, 8.8vw, 148px); line-height: .95; }
+.simple-game h1 { font-size: clamp(60px, 9vw, 150px); line-height: .95; }
+.catalogue h2, .team-section h2 { line-height: .95; }
+.outline { color: #9fb0c4; -webkit-text-stroke: 0; }
+
+@media (max-width: 980px) {
+  .concept-links { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .featured { width: min(370px, 100%); }
+}
+@media (max-width: 700px) {
+  .concept-hero .studio-title { font-size: 12.4vw; line-height: .92; }
+  .about-intro h1 { font-size: 15vw; }
+  .contact h1 { font-size: 16vw; }
+  .hero-rule__note { display: none; }
+}
+
+/* --- hero statement must respect the hero gutter --- */
+.concept-hero .studio-title { font-size: min(25svh, 12vw); }
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 11.6vw; } }
+/* .concept-links p was right-aligning the featured card's copy */
+.concept-links .featured p { text-align: left; }
+
+/* ============================================================
+   GLASS LEGIBILITY — the pill must read on dark art, not just rain
+   ============================================================ */
+.glass-overlay {
+  background:
+    linear-gradient(168deg, rgba(40, 45, 58, .42), rgba(16, 19, 27, .52)),
+    linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, 0) 48%);
+}
+.glass-specular {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .62),
+    inset 1px 0 0 rgba(255, 255, 255, .2),
+    inset -1px 0 0 rgba(255, 255, 255, .2),
+    inset 0 -1px 0 rgba(255, 255, 255, .14),
+    inset 0 0 24px rgba(255, 255, 255, .1);
+}
+/* a constant hairline so the shape is always defined */
+.site-header::after,
+.featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(233, 238, 245, .2);
+  pointer-events: none;
+  z-index: 4;
+}
+.site-header {
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, .42),
+    0 22px 64px rgba(0, 0, 0, .5);
+}
+body.is-scrolled .glass-overlay {
+  background:
+    linear-gradient(168deg, rgba(34, 38, 50, .62), rgba(10, 12, 18, .74)),
+    linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 48%);
+}
+
+/* ============================================================
+   INDUSTRIAL PASS
+   Big Shoulders Display for signage-scale type, IBM Plex Mono for
+   metadata, and a hard-edged featured-release panel on the right.
+   Red is reserved for three things only: the period after STUDIOS.,
+   AVAILABLE NOW, and the CTA hover.
+   ============================================================ */
+:root {
+  --display: 'Big Shoulders Display', 'Ouch Condensed', 'Arial Narrow', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ---- hero: title left, release right ---- */
+.hero-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(520px, 41%);
+  align-items: center;
+  gap: clamp(26px, 3.6vw, 60px);
+  min-height: 0;
+}
+
+.concept-hero .studio-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: min(27svh, 14.2vw);
+  line-height: .72;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  gap: 0;
+  align-self: center;
+}
+.concept-hero .hero-word {
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f4 46%, #bcc4cd 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 12px 38px rgba(0, 0, 0, .6));
+}
+.hero-period {
+  -webkit-text-fill-color: var(--red);
+  color: var(--red);
+  filter: drop-shadow(0 0 24px rgba(191, 41, 65, .85));
+}
+
+/* ---- featured release: mechanical, not glassmorphic ---- */
+.release {
+  position: relative;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 3px;
+  background: linear-gradient(110deg, rgba(12, 13, 17, .88), rgba(22, 15, 21, .62));
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+  justify-self: end;
+}
+/* corner ticks */
+.release::before, .release::after {
+  content: "";
+  position: absolute;
+  width: 11px; height: 11px;
+  border: 1px solid rgba(255, 255, 255, .4);
+  z-index: 3; pointer-events: none;
+}
+.release::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.release::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+/* art bleeds in from the right and dissolves into the page */
+.release__art {
+  position: absolute; inset: 0; z-index: 0;
+  border: 0; border-radius: 0; aspect-ratio: auto;
+  opacity: .42;
+  place-items: start end;
+  padding: 12px 14px 0 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 80%, transparent 100%);
+}
+.release__art::after { font-size: 8px; letter-spacing: .3em; }
+
+.release__body { position: relative; z-index: 2; padding: 16px 20px 0; }
+
+.release__top {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  margin: 0 0 16px; padding-bottom: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, .13);
+  font: 9px/1.5 var(--mono);
+  letter-spacing: .24em; text-transform: uppercase; color: #8b909c;
+}
+.release__status { color: var(--red); white-space: nowrap; }
+
+.release__name {
+  margin: 0;
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(52px, 4.8vw, 82px);
+  line-height: .78; letter-spacing: -.03em; text-transform: uppercase;
+  color: #f4f7fa;
+}
+.release__tag {
+  margin: 14px 0 0;
+  font: 400 11px/1.75 var(--mono);
+  letter-spacing: .16em; text-transform: uppercase; color: #c6cbd5;
+}
+.release__meta {
+  margin: 15px 0 18px;
+  font: 300 9px/1.6 var(--mono);
+  letter-spacing: .2em; text-transform: uppercase; color: #81869 3;
+  color: #818693;
+}
+.release__meta i { font-style: normal; color: rgba(255, 255, 255, .28); padding: 0 7px; }
+
+.release__cta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 -20px; padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, .13);
+  font: 500 11px/1 var(--mono);
+  letter-spacing: .22em; text-transform: uppercase; color: #fff;
+  transition: background .3s var(--ease), letter-spacing .3s var(--ease);
+}
+.release__cta span { font-size: 14px; }
+.release__cta:hover { background: var(--red); letter-spacing: .26em; }
+
+/* ---- bottom row ---- */
+.concept-links { justify-content: flex-start; }
+
+/* ---- responsive ---- */
+@media (max-width: 1100px) {
+  .hero-body { grid-template-columns: 1fr; align-items: start; gap: 26px; }
+  .release { justify-self: start; width: min(520px, 100%); }
+  .concept-hero .studio-title { font-size: min(22svh, 15vw); }
+}
+@media (max-width: 700px) {
+  .concept-hero .studio-title { font-size: 17vw; }
+  .release__name { font-size: 15vw; }
+  .release__top { flex-wrap: wrap; gap: 6px; }
+}
+
+/* keep the signage title inside its column so it never runs into the release panel */
+.hero-body { grid-template-columns: minmax(0, 1fr) min(460px, 36%); }
+.concept-hero .studio-title { font-size: min(27svh, 13vw); }
+@media (max-width: 1100px) {
+  .hero-body { grid-template-columns: 1fr; }
+  .concept-hero .studio-title { font-size: min(22svh, 15vw); }
+}
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
+.concept-hero .studio-title { font-size: min(26svh, 12.2vw); }
+@media (max-width: 1100px) { .concept-hero .studio-title { font-size: min(22svh, 15vw); } }
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
+/* final: clears the release panel at every desktop width */
+.concept-hero .studio-title { font-size: min(23svh, 11.2vw); }
+@media (max-width: 1100px) { .concept-hero .studio-title { font-size: min(22svh, 15vw); } }
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
+
+/* The hero content is max-width capped, so vw sizing drifts at large screens.
+   Size the signage type against its own container instead. */
+.hero-body { container-type: inline-size; }
+@supports (width: 1cqw) {
+  .concept-hero .studio-title { font-size: min(23svh, 16cqw); }
+  @media (max-width: 1100px) { .concept-hero .studio-title { font-size: min(22svh, 15vw); } }
+  @media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
+}
+
+/* containment collapsed the grid item - drop it and cap the title in px,
+   which is what the max-width-capped hero actually needs at large screens */
+.hero-body { container-type: normal; }
+.concept-hero .studio-title { font-size: min(23svh, 11.2vw, 178px); }
+@media (max-width: 1100px) { .concept-hero .studio-title { font-size: min(22svh, 15vw); } }
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
+
+/* ROOT FIX: .home-hero sets justify-content:space-between for its flex layout.
+   .concept-hero switches to grid, where that stops the auto column from
+   stretching - the hero was collapsing to max-content. Pin an explicit
+   full-width column so the title and release panel get the real space. */
+.home-hero.concept-hero { grid-template-columns: minmax(0, 1fr); justify-content: normal; }
+.concept-hero .studio-title { font-size: min(26svh, 13vw); }
+@media (max-width: 1100px) { .concept-hero .studio-title { font-size: min(22svh, 15vw); } }
+@media (max-width: 700px) { .concept-hero .studio-title { font-size: 17vw; } }
