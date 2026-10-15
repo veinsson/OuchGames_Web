@@ -1,0 +1,6 @@
+# Local only: the site source (private repo ouch-site-dev), its backups and tool settings.
+# The live site is just the built files in this folder.
+/ouchrevamp/
+/ouchrevamp.bak-*/
+/ouchrevamp.zip
+/.claude/
