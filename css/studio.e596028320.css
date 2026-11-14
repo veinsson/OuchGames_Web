@@ -582,3 +582,32 @@ body.motion-paused .wall-track { animation-play-state: paused; }
 }
 @media (prefers-reduced-motion: reduce) { .timeline__item.is-now::after { animation: none; } }
 .page-about .team-section { padding-bottom: clamp(50px, 5vw, 80px); }
+
+/* ---- Where we're headed: heading on the left, five rows on the right ---- */
+.studio-next {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 90px);
+  padding: clamp(56px, 6vw, 96px) var(--gutter);
+  background: rgba(11, 14, 21, .93);
+}
+.studio-next__head { position: sticky; top: 120px; align-self: start; }
+.studio-next__head h2 { margin: 18px 0 0; font-size: clamp(64px, 8vw, 132px); line-height: .9; }
+.studio-next__list { margin: 0; padding: 0; list-style: none; }
+.studio-next__list li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 16px;
+  padding: 26px 0 30px;
+  border-top: 1px solid rgba(255, 255, 255, .18);
+}
+.studio-next__list li:last-child { border-bottom: 1px solid rgba(255, 255, 255, .18); }
+.studio-next__list span { padding-top: 10px; font: 500 10px/1 var(--mono); letter-spacing: .2em; color: var(--red); }
+.studio-next__list h3 { margin: 0 0 12px; font: 800 clamp(28px, 2.8vw, 44px)/.95 var(--display); text-transform: uppercase; color: #f1f4f8; }
+.studio-next__list h3 i { font-style: normal; color: var(--red); }
+.studio-next__list p { grid-column: 2; margin: 0; max-width: 58ch; color: #aeb8c4; font-size: 16px; line-height: 1.55; }
+@media (max-width: 900px) {
+  .studio-next { grid-template-columns: minmax(0, 1fr); }
+  .studio-next__head { position: static; }
+  .studio-next__list li { grid-template-columns: 40px minmax(0, 1fr); column-gap: 10px; }
+}

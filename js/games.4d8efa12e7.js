@@ -15,6 +15,17 @@ window.OUCH_GAMES = [
     "focus": "30% 40%"
   },
   {
+    "id": "dollhouse",
+    "title": "DOLLHOUSE",
+    "image": "assets/newsite/DollhouseTB.jpg",
+    "code": "3404-7672-5291",
+    "description": "Investigate a jungle island where people leave their haunted dolls behind for good. By Teki.",
+    "category": "Horror",
+    "credit": "Teki",
+    "released": "2026-11-13",
+    "focus": "50% 35%"
+  },
+  {
     "id": "hunt",
     "title": "HUNT",
     "image": "assets/newsite/HUNT_TB.jpeg",

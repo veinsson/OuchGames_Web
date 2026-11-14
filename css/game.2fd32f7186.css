@@ -35,7 +35,9 @@
 .game-hero .eyebrow i { margin: 0 6px; font-style: normal; color: var(--red); }
 .game-hero__title {
   margin: 18px 0 18px;
-  font: 900 clamp(84px, 13vw, 230px)/.82 var(--display);
+  /* --chars is the longest word's length (set by build_game_pages.py); on
+     phones the minimum shrinks so long names like DOLLHOUSE never split */
+  font: 900 clamp(min(84px, calc((100vw - 48px) / (var(--chars, 6) * .5))), 13vw, 230px)/.82 var(--display);
   letter-spacing: -.01em;
   text-transform: uppercase;
   color: #f6f3f1;
@@ -175,3 +177,11 @@
 @media (max-width: 900px) {
   .game-hero__art { background-position: 0 0, 0 0, 0 0, var(--focus, center 35%); }
 }
+
+/* ---- In-game screenshots (only on games that list some) ---------------- */
+.game-shots { padding: 0 var(--gutter) clamp(70px, 7vw, 110px); }
+.game-shots__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.game-shot { margin: 0; overflow: hidden; border: 1px solid var(--edge-soft, rgba(233, 238, 245, .12)); border-radius: var(--r-md, 18px); background: #0b0e14; }
+.game-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; transition: scale .6s cubic-bezier(.2, .7, .2, 1); }
+.game-shot:hover img { scale: 1.04; }
+@media (max-width: 900px) { .game-shots__grid { grid-template-columns: minmax(0, 1fr); } }
